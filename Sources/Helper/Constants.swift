@@ -38,15 +38,25 @@ public let foodGroupColorDarkBg: Color = .mint.opacity(0.8)
 public let foodGroupColorLiteBg: Color = .primary
 public let foodGroupListItemTint: Color = .mint.opacity(0.2)
 
-public let websiteDomain = "daily-calorie-tracker.github.io"
-public let websiteTitle = "Daily Calorie Tracker"
+public let websiteDomain = "open-trackers.github.io"
 public let copyright = "Copyright 2023 OpenAlloc LLC"
 
 public let websiteURL = URL(string: "https://\(websiteDomain)")!
 public let websitePrivacyURL = websiteURL.appending(path: "privacy")
 public let websiteTermsURL = websiteURL.appending(path: "terms")
-public let websiteTutorialURL = websiteURL.appending(path: "tutorial")
+
+public let websiteAppURL = websiteURL.appending(path: "dct")
+public let websiteAppTutorialURL = websiteAppURL.appending(path: "tutorial")
 
 public let categoryQuickLogActivityType = "org.openalloc.dcalt.category-quick-log"
 public let categoryServingLogActivityType = "org.openalloc.dcalt.category-serving-log"
 public let userActivity_uriRepKey = "uriRep"
+
+public let websitePlea: String =
+    "As an open source project, \(shortAppName) depends on its community of users. Please help by rating and reviewing in the App Store!"
+
+#if os(watchOS)
+    public let shortAppName = "DCT"
+#elseif os(iOS)
+    public let shortAppName = "DCT+"
+#endif

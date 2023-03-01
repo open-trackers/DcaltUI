@@ -102,21 +102,14 @@ public struct DcaltDestination: View {
         }
     }
 
-    private var shortAppName: String {
-        #if os(watchOS)
-            "DCT"
-        #elseif os(iOS)
-            "DCT+"
-        #endif
-    }
-
     private var aboutView: some View {
         AboutView(shortAppName: shortAppName,
-                  websiteURL: websiteURL,
+                  websiteURL: websiteAppURL,
                   privacyURL: websitePrivacyURL,
                   termsURL: websiteTermsURL,
-                  tutorialURL: websiteTutorialURL,
-                  copyright: copyright) {
+                  tutorialURL: websiteAppTutorialURL,
+                  copyright: copyright,
+                  plea: websitePlea) {
             AppIcon(name: "app_icon")
         }
     }
