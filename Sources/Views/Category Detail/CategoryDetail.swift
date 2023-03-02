@@ -59,11 +59,17 @@ public struct CategoryDetail: View {
                     CategoryName(category: category)
                     CategoryImage(category: category)
                 }
+                .tabItem {
+                    Text("Properties")
+                }
                 .tag(0)
 
                 Form {
                     FormColorPicker(color: $color)
                     CategoryFoodGroups(category: category)
+                }
+                .tabItem {
+                    Text("Food Groups")
                 }
                 .tag(1)
 
