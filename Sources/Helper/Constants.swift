@@ -38,6 +38,10 @@ public let foodGroupColorDarkBg: Color = .mint.opacity(0.8)
 public let foodGroupColorLiteBg: Color = .primary
 public let foodGroupListItemTint: Color = .mint.opacity(0.2)
 
+public let categoryQuickLogActivityType = "org.openalloc.dcalt.category-quick-log"
+public let categoryServingLogActivityType = "org.openalloc.dcalt.category-serving-log"
+public let userActivity_uriRepKey = "uriRep"
+
 public let websiteDomain = "open-trackers.github.io"
 public let copyright = "Copyright 2023 OpenAlloc LLC"
 
@@ -47,10 +51,6 @@ public let websiteTermsURL = websiteURL.appending(path: "terms")
 
 public let websiteAppURL = websiteURL.appending(path: "dct")
 public let websiteAppTutorialURL = websiteAppURL.appending(path: "tutorial")
-
-public let categoryQuickLogActivityType = "org.openalloc.dcalt.category-quick-log"
-public let categoryServingLogActivityType = "org.openalloc.dcalt.category-serving-log"
-public let userActivity_uriRepKey = "uriRep"
 
 public let websitePlea: String =
     "As an open source project, \(shortAppName) depends on its community of users. Please help by rating and reviewing in the App Store!"
