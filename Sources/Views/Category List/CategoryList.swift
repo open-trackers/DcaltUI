@@ -36,13 +36,6 @@ public struct CategoryList: View {
 
     public init(onShortcut: @escaping () -> Void = {}) {
         self.onShortcut = onShortcut
-
-        //        #if os(iOS)
-        //            // let color = colorScheme == .dark ? UIColor.yellow : UIColor(Color.accentColor)
-        //            let color = UIColor(Color.accentColor)
-        //            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: color]
-        //            UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: color]
-        //        #endif
     }
 
     // MARK: - Locals
@@ -223,6 +216,8 @@ public struct CategoryList: View {
             router.path.append(DcaltRoute.about)
         }
     #endif
+
+    // MARK: - Background Task
 
     @Sendable
     private func taskAction() async {
