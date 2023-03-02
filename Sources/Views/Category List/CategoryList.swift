@@ -32,13 +32,17 @@ public struct CategoryList: View {
 
     // MARK: - Parameters
 
-    public init() {
-//        #if os(iOS)
-//            // let color = colorScheme == .dark ? UIColor.yellow : UIColor(Color.accentColor)
-//            let color = UIColor(Color.accentColor)
-//            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: color]
-//            UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: color]
-//        #endif
+    private let onShortcut: () -> Void
+
+    public init(onShortcut: @escaping () -> Void = {}) {
+        self.onShortcut = onShortcut
+
+        //        #if os(iOS)
+        //            // let color = colorScheme == .dark ? UIColor.yellow : UIColor(Color.accentColor)
+        //            let color = UIColor(Color.accentColor)
+        //            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: color]
+        //            UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: color]
+        //        #endif
     }
 
     // MARK: - Locals
@@ -91,6 +95,8 @@ public struct CategoryList: View {
         }
         .onContinueUserActivity(categoryQuickLogActivityType,
                                 perform: categoryQuickLogContinueUserActivity)
+        .onContinueUserActivity(categoryServingLogActivityType,
+                                perform: categoryServingLogContinueUserActivity)
         .task(priority: .utility, taskAction)
     }
 
@@ -259,6 +265,9 @@ public struct CategoryList: View {
 
     private func categoryQuickLogContinueUserActivity(_ userActivity: NSUserActivity) {
         logger.notice("\(#function)")
+
+        onShortcut() // To force to first tab in iOS app, in case started via shortcut
+
         guard let categoryURI = userActivity.userInfo?[userActivity_uriRepKey] as? URL,
               let category = NSManagedObject.get(viewContext, forURIRepresentation: categoryURI) as? MCategory
         else {
@@ -273,6 +282,9 @@ public struct CategoryList: View {
 
     private func categoryServingLogContinueUserActivity(_ userActivity: NSUserActivity) {
         logger.notice("\(#function)")
+
+        onShortcut() // To force to first tab in iOS app, in case started via shortcut
+
         guard let servingURI = userActivity.userInfo?[userActivity_uriRepKey] as? URL,
               let serving = NSManagedObject.get(viewContext, forURIRepresentation: servingURI) as? MServing
         else {
