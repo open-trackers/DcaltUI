@@ -264,7 +264,7 @@ public struct CategoryList: View {
         onShortcut() // To force to first tab in iOS app, in case started via shortcut
 
         guard let categoryURI = userActivity.userInfo?[userActivity_uriRepKey] as? URL,
-              let category = NSManagedObject.get(viewContext, forURIRepresentation: categoryURI) as? MCategory
+              let category = MCategory.get(viewContext, forURIRepresentation: categoryURI) as? MCategory
         else {
             logger.notice("\(#function): unable to continue User Activity")
             return
@@ -281,7 +281,7 @@ public struct CategoryList: View {
         onShortcut() // To force to first tab in iOS app, in case started via shortcut
 
         guard let servingURI = userActivity.userInfo?[userActivity_uriRepKey] as? URL,
-              let serving = NSManagedObject.get(viewContext, forURIRepresentation: servingURI) as? MServing
+              let serving = MServing.get(viewContext, forURIRepresentation: servingURI) as? MServing
         else {
             logger.notice("\(#function): unable to continue User Activity")
             return
