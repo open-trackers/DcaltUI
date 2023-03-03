@@ -41,7 +41,7 @@ public struct DcaltDestination: View {
         case .about:
             aboutView
         case let .categoryDetail(categoryURI):
-            if let category = MCategory.get(viewContext, forURIRepresentation: categoryURI) {
+            if let category: MCategory = MCategory.get(viewContext, forURIRepresentation: categoryURI) {
                 CategoryDetail(category: category)
                     .environmentObject(router)
                     .environment(\.managedObjectContext, viewContext)
@@ -49,7 +49,7 @@ public struct DcaltDestination: View {
                 Text("Category not available to display detail.")
             }
         case let .categoryRun(categoryURI):
-            if let category = MCategory.get(viewContext, forURIRepresentation: categoryURI) {
+            if let category: MCategory = MCategory.get(viewContext, forURIRepresentation: categoryURI) {
                 CategoryRun(category: category)
                     .environmentObject(router)
                     .environment(\.managedObjectContext, viewContext)
@@ -57,7 +57,7 @@ public struct DcaltDestination: View {
                 Text("Category not available to display detail.")
             }
         case let .servingList(categoryURI):
-            if let category = MCategory.get(viewContext, forURIRepresentation: categoryURI) {
+            if let category: MCategory = MCategory.get(viewContext, forURIRepresentation: categoryURI) {
                 ServingList(category: category)
                     .environmentObject(router)
                     .environment(\.managedObjectContext, viewContext)
@@ -65,7 +65,7 @@ public struct DcaltDestination: View {
                 Text("Category not available to display serving list.")
             }
         case let .servingDetail(servingURI):
-            if let serving = MServing.get(viewContext, forURIRepresentation: servingURI) {
+            if let serving: MServing = MServing.get(viewContext, forURIRepresentation: servingURI) {
                 ServingDetail(serving: serving)
                     .environmentObject(router)
                     .environment(\.managedObjectContext, viewContext)
@@ -73,7 +73,7 @@ public struct DcaltDestination: View {
                 Text("Serving not available to display detail.")
             }
         case let .servingRun(servingURI):
-            if let serving = MServing.get(viewContext, forURIRepresentation: servingURI) {
+            if let serving: MServing = MServing.get(viewContext, forURIRepresentation: servingURI) {
                 ServingRun(serving: serving)
                     .environmentObject(router)
                     .environment(\.managedObjectContext, viewContext)
@@ -81,7 +81,7 @@ public struct DcaltDestination: View {
                 Text("Serving not available to run.")
             }
         case let .quickLog(categoryURI):
-            if let category = MCategory.get(viewContext, forURIRepresentation: categoryURI) {
+            if let category: MCategory = MCategory.get(viewContext, forURIRepresentation: categoryURI) {
                 QuickLog(category: category, lastCalories: quickLogRecents[categoryURI]?.first)
                     .environmentObject(router)
                     .environment(\.managedObjectContext, viewContext)
@@ -89,7 +89,7 @@ public struct DcaltDestination: View {
                 Text("Category not available for quick add.")
             }
         case let .foodGroupList(categoryURI):
-            if let category = MCategory.get(viewContext, forURIRepresentation: categoryURI) {
+            if let category: MCategory = MCategory.get(viewContext, forURIRepresentation: categoryURI) {
                 FoodGroupList(category: category)
                     .environmentObject(router)
                     .environment(\.managedObjectContext, viewContext)
