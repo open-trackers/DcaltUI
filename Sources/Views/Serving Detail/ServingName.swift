@@ -34,7 +34,8 @@ public struct ServingName: View {
         Section {
             TextFieldWithPresets($servingPreset, // serving.wrappedName
                                  prompt: "Enter serving name",
-                                 presets: filteredServingPresets) { _, preset in
+                                 presets: filteredServingPresets)
+            { _, preset in
                 serving.name = preset.title
                 serving.volume_mL = Float(preset.volume_mL ?? 0)
                 serving.weight_g = Float(preset.weight_g ?? 0)

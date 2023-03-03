@@ -47,7 +47,7 @@ public struct FoodGroupPicker: View {
         }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") { self.showPresets = false }
+                Button("Cancel") { showPresets = false }
             }
         }
     }

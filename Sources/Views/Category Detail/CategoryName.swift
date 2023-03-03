@@ -30,7 +30,8 @@ public struct CategoryName: View {
         Section {
             TextFieldWithPresets($category.wrappedName,
                                  prompt: "Enter category name",
-                                 presets: categoryNamePresets) { _, _ in
+                                 presets: categoryNamePresets)
+            { _, _ in
                 // nothing to set other than the name
             } label: {
                 Text($0)

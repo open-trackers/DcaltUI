@@ -51,7 +51,8 @@ public struct CategoryList: View {
 
     public var body: some View {
         CellList(cell: categoryCell,
-                 addButton: { AddCategoryButton() }) {
+                 addButton: { AddCategoryButton() })
+        {
             #if os(watchOS)
                 watchButtons
             #elseif os(iOS)

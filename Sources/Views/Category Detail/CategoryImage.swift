@@ -29,7 +29,8 @@ public struct CategoryImage: View {
     public var body: some View {
         Section {
             ImageStepper(initialName: category.imageName,
-                         imageNames: systemImageNames) {
+                         imageNames: systemImageNames)
+            {
                 category.imageName = $0
             }
             #if os(watchOS)
