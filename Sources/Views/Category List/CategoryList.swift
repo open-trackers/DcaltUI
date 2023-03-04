@@ -16,8 +16,6 @@ import DcaltLib
 import TrackerLib
 import TrackerUI
 
-private let storageKeyCategoryIsNewUser = "category-is-new-user"
-
 extension MCategory: Named {}
 
 // This is the shared 'ContentView' for both iOS and watchOS platforms
@@ -40,12 +38,12 @@ public struct CategoryList: View {
 
     // MARK: - Locals
 
-    @AppStorage(storageKeyCategoryIsNewUser) private var isNewUser: Bool = true
+    @AppStorage("category-is-new-user") private var isNewUser: Bool = true
 
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!,
                                 category: String(describing: CategoryList.self))
 
-    @State private var showNewUser = false
+    @State private var showGettingStarted = false
 
     // MARK: - Views
 
@@ -78,10 +76,10 @@ public struct CategoryList: View {
         }
         #endif
         .onAppear(perform: appearAction)
-        .sheet(isPresented: $showNewUser) {
+        .sheet(isPresented: $showGettingStarted) {
             NavigationStack {
                 if let appSetting = try? AppSetting.getOrCreate(viewContext) {
-                    GettingStarted(appSetting: appSetting, show: $showNewUser)
+                    GettingStarted(appSetting: appSetting, show: $showGettingStarted)
                 } else {
                     Text("Unable to retrieve settings")
                 }
@@ -161,7 +159,7 @@ public struct CategoryList: View {
         // if a new user, prompt for target calories and ask if they'd like to create the standard categories
         if isNewUser {
             isNewUser = false
-            showNewUser = true
+            showGettingStarted = true
         }
     }
 
