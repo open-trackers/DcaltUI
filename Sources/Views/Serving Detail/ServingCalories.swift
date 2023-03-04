@@ -25,10 +25,12 @@ struct ServingCalories: View {
             CalorieStepper(value: $serving.calories)
 
             if recents.first != nil {
-                PresetValues(values: recents, label: label, onSelect: {
-                    serving.calories = $0
-                    // recents.updateMRU(with: $0, maxCount: maxRecents)
-                })
+                PresetValues(values: recents,
+                             label: label,
+                             onShortPress: {
+                                 serving.calories = $0
+                                 // recents.updateMRU(with: $0, maxCount: maxRecents)
+                             })
             }
         }
     }

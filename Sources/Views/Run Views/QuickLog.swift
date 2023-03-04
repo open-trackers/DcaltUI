@@ -102,7 +102,8 @@ public struct QuickLog: View {
                 GroupBox {
                     PresetValues(values: Array(recents),
                                  label: presetLabel,
-                                 onSelect: setTargetCalories)
+                                 onLongPress: logPresetAction,
+                                 onShortPress: setValueAction)
                 } label: {
                     Text("Recent Calories")
                         .foregroundStyle(.tint)
@@ -129,7 +130,8 @@ public struct QuickLog: View {
                     PresetValues(values: recents,
                                  minimumWidth: presetWidth(geo.size.width),
                                  label: presetLabel,
-                                 onSelect: setTargetCalories)
+                                 onLongPress: logPresetAction,
+                                 onShortPress: setValueAction)
                 }
                 .navigationTitle {
                     Image(systemName: "bolt.fill")
@@ -190,7 +192,7 @@ public struct QuickLog: View {
 
     // MARK: - Helpers
 
-    private func setTargetCalories(_ val: Int16) {
+    private func setValueAction(_ val: Int16) {
         value = max(calorieRange.lowerBound, min(calorieRange.upperBound, val))
     }
 
@@ -205,6 +207,13 @@ public struct QuickLog: View {
             let vals: [Int16] = [25, 50, 100, 150, 200, 400, 600, 800]
             vals.forEach { updateRecents(with: $0) }
         }
+    }
+
+    // long press action
+    private func logPresetAction(_ val: Int16) {
+        logger.debug("\(#function)")
+        value = val
+        logAction()
     }
 
     private func logAction() {

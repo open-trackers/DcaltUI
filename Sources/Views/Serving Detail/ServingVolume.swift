@@ -25,10 +25,12 @@ struct ServingVolume: View {
             VolumeStepper(value: $serving.volume_mL)
 
             if recents.first != nil {
-                PresetValues(values: recents, label: label, onSelect: {
-                    serving.volume_mL = $0
-                    // recents.updateMRU(with: $0, maxCount: maxRecents)
-                })
+                PresetValues(values: recents,
+                             label: label,
+                             onShortPress: {
+                                 serving.volume_mL = $0
+                                 // recents.updateMRU(with: $0, maxCount: maxRecents)
+                             })
             }
         }
     }

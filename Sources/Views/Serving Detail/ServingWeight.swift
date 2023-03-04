@@ -25,10 +25,12 @@ struct ServingWeight: View {
             WeightStepper(value: $serving.weight_g)
 
             if recents.first != nil {
-                PresetValues(values: recents, label: label, onSelect: {
-                    serving.weight_g = $0
-                    // recents.updateMRU(with: $0, maxCount: maxRecents)
-                })
+                PresetValues(values: recents,
+                             label: label,
+                             onShortPress: {
+                                 serving.weight_g = $0
+                                 // recents.updateMRU(with: $0, maxCount: maxRecents)
+                             })
             }
         }
     }
