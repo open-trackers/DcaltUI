@@ -101,10 +101,7 @@ public struct QuickLog: View {
 
                 GroupBox {
                     PresetValues(values: Array(recents),
-                                 label: {
-                                     Text("\($0)").font(.title)
-
-                                 },
+                                 label: presetLabel,
                                  onSelect: setTargetCalories)
                 } label: {
                     Text("Recent Calories")
@@ -120,37 +117,51 @@ public struct QuickLog: View {
 
     #if os(watchOS)
         private var platformView: some View {
-            ScrollView {
-                TitleText(category.wrappedName)
-                    .foregroundColor(.yellow)
+            GeometryReader { geo in
+                VStack(spacing: 0) {
+                    TitleText(category.wrappedName)
+                        .foregroundColor(.yellow)
+                        .frame(height: geo.size.height * 1 / 4)
 
-                CalorieStepper(value: $value)
+                    CalorieStepper(value: $value)
+                        .frame(height: geo.size.height * 1 / 4)
 
-                Section {
-                    PresetValues(values: Array(recents),
-                                 label: {
-                                     Text("\($0)")
-                                         .font(.title2)
-
-                                 },
+                    PresetValues(values: recents,
+                                 minimumWidth: presetWidth(geo.size.width),
+                                 label: presetLabel,
                                  onSelect: setTargetCalories)
-                        .padding(.vertical, 5)
-                } header: {
-                    Text("Recents")
-                        .foregroundColor(.secondary)
+                }
+                .navigationTitle {
+                    Image(systemName: "bolt.fill")
+                        .foregroundColor(.primary)
                 }
             }
-            .navigationTitle {
-                NavTitle(title)
-            }
+            .ignoresSafeArea(.all, edges: [.bottom])
         }
     #endif
+
+    private func presetLabel(_ value: Int16) -> some View {
+        #if os(watchOS)
+            Text("\(value)")
+        #elseif os(iOS)
+            Text("\(value)")
+                .font(.title)
+        #endif
+    }
 
     // MARK: - Properties
 
     private var title: String {
         "Quick Log"
     }
+
+    #if os(watchOS)
+        private func presetWidth(_ geoWidth: CGFloat) -> CGFloat {
+            let presetsPerRow: CGFloat = 2
+            let fudge: CGFloat = presetsPerRow * 2
+            return geoWidth / presetsPerRow - fudge
+        }
+    #endif
 
     @ViewBuilder
     private var consumeText: some View {
@@ -166,7 +177,11 @@ public struct QuickLog: View {
     }
 
     private var recents: [Int16] {
-        recentsDict[categoryUri, default: []]
+        var all = ArraySlice(recentsDict[categoryUri, default: []])
+        #if os(watchOS)
+            all = all.prefix(maxRecents)
+        #endif
+        return Array(all)
     }
 
     private var categoryUri: URL {
@@ -259,13 +274,11 @@ struct QuickLog_Previews: PreviewProvider {
 
     static var previews: some View {
         let manager = CoreDataStack.getPreviewStack()
-//        let container: NSPersistentContainer = try! manager.clearContainer()
-//        let ctx = container.viewContext
         let ctx = manager.container.viewContext
-        // let mainStore = manager.getMainStore(ctx)!
         let category = MCategory.create(ctx, userOrder: 0)
         category.name = "Fruit"
         return TestHolder(category: category)
+            .accentColor(.mint)
             .environment(\.managedObjectContext, ctx)
             .environmentObject(manager)
     }
