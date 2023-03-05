@@ -18,6 +18,11 @@ import TrackerUI
 
 extension MCategory: Named {}
 
+public extension Notification.Name {
+    static let logCategory = Notification.Name("dcalt-log-category") // payload of categoryURI
+    static let logServing = Notification.Name("dcalt-log-serving") // payload of servingURI
+}
+
 // This is the shared 'ContentView' for both iOS and watchOS platforms
 public struct CategoryList: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -30,13 +35,12 @@ public struct CategoryList: View {
 
     // MARK: - Parameters
 
-    private let onShortcut: () -> Void
-
-    public init(onShortcut: @escaping () -> Void = {}) {
-        self.onShortcut = onShortcut
-    }
+    public init() {}
 
     // MARK: - Locals
+
+    private let logCategoryPublisher = NotificationCenter.default.publisher(for: .logCategory)
+    private let logServingPublisher = NotificationCenter.default.publisher(for: .logServing)
 
     @AppStorage("category-is-new-user") private var isNewUser: Bool = true
 
@@ -85,11 +89,19 @@ public struct CategoryList: View {
                 }
             }
         }
-        .onContinueUserActivity(categoryQuickLogActivityType,
-                                perform: categoryQuickLogContinueUserActivity)
-        .onContinueUserActivity(categoryServingLogActivityType,
-                                perform: categoryServingLogContinueUserActivity)
         .task(priority: .utility, taskAction)
+        .onReceive(logCategoryPublisher) { payload in
+            logger.debug("Notification received for logCategoryPublisher")
+            // refresh, but only for current document
+            guard let categoryURI = payload.object as? URL else { return }
+            router.path = [.quickLog(categoryURI)]
+        }
+        .onReceive(logServingPublisher) { payload in
+            logger.debug("Notification received for logServingPublisher")
+            // refresh, but only for current document
+            guard let servingURI = payload.object as? URL else { return }
+            router.path = [.servingRun(servingURI)]
+        }
     }
 
     private func categoryCell(category: MCategory, now: Binding<Date>) -> some View {
@@ -253,46 +265,6 @@ public struct CategoryList: View {
             }
         }
         logger.notice("\(#function) END")
-    }
-
-    // MARK: - User Activity
-
-    private func categoryQuickLogContinueUserActivity(_ userActivity: NSUserActivity) {
-        logger.notice("\(#function)")
-
-        onShortcut() // To force to first tab in iOS app, in case started via shortcut
-
-        guard let categoryURI = userActivity.userInfo?[userActivity_uriRepKey] as? URL,
-              let category = MCategory.get(viewContext, forURIRepresentation: categoryURI) as? MCategory,
-              !category.isDeleted,
-              category.archiveID != nil
-        else {
-            logger.notice("\(#function): unable to continue User Activity")
-            return
-        }
-
-        logger.notice("\(#function): on category=\(category.wrappedName)")
-
-        router.path = [.quickLog(categoryURI)]
-    }
-
-    private func categoryServingLogContinueUserActivity(_ userActivity: NSUserActivity) {
-        logger.notice("\(#function)")
-
-        onShortcut() // To force to first tab in iOS app, in case started via shortcut
-
-        guard let servingURI = userActivity.userInfo?[userActivity_uriRepKey] as? URL,
-              let serving = MServing.get(viewContext, forURIRepresentation: servingURI) as? MServing,
-              !serving.isDeleted,
-              serving.archiveID != nil
-        else {
-            logger.notice("\(#function): unable to continue User Activity")
-            return
-        }
-
-        logger.notice("\(#function): on serving=\(serving.wrappedName)")
-
-        router.path = [.servingRun(servingURI)]
     }
 }
 
