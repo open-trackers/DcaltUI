@@ -66,7 +66,7 @@ public struct QuickLog: View {
         platformView
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(action: logAction) {
+                    Button(action: { logAction(immediate: false) }) {
                         consumeText
                     }
                     .disabled(value == 0)
@@ -210,10 +210,10 @@ public struct QuickLog: View {
     private func logPresetAction(_ val: Int16) {
         logger.debug("\(#function)")
         value = val
-        logAction()
+        logAction(immediate: true)
     }
 
-    private func logAction() {
+    private func logAction(immediate: Bool) {
         logger.debug("\(#function)")
 
         guard let mainStore = manager.getMainStore(viewContext) else {
@@ -243,7 +243,7 @@ public struct QuickLog: View {
             // update stored list of most recently used (MRU) values for the category
             updateRecents(with: value)
 
-            Haptics.play()
+            Haptics.play(immediate ? .immediateAction : .click)
 
             router.path.removeAll()
 
