@@ -117,8 +117,8 @@ public struct CategoryList: View {
                 settingsButton
                 aboutButton
             }
+            .listItemTint(Color.accentColor.opacity(0.2))
             .font(.title3)
-            .tint(categoryColor)
             .foregroundStyle(.tint)
             .symbolRenderingMode(.hierarchical)
         }
@@ -136,16 +136,16 @@ public struct CategoryList: View {
         private var settingsButton: some View {
             Button(action: settingsAction) {
                 Label("Settings", systemImage: "gear.circle")
-                    .symbolRenderingMode(.hierarchical)
             }
         }
 
         private var aboutButton: some View {
             Button(action: aboutAction) {
-                Label(title: { Text("About") }, icon: {
-                    AppIcon(name: "app_icon")
-                        .frame(width: 24, height: 24)
-                })
+                Label("About \(shortAppName)", systemImage: "info.circle")
+//                Label(title: { Text("About") }, icon: {
+//                    AppIcon(name: "app_icon")
+//                        .frame(width: 24, height: 24)
+//                })
             }
         }
     #endif
