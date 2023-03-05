@@ -18,9 +18,6 @@ import DcaltLib
 import TrackerLib
 import TrackerUI
 
-// public let quickLogID = UUID(uuidString: "3433E226-BDBF-45B5-9D5E-6BAACAA92C02")!
-// public let quickLogName = "Quick Log"
-
 public let storageKeyQuickLogRecents = "quick-log-recents"
 public typealias QuickLogRecentsDict = [URL: [Int16]]
 
