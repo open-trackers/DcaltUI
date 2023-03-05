@@ -38,8 +38,8 @@ public let foodGroupColorDarkBg: Color = .mint.opacity(0.8)
 public let foodGroupColorLiteBg: Color = .primary
 public let foodGroupListItemTint: Color = .mint.opacity(0.2)
 
-public let categoryQuickLogActivityType = "org.openalloc.dcalt.category-quick-log"
-public let categoryServingLogActivityType = "org.openalloc.dcalt.category-serving-log"
+public let logCategoryActivityType = "org.openalloc.dcalt.category-quick-log"
+public let logServingActivityType = "org.openalloc.dcalt.category-serving-log"
 public let userActivity_uriRepKey = "uriRep"
 
 public let websiteDomain = "open-trackers.github.io"

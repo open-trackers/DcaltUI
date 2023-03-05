@@ -18,11 +18,6 @@ import TrackerUI
 
 extension MCategory: Named {}
 
-public extension Notification.Name {
-    static let logCategory = Notification.Name("dcalt-log-category") // payload of categoryURI
-    static let logServing = Notification.Name("dcalt-log-serving") // payload of servingURI
-}
-
 // This is the shared 'ContentView' for both iOS and watchOS platforms
 public struct CategoryList: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -91,14 +86,12 @@ public struct CategoryList: View {
         }
         .task(priority: .utility, taskAction)
         .onReceive(logCategoryPublisher) { payload in
-            logger.debug("Notification received for logCategoryPublisher")
-            // refresh, but only for current document
+            logger.debug("onReceive: \(logCategoryPublisher.name.rawValue)")
             guard let categoryURI = payload.object as? URL else { return }
             router.path = [.quickLog(categoryURI)]
         }
         .onReceive(logServingPublisher) { payload in
-            logger.debug("Notification received for logServingPublisher")
-            // refresh, but only for current document
+            logger.debug("onReceive: \(logServingPublisher.name.rawValue)")
             guard let servingURI = payload.object as? URL else { return }
             router.path = [.servingRun(servingURI)]
         }

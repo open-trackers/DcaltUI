@@ -67,7 +67,7 @@ public struct ServingRun: View {
             }
 
             // advertise running "Log '12 oz Porterhouse'"
-            .userActivity(categoryServingLogActivityType,
+            .userActivity(logServingActivityType,
                           userActivityUpdate)
     }
 

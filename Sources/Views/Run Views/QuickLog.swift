@@ -78,7 +78,7 @@ public struct QuickLog: View {
             .onAppear(perform: appearAction)
 
             // advertise running "'Meat' Quick Log"
-            .userActivity(categoryQuickLogActivityType,
+            .userActivity(logCategoryActivityType,
                           userActivityUpdate)
     }
 
