@@ -51,7 +51,10 @@ public struct CategoryList: View {
                  addButton: { AddCategoryButton() })
         {
             #if os(watchOS)
-                watchButtons
+                todayButton
+                AddCategoryButton()
+                settingsButton
+                aboutButton
             #elseif os(iOS)
                 EmptyView()
             #endif
@@ -109,24 +112,6 @@ public struct CategoryList: View {
     }
 
     #if os(watchOS)
-        @ViewBuilder
-        private var watchButtons: some View {
-            Group {
-                todayButton
-                addButton
-                settingsButton
-                aboutButton
-            }
-            .listItemTint(Color.accentColor.opacity(0.2))
-            .font(.title3)
-            .foregroundStyle(.tint)
-            .symbolRenderingMode(.hierarchical)
-        }
-
-        private var addButton: some View {
-            AddCategoryButton()
-        }
-
         private var todayButton: some View {
             Button(action: todayAction) {
                 Label("Today", systemImage: "sun.max")
@@ -142,10 +127,6 @@ public struct CategoryList: View {
         private var aboutButton: some View {
             Button(action: aboutAction) {
                 Label("About \(shortAppName)", systemImage: "info.circle")
-//                Label(title: { Text("About") }, icon: {
-//                    AppIcon(name: "app_icon")
-//                        .frame(width: 24, height: 24)
-//                })
             }
         }
     #endif
