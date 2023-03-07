@@ -323,7 +323,7 @@ struct ServingRun_Previews: PreviewProvider {
         var serving: MServing
         @State var navData: Data?
         var body: some View {
-            NavStack(navData: $navData) {
+            DcaltNavStack(navData: $navData) {
                 ServingRun(serving: serving)
             }
         }

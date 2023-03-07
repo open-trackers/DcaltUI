@@ -121,7 +121,7 @@ struct ServingList_Previews: PreviewProvider {
         var category: MCategory
         @State var navData: Data?
         var body: some View {
-            NavStack(navData: $navData) {
+            DcaltNavStack(navData: $navData) {
                 ServingList(category: category)
             }
         }

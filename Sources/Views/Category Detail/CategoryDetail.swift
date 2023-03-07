@@ -129,7 +129,7 @@ struct CategoryDetail_Previews: PreviewProvider {
         @State var navData: Data?
         @State var isNew = false
         var body: some View {
-            NavStack(navData: $navData) {
+            DcaltNavStack(navData: $navData) {
                 CategoryDetail(category: category)
             }
         }

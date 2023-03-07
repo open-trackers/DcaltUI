@@ -217,7 +217,7 @@ struct CategoryList_Previews: PreviewProvider {
     struct TestHolder: View {
         @State var navData: Data?
         var body: some View {
-            NavStack(navData: $navData) {
+            DcaltNavStack(navData: $navData) {
                 CategoryList()
             }
         }

@@ -19,11 +19,9 @@ public struct DcaltDestination: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject private var router: DcaltRouter
 
-//    private var router: DcaltRouter
     private var route: DcaltRoute
 
     public init(_ route: DcaltRoute) {
-//        self.router = router
         self.route = route
     }
 

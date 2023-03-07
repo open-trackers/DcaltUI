@@ -272,7 +272,7 @@ struct QuickLog_Previews: PreviewProvider {
         @State var navData: Data?
         @State var isNew = false
         var body: some View {
-            NavStack(navData: $navData) {
+            DcaltNavStack(navData: $navData) {
                 QuickLog(category: category, lastCalories: 250)
             }
         }

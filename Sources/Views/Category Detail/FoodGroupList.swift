@@ -152,7 +152,7 @@ struct FoodGroupList_Previews: PreviewProvider {
         var category: MCategory
         @State var navData: Data?
         var body: some View {
-            NavStack(navData: $navData) {
+            DcaltNavStack(navData: $navData) {
                 FoodGroupList(category: category)
             }
         }
