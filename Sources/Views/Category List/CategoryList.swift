@@ -44,6 +44,8 @@ public struct CategoryList: View {
 
     @State private var showGettingStarted = false
 
+    @SceneStorage("updated-created-ats") private var updatedCreatedAts: Bool = false
+
     // MARK: - Views
 
     public var body: some View {
@@ -210,6 +212,14 @@ public struct CategoryList: View {
 
         await manager.container.performBackgroundTask { backgroundContext in
             do {
+                if !updatedCreatedAts {
+                    try updateCreatedAts(backgroundContext)
+                    try backgroundContext.save()
+                    logger.notice("\(#function): updated createdAts, where necessary")
+                    updatedCreatedAts = true
+                    try backgroundContext.save()
+                }
+
                 #if os(watchOS)
                     // delete log records older than N days
                     guard let keepSince = Calendar.current.date(byAdding: .year, value: -1, to: Date.now),
