@@ -2,10 +2,10 @@
 
 Shared user interface (UI) layer for the _Daily Calorie Tracker_, presently available as iOS apps and independent watchOS apps.
 
-For full details, including free download links from the App Store, visit the [_open-trackers_ website](https://open-trackers.github.io).
+For full details, including free download links from the App Store, visit:
 
-* [Open Trackers Website](https://open-trackers.github.io) - website for _Gym Routine Tracker_ and _Daily Calorie Tracker_ apps
-* [Open Trackers Project](https://github.com/open-trackers) - Github site for the development project, including full source code
+* [_Open Trackers_ Website](https://open-trackers.github.io) - website for _Gym Routine Tracker_ and _Daily Calorie Tracker_ apps
+* [_Open Trackers_ Project](https://github.com/open-trackers) - Github site for the development project, including full source code
 
 ## License
 
