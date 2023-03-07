@@ -44,8 +44,6 @@ public struct CategoryList: View {
 
     @State private var showGettingStarted = false
 
-    @SceneStorage("updated-created-ats") private var updatedCreatedAts: Bool = false
-
     // MARK: - Views
 
     public var body: some View {
@@ -89,7 +87,7 @@ public struct CategoryList: View {
                 }
             }
         }
-        .task(priority: .utility, taskAction)
+        // .task(priority: .utility, taskAction)
         .onReceive(logCategoryPublisher) { payload in
             logger.debug("onReceive: \(logCategoryPublisher.name.rawValue)")
             guard let categoryURI = payload.object as? URL else { return }
@@ -206,50 +204,13 @@ public struct CategoryList: View {
 
     // MARK: - Background Task
 
-    @Sendable
-    private func taskAction() async {
-        logger.notice("\(#function) START")
-
-        await manager.container.performBackgroundTask { backgroundContext in
-            do {
-                if !updatedCreatedAts {
-                    try updateCreatedAts(backgroundContext)
-                    try backgroundContext.save()
-                    logger.notice("\(#function): updated createdAts, where necessary")
-                    updatedCreatedAts = true
-                    try backgroundContext.save()
-                }
-
-                #if os(watchOS)
-                    // delete log records older than N days
-                    guard let keepSince = Calendar.current.date(byAdding: .year, value: -1, to: Date.now),
-                          let (keepSinceDay, _) = splitDate(keepSince)
-                    else { throw TrackerError.missingData(msg: "Clean: could not resolve date one year in past") }
-                    logger.notice("\(#function): keepSince=\(keepSinceDay)")
-                    try cleanLogRecords(backgroundContext, keepSinceDay: keepSinceDay)
-                #endif
-
-                #if os(iOS)
-                    guard let mainStore = manager.getMainStore(backgroundContext),
-                          let archiveStore = manager.getArchiveStore(backgroundContext),
-                          let startOfDay = try? AppSetting.getOrCreate(backgroundContext).startOfDayEnum
-                    else {
-                        logger.error("\(#function): unable to acquire configuration to transfer log records.")
-                        return
-                    }
-                    try transferToArchive(backgroundContext,
-                                          mainStore: mainStore,
-                                          archiveStore: archiveStore,
-                                          startOfDay: startOfDay)
-                #endif
-
-                try backgroundContext.save()
-            } catch {
-                logger.error("\(#function): \(error.localizedDescription)")
-            }
-        }
-        logger.notice("\(#function) END")
-    }
+//    @Sendable
+//    private func taskAction() async {
+//        logger.notice("\(#function) START")
+//
+//
+//        logger.notice("\(#function) END")
+//    }
 }
 
 struct CategoryList_Previews: PreviewProvider {
