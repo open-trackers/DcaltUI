@@ -48,17 +48,27 @@ public struct CategoryRun: View {
 
     @FetchRequest private var servings: FetchedResults<MServing>
 
+    private let listItemTint = Color.accentColor.opacity(0.2)
+
     // MARK: - Views
 
     public var body: some View {
         List {
             ForEach(servings, id: \.self) { serving in
                 servingButton(serving)
+                #if os(watchOS)
+                    .listItemTint(listItemTint)
+                #elseif os(iOS)
+                    .listRowBackground(listItemTint)
+                #endif
             }
+            .onDelete(perform: deleteAction)
+
             #if os(watchOS)
                 addButton
             #endif
         }
+
         #if os(watchOS)
         .navigationTitle {
             NavTitle(category.wrappedName)
@@ -96,32 +106,42 @@ public struct CategoryRun: View {
     #endif
 
     private func servingButton(_ serving: MServing) -> some View {
-        Button(action: {}) {
-            HStack {
-                Text("\(serving.name ?? "unknown")")
-                    .foregroundColor(servingColor)
-                Spacer()
-                Text("\(serving.calories) cals")
+        HStack {
+            Button(action: {}) {
+                HStack {
+                    Text("\(serving.name ?? "unknown")")
+                        .foregroundColor(servingColor)
+                        .lineLimit(3)
+                    Spacer()
+                }
+                .contentShape(Rectangle())
+            }
+            .onTapGesture {
+                servingRunAction(serving)
+            }
+            .simultaneousGesture(
+                LongPressGesture()
+                    .onEnded { _ in
+                        immediateLogAction(serving)
+                    }
+            )
+
+            // NOTE: on iOS, this area needs to be outside the button so the
+            // user can grab the netCalories to swipe to delete.
+            netCalories(serving)
+        }
+    }
+
+    private func netCalories(_ serving: MServing) -> some View {
+        VStack(alignment: .trailing) {
+            Text("\(serving.netCalories) cal")
+                .font(.headline)
+            if !serving.lastIntensityAt1 {
+                Text("\(serving.lastIntensity * 100.0, specifier: "%0.0f")%")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
             }
         }
-        .onTapGesture {
-            // print("SHORT PRESS")
-            servingRunAction(serving)
-        }
-        .simultaneousGesture(
-            LongPressGesture()
-                .onEnded { _ in
-                    // print("LONG PRESS")
-                    immediateLogAction(serving)
-                }
-        )
-//        .highPriorityGesture(
-//            TapGesture()
-//                .onEnded { _ in
-//                    print("SHORT PRESS 2")
-//                    //servingRunAction(serving)
-//                }
-//        )
     }
 
     // MARK: - Properties
@@ -132,13 +152,28 @@ public struct CategoryRun: View {
 
     // MARK: - Actions
 
-    // based on long press at 100% of serving
+    private func deleteAction(at offsets: IndexSet) {
+        logger.notice("\(#function)")
+        do {
+            for index in offsets {
+                let element = servings[index]
+                viewContext.delete(element)
+            }
+            try viewContext.save()
+        } catch {
+            logger.error("\(#function): \(error.localizedDescription)")
+        }
+    }
+
+    // based on long press, will log at serving.lastIntensity, which may not be 100%!
     private func immediateLogAction(_ serving: MServing) {
         logger.notice("\(#function)")
 
         guard let mainStore = manager.getMainStore(viewContext) else { return }
         do {
-            try serving.logCalories(viewContext, mainStore: mainStore)
+            try serving.logCalories(viewContext,
+                                    mainStore: mainStore,
+                                    intensity: serving.lastIntensity)
 
             try viewContext.save()
 
@@ -186,11 +221,13 @@ struct CategoryRun_Previews: PreviewProvider {
         let category = MCategory.create(ctx, userOrder: 0)
         category.name = "Fruit"
         let s1 = MServing.create(ctx, category: category, userOrder: 0)
-        s1.name = "Banana"
+        s1.name = "Banana ala King and many other things that are amazing"
         s1.calories = 150
+        s1.lastIntensity = 0.75
         let s2 = MServing.create(ctx, category: category, userOrder: 1)
         s2.name = "Peach"
         s2.calories = 120
+        s2.lastIntensity = 0.3
         let s3 = MServing.create(ctx, category: category, userOrder: 2)
         s3.name = "Pear"
         s3.calories = 110

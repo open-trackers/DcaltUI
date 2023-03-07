@@ -53,11 +53,15 @@ public struct FoodGroupList: View {
                    let foodGroup = FoodGroup(rawValue: groupRaw)
                 {
                     Text("\(foodGroup.description)")
+                    #if os(watchOS)
+                        .listItemTint(foodGroupListItemTint)
+                    #elseif os(iOS)
+                        .listRowBackground(foodGroupListItemTint)
+                    #endif
                 }
             }
             .onMove(perform: moveAction)
             .onDelete(perform: deleteAction)
-            .listItemTint(foodGroupListItemTint)
 
             #if os(watchOS)
                 addPresetButton {
@@ -160,6 +164,7 @@ struct FoodGroupList_Previews: PreviewProvider {
         let category = MCategory.create(ctx, userOrder: 0)
         category.name = "Beverage"
         _ = MFoodGroup.create(ctx, category: category, userOrder: 0, groupRaw: FoodGroup.pork.rawValue)
+        _ = MFoodGroup.create(ctx, category: category, userOrder: 1, groupRaw: FoodGroup.vegetables.rawValue)
         return TestHolder(category: category)
             .environment(\.managedObjectContext, ctx)
             .environmentObject(manager)

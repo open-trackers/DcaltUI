@@ -50,10 +50,14 @@ public struct ServingList: View {
                     Text("\(serving.name ?? "unknown")")
                         .foregroundColor(servingColor)
                 }
+                #if os(watchOS)
+                .listItemTint(servingListItemTint)
+                #elseif os(iOS)
+                .listRowBackground(servingListItemTint)
+                #endif
             }
             .onMove(perform: moveAction)
             .onDelete(perform: deleteAction)
-            .listItemTint(servingListItemTint)
 
             #if os(watchOS)
                 AddServingButton(category: category)
