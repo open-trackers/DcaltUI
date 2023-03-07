@@ -32,11 +32,11 @@ public struct ServingName: View {
 
     public var body: some View {
         Section {
-            TextFieldWithPresets($servingPreset, // serving.wrappedName
+            TextFieldWithPresets($serving.wrappedName,
                                  prompt: "Enter serving name",
                                  presets: filteredServingPresets)
             { _, preset in
-                serving.name = preset.title
+                // serving.name = preset.title  // NOTE title should have been set by control
                 serving.volume_mL = Float(preset.volume_mL ?? 0)
                 serving.weight_g = Float(preset.weight_g ?? 0)
                 serving.calories = Int16(preset.calories)
