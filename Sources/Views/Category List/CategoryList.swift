@@ -63,8 +63,8 @@ public struct CategoryList: View {
         // .navigationBarTitleDisplayMode(.large)
         .navigationTitle {
             CalorieTitle()
-                .font(.headline)
-                .fontWeight(.bold)
+                .font(.title3)
+                .fontWeight(.bold) // NOTE let CalorieTitle choose its own color depending on context
         }
         #elseif os(iOS)
         // .navigationBarTitleDisplayMode(.inline) // reduces the space allocated
@@ -72,8 +72,7 @@ public struct CategoryList: View {
             ToolbarItem(placement: .principal) {
                 CalorieTitle()
                     .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.tint)
+                    .fontWeight(.bold) // NOTE let CalorieTitle choose its own color depending on context
             }
         }
         #endif

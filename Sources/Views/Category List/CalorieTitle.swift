@@ -34,6 +34,7 @@ struct CalorieTitle: View {
     var body: some View {
         HStack {
             Text("\(progressFormatted)\(refreshToggle ? "" : "")")
+                .foregroundStyle(isOver ? Color.red : .accentColor)
             Spacer()
         }
         .contentShape(Rectangle())
@@ -58,6 +59,15 @@ struct CalorieTitle: View {
 
     private var appSetting: AppSetting? {
         try? AppSetting.getOrCreate(viewContext)
+    }
+
+    private var isOver: Bool {
+        if let calories = todayZDayRun?.calories,
+           let targetCalories = appSetting?.targetCalories
+        {
+            return calories > targetCalories
+        }
+        return false
     }
 
     private var subjectiveToday: String? {
