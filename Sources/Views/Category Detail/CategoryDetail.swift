@@ -41,7 +41,10 @@ public struct CategoryDetail: View {
                                 category: String(describing: CategoryDetail.self))
 
     #if os(watchOS)
-        @SceneStorage("category-detail-tab") private var selectedTab: Int = 0
+        // NOTE no longer saving the tab in scene storage, because it has been
+        // annoying to not start out at the first tab when navigating to detail.
+        // @SceneStorage("category-detail-tab") private var selectedTab: Int = 0
+        @State private var selectedTab: Int = 0
     #endif
 
     // MARK: - Views
