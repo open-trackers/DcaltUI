@@ -27,8 +27,8 @@ public struct FoodGroupList: View {
     public init(category: MCategory) {
         self.category = category
 
-        let sort = [NSSortDescriptor(keyPath: \MFoodGroup.userOrder, ascending: true)]
-        let pred = NSPredicate(format: "category == %@", category)
+        let sort = MFoodGroup.byUserOrder()
+        let pred = MFoodGroup.getPredicate(category: category)
         _categoryPresets = FetchRequest<MFoodGroup>(entity: MFoodGroup.entity(),
                                                     sortDescriptors: sort,
                                                     predicate: pred)

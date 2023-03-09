@@ -27,8 +27,8 @@ public struct ServingList: View {
     public init(category: MCategory) {
         self.category = category
 
-        let sort = [NSSortDescriptor(keyPath: \MServing.userOrder, ascending: true)]
-        let pred = NSPredicate(format: "category == %@", category)
+        let sort = MServing.byUserOrder()
+        let pred = MServing.getPredicate(category: category)
         _servings = FetchRequest<MServing>(entity: MServing.entity(),
                                            sortDescriptors: sort,
                                            predicate: pred)
