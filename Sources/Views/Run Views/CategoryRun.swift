@@ -31,9 +31,10 @@ public struct CategoryRun: View {
 
     public init(category: MCategory) {
         self.category = category
+        let predicate = MServing.getPredicate(category: category)
         _servings = FetchRequest<MServing>(entity: MServing.entity(),
-                                           sortDescriptors: MCategory.servingSort,
-                                           predicate: category.servingPredicate)
+                                           sortDescriptors: MServing.byUserOrder(),
+                                           predicate: predicate)
         #if os(iOS)
             let uic = UIColor(.accentColor)
             UIPageControl.appearance().currentPageIndicatorTintColor = uic
