@@ -175,15 +175,8 @@ public struct CategoryList: View {
         private func todayAction() {
             logger.notice("\(#function)")
             Haptics.play()
-
-            guard let mainStore = manager.getMainStore(viewContext),
-                  let appSetting = try? AppSetting.getOrCreate(viewContext),
-                  case let startOfDay = appSetting.startOfDayEnum,
-                  let (consumedDay, _) = getSubjectiveDate(dayStartHour: startOfDay.hour,
-                                                           dayStartMinute: startOfDay.minute),
-                  let zDayRun = try? ZDayRun.get(viewContext, consumedDay: consumedDay, inStore: mainStore)
-            else { return }
-            router.path.append(DcaltRoute.dayRunDetail(zDayRun.uriRepresentation))
+            
+            router.path.append(DcaltRoute.dayRunToday)
         }
 
         private func settingsAction() {
