@@ -1,5 +1,5 @@
 //
-//  ServingFoodGroups.swift
+//  CatDetName.swift
 //
 // Copyright 2022, 2023  OpenAlloc LLC
 //
@@ -13,9 +13,7 @@ import SwiftUI
 import DcaltLib
 import TrackerUI
 
-public struct CategoryFoodGroups: View {
-    @EnvironmentObject private var router: DcaltRouter
-
+public struct CatDetName: View {
     // MARK: - Parameters
 
     @ObservedObject private var category: MCategory
@@ -30,40 +28,29 @@ public struct CategoryFoodGroups: View {
 
     public var body: some View {
         Section {
-            Button(action: foodGroupListAction) {
-                HStack {
-                    Text("Food Groups")
-                    Spacer()
-                    Text(foodGroupCount > 0 ? String(format: "%d", foodGroupCount) : "none")
-                    #if os(watchOS)
-                        .foregroundStyle(foodGroupColorDarkBg)
-                    #endif
-                }
+            TextFieldWithPresets($category.wrappedName,
+                                 prompt: "Enter category name",
+                                 presets: categoryNamePresets)
+            { _, _ in
+                // nothing to set other than the name
+            } label: {
+                Text($0)
+                    .foregroundStyle(.tint)
             }
-        } footer: {
-            Text("The food group presets available for this category. (If ‘none’, all will be available.)")
+        } header: {
+            Text("Name")
         }
     }
 
     // MARK: - Properties
-
-    private var foodGroupCount: Int {
-        category.foodGroups?.count ?? 0
-    }
-
-    // MARK: - Actions
-
-    private func foodGroupListAction() {
-        router.path.append(DcaltRoute.foodGroupList(category.uriRepresentation))
-    }
 }
 
-struct CategoryFoodGroups_Previews: PreviewProvider {
+struct CatDetName_Previews: PreviewProvider {
     struct TestHolder: View {
         var category: MCategory
         var body: some View {
             Form {
-                CategoryFoodGroups(category: category)
+                CatDetName(category: category)
             }
         }
     }

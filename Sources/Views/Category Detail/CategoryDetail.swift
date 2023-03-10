@@ -78,18 +78,18 @@ public struct CategoryDetail: View {
             VStack {
                 TabView(selection: $selectedTab) {
                     Form {
-                        CategoryName(category: category)
+                        CatDetName(category: category)
                     }
                     .tag(Tab.name)
 
                     Form {
                         FormColorPicker(color: $color)
-                        CategoryImage(category: category)
+                        CatDetImage(category: category)
                     }
                     .tag(Tab.colorImage)
 
                     Form {
-                        CategoryFoodGroups(category: category)
+                        CatDetFoodGroups(category: category)
                     }
                     .tag(Tab.foodGroups)
 
@@ -121,11 +121,11 @@ public struct CategoryDetail: View {
     #if os(iOS)
         private var platformView: some View {
             Form {
-                CategoryName(category: category)
-                CategoryImage(category: category)
+                CatDetName(category: category)
+                CatDetImage(category: category)
                 FormColorPicker(color: $color)
-                CategoryServings(category: category)
-                CategoryFoodGroups(category: category)
+                CatDetServings(category: category)
+                CatDetFoodGroups(category: category)
             }
             .navigationTitle(title)
         }

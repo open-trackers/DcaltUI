@@ -1,5 +1,5 @@
 //
-//  CategoryName.swift
+//  CatDetServings.swift
 //
 // Copyright 2022, 2023  OpenAlloc LLC
 //
@@ -13,7 +13,9 @@ import SwiftUI
 import DcaltLib
 import TrackerUI
 
-public struct CategoryName: View {
+public struct CatDetServings: View {
+    @EnvironmentObject private var router: DcaltRouter
+
     // MARK: - Parameters
 
     @ObservedObject private var category: MCategory
@@ -28,29 +30,40 @@ public struct CategoryName: View {
 
     public var body: some View {
         Section {
-            TextFieldWithPresets($category.wrappedName,
-                                 prompt: "Enter category name",
-                                 presets: categoryNamePresets)
-            { _, _ in
-                // nothing to set other than the name
-            } label: {
-                Text($0)
-                    .foregroundStyle(.tint)
+            Button(action: servingListAction) {
+                HStack {
+                    Text("Servings")
+                    Spacer()
+                    Text(servingCount > 0 ? String(format: "%d", servingCount) : "none")
+                    #if os(watchOS)
+                        .foregroundStyle(foodGroupColorDarkBg)
+                    #endif
+                }
             }
-        } header: {
-            Text("Name")
+        } footer: {
+            Text("The servings available for this category.")
         }
     }
 
     // MARK: - Properties
+
+    private var servingCount: Int {
+        category.servings?.count ?? 0
+    }
+
+    // MARK: - Actions
+
+    private func servingListAction() {
+        router.path.append(DcaltRoute.servingList(category.uriRepresentation))
+    }
 }
 
-struct CategoryName_Previews: PreviewProvider {
+struct CatDetServings_Previews: PreviewProvider {
     struct TestHolder: View {
         var category: MCategory
         var body: some View {
             Form {
-                CategoryName(category: category)
+                CatDetServings(category: category)
             }
         }
     }

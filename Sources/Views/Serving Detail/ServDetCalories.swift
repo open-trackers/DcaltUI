@@ -1,5 +1,5 @@
 //
-//  ServingCalories.swift
+//  ServDetCalories.swift
 //
 // Copyright 2023  OpenAlloc LLC
 //
@@ -14,7 +14,7 @@ import SwiftUI
 import DcaltLib
 import TrackerUI
 
-struct ServingCalories: View {
+struct ServDetCalories: View {
     @ObservedObject var serving: MServing
 
     @AppStorage("serving-calories-recents") private var recents = [Int16]()
@@ -40,13 +40,13 @@ struct ServingCalories: View {
     }
 }
 
-struct ServingCalories_Previews: PreviewProvider {
+struct ServDetCalories_Previews: PreviewProvider {
     struct TestHolder: View {
         var serving: MServing
         var body: some View {
             NavigationStack {
                 Form {
-                    ServingCalories(serving: serving)
+                    ServDetCalories(serving: serving)
                 }
             }
         }

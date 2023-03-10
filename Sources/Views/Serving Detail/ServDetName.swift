@@ -1,5 +1,5 @@
 //
-//  ServingName.swift
+//  ServDetName.swift
 //
 // Copyright 2022, 2023  OpenAlloc LLC
 //
@@ -13,7 +13,7 @@ import SwiftUI
 import DcaltLib
 import TrackerUI
 
-public struct ServingName: View {
+public struct ServDetName: View {
     // MARK: - Parameters
 
     @ObservedObject private var serving: MServing
@@ -62,12 +62,12 @@ public struct ServingName: View {
     }
 }
 
-struct ServingName_Previews: PreviewProvider {
+struct ServDetName_Previews: PreviewProvider {
     struct TestHolder: View {
         var serving: MServing
         var body: some View {
             Form {
-                ServingName(serving: serving)
+                ServDetName(serving: serving)
             }
         }
     }

@@ -1,5 +1,5 @@
 //
-//  CategoryServings.swift
+//  CatDetImage.swift
 //
 // Copyright 2022, 2023  OpenAlloc LLC
 //
@@ -13,9 +13,7 @@ import SwiftUI
 import DcaltLib
 import TrackerUI
 
-public struct CategoryServings: View {
-    @EnvironmentObject private var router: DcaltRouter
-
+public struct CatDetImage: View {
     // MARK: - Parameters
 
     @ObservedObject private var category: MCategory
@@ -30,40 +28,30 @@ public struct CategoryServings: View {
 
     public var body: some View {
         Section {
-            Button(action: servingListAction) {
-                HStack {
-                    Text("Servings")
-                    Spacer()
-                    Text(servingCount > 0 ? String(format: "%d", servingCount) : "none")
-                    #if os(watchOS)
-                        .foregroundStyle(foodGroupColorDarkBg)
-                    #endif
-                }
+            ImageStepper(initialName: category.imageName,
+                         imageNames: systemImageNames)
+            {
+                category.imageName = $0
             }
-        } footer: {
-            Text("The servings available for this category.")
+            #if os(watchOS)
+            .imageScale(.small)
+            #elseif os(iOS)
+            .imageScale(.large)
+            #endif
+        } header: {
+            Text("Image")
         }
     }
 
     // MARK: - Properties
-
-    private var servingCount: Int {
-        category.servings?.count ?? 0
-    }
-
-    // MARK: - Actions
-
-    private func servingListAction() {
-        router.path.append(DcaltRoute.servingList(category.uriRepresentation))
-    }
 }
 
-struct CategoryServings_Previews: PreviewProvider {
+struct CatDetImage_Previews: PreviewProvider {
     struct TestHolder: View {
         var category: MCategory
         var body: some View {
             Form {
-                CategoryServings(category: category)
+                CatDetImage(category: category)
             }
         }
     }

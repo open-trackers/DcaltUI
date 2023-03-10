@@ -1,5 +1,5 @@
 //
-//  CategoryImage.swift
+//  ServingFoodGroups.swift
 //
 // Copyright 2022, 2023  OpenAlloc LLC
 //
@@ -13,7 +13,9 @@ import SwiftUI
 import DcaltLib
 import TrackerUI
 
-public struct CategoryImage: View {
+public struct CatDetFoodGroups: View {
+    @EnvironmentObject private var router: DcaltRouter
+
     // MARK: - Parameters
 
     @ObservedObject private var category: MCategory
@@ -28,30 +30,40 @@ public struct CategoryImage: View {
 
     public var body: some View {
         Section {
-            ImageStepper(initialName: category.imageName,
-                         imageNames: systemImageNames)
-            {
-                category.imageName = $0
+            Button(action: foodGroupListAction) {
+                HStack {
+                    Text("Food Groups")
+                    Spacer()
+                    Text(foodGroupCount > 0 ? String(format: "%d", foodGroupCount) : "none")
+                    #if os(watchOS)
+                        .foregroundStyle(foodGroupColorDarkBg)
+                    #endif
+                }
             }
-            #if os(watchOS)
-            .imageScale(.small)
-            #elseif os(iOS)
-            .imageScale(.large)
-            #endif
-        } header: {
-            Text("Image")
+        } footer: {
+            Text("The food group presets available for this category. (If ‘none’, all will be available.)")
         }
     }
 
     // MARK: - Properties
+
+    private var foodGroupCount: Int {
+        category.foodGroups?.count ?? 0
+    }
+
+    // MARK: - Actions
+
+    private func foodGroupListAction() {
+        router.path.append(DcaltRoute.foodGroupList(category.uriRepresentation))
+    }
 }
 
-struct CategoryImage_Previews: PreviewProvider {
+struct CatDetFoodGroups_Previews: PreviewProvider {
     struct TestHolder: View {
         var category: MCategory
         var body: some View {
             Form {
-                CategoryImage(category: category)
+                CatDetFoodGroups(category: category)
             }
         }
     }

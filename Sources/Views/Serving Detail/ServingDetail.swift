@@ -72,19 +72,19 @@ public struct ServingDetail: View {
             VStack {
                 TabView(selection: $selectedTab) {
                     Form {
-                        ServingName(serving: serving)
+                        ServDetName(serving: serving)
                     }
                     .tag(Tab.name)
                     Form {
-                        ServingCalories(serving: serving)
+                        ServDetCalories(serving: serving)
                     }
                     .tag(Tab.calories)
                     Form {
-                        ServingWeight(serving: serving)
+                        ServDetWeight(serving: serving)
                     }
                     .tag(Tab.weight)
                     Form {
-                        ServingVolume(serving: serving)
+                        ServDetVolume(serving: serving)
                     }
                     .tag(Tab.volume)
                 }
@@ -113,11 +113,11 @@ public struct ServingDetail: View {
             Form {
                 // FUTURE: allow user to change category
 
-                ServingName(serving: serving)
-                ServingCalories(serving: serving)
+                ServDetName(serving: serving)
+                ServDetCalories(serving: serving)
 
-                ServingWeight(serving: serving)
-                ServingVolume(serving: serving)
+                ServDetWeight(serving: serving)
+                ServDetVolume(serving: serving)
             }
             .navigationTitle(title)
         }
