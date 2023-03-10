@@ -44,7 +44,25 @@ public struct CategoryDetail: View {
         // NOTE no longer saving the tab in scene storage, because it has been
         // annoying to not start out at the first tab when navigating to detail.
         // @SceneStorage("category-detail-tab") private var selectedTab: Int = 0
-        @State private var selectedTab: Int = 0
+        @State private var selectedTab: Tab = .first
+
+        enum Tab: Int, ControlBarProtocol {
+            case name = 1
+            case colorImage = 2
+            case foodGroups = 3
+            case servings = 4
+
+            static var first: Tab = .name
+            static var last: Tab = .servings
+
+            var previous: Tab? {
+                Tab(rawValue: rawValue - 1)
+            }
+
+            var next: Tab? {
+                Tab(rawValue: rawValue + 1)
+            }
+        }
     #endif
 
     // MARK: - Views
@@ -57,38 +75,42 @@ public struct CategoryDetail: View {
 
     #if os(watchOS)
         private var platformView: some View {
-            TabView(selection: $selectedTab) {
-                Form {
-                    CategoryName(category: category)
-                    CategoryImage(category: category)
-                }
-                .tabItem {
-                    Text("Properties")
-                }
-                .tag(0)
+            VStack {
+                TabView(selection: $selectedTab) {
+                    Form {
+                        CategoryName(category: category)
+                    }
+                    .tag(Tab.name)
 
-                Form {
-                    FormColorPicker(color: $color)
-                    CategoryFoodGroups(category: category)
-                }
-                .tabItem {
-                    Text("Food Groups")
-                }
-                .tag(1)
+                    Form {
+                        FormColorPicker(color: $color)
+                        CategoryImage(category: category)
+                    }
+                    .tag(Tab.colorImage)
 
-                FakeSection(title: "Servings") {
-                    ServingList(category: category)
+                    Form {
+                        CategoryFoodGroups(category: category)
+                    }
+                    .tag(Tab.foodGroups)
+
+                    FakeSection(title: "Servings") {
+                        ServingList(category: category)
+                    }
+                    .tag(Tab.servings)
                 }
-                .tabItem {
-                    Text("Servings")
-                }
-                .tag(2)
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .frame(maxHeight: .infinity)
+
+                ControlBar(selection: $selectedTab, tint: categoryColor)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom)
             }
+            .ignoresSafeArea(.all, edges: [.bottom]) // NOTE allows control bar to be at bottom
             .navigationTitle {
                 NavTitle(title, color: categoryColor)
                     .onTapGesture {
                         withAnimation {
-                            selectedTab = 0
+                            selectedTab = .first
                         }
                     }
             }

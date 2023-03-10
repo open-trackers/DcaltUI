@@ -37,7 +37,25 @@ public struct ServingDetail: View {
         // NOTE no longer saving the tab in scene storage, because it has been
         // annoying to not start out at the first tab when navigating to detail.
         // @SceneStorage("serving-detail-tab") private var selectedTab = 0
-        @State private var selectedTab: Int = 0
+        @State private var selectedTab: Tab = .first
+
+        enum Tab: Int, ControlBarProtocol {
+            case name = 1
+            case calories = 2
+            case weight = 3
+            case volume = 4
+
+            static var first: Tab = .name
+            static var last: Tab = .volume
+
+            var previous: Tab? {
+                Tab(rawValue: rawValue - 1)
+            }
+
+            var next: Tab? {
+                Tab(rawValue: rawValue + 1)
+            }
+        }
     #endif
 
     // MARK: - Views
@@ -51,24 +69,38 @@ public struct ServingDetail: View {
 
     #if os(watchOS)
         private var platformView: some View {
-            TabView(selection: $selectedTab) {
-                Form {
-                    ServingName(serving: serving)
-                    ServingCalories(serving: serving)
+            VStack {
+                TabView(selection: $selectedTab) {
+                    Form {
+                        ServingName(serving: serving)
+                    }
+                    .tag(Tab.name)
+                    Form {
+                        ServingCalories(serving: serving)
+                    }
+                    .tag(Tab.calories)
+                    Form {
+                        ServingWeight(serving: serving)
+                    }
+                    .tag(Tab.weight)
+                    Form {
+                        ServingVolume(serving: serving)
+                    }
+                    .tag(Tab.volume)
                 }
-                .tag(0)
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .frame(maxHeight: .infinity)
 
-                Form {
-                    ServingWeight(serving: serving)
-                    ServingVolume(serving: serving)
-                }
-                .tag(1)
+                ControlBar(selection: $selectedTab, tint: servingColor)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom)
             }
+            .ignoresSafeArea(.all, edges: [.bottom]) // NOTE allows control bar to be at bottom
             .navigationTitle {
                 NavTitle(title)
                     .onTapGesture {
                         withAnimation {
-                            selectedTab = 0
+                            selectedTab = .first
                         }
                     }
             }

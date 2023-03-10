@@ -89,15 +89,17 @@ public struct FoodGroupList: View {
         #endif
         .sheet(isPresented: $showPicker) {
             NavigationStack {
-                FoodGroupPicker(foodGroups: unselectedCases, showPresets: $showPicker, onSelect: addPresetAction)
+                FoodGroupPicker(foodGroups: unselectedCases,
+                                showPresets: $showPicker,
+                                onSelect: addPresetAction)
             }
             .interactiveDismissDisabled() // NOTE: needed to prevent home button from dismissing sheet
         }
     }
 
-    private func addPresetButton(stuff: () -> some View) -> some View {
+    private func addPresetButton(content: () -> some View) -> some View {
         Button(action: { showPicker = true }) {
-            stuff()
+            content()
         }
         .disabled(unselectedCases.count == 0)
     }
