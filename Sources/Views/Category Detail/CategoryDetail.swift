@@ -108,11 +108,11 @@ public struct CategoryDetail: View {
             .ignoresSafeArea(.all, edges: [.bottom]) // NOTE allows control bar to be at bottom
             .navigationTitle {
                 NavTitle(title, color: categoryColor)
-                    .onTapGesture {
-                        withAnimation {
-                            selectedTab = .first
-                        }
-                    }
+//                    .onTapGesture {
+//                        withAnimation {
+//                            selectedTab = .first
+//                        }
+//                    }
             }
         }
     #endif
