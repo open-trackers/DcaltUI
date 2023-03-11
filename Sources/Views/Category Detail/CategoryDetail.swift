@@ -75,45 +75,27 @@ public struct CategoryDetail: View {
 
     #if os(watchOS)
         private var platformView: some View {
-            VStack {
-                TabView(selection: $selectedTab) {
-                    Form {
-                        CatDetName(category: category)
-                    }
-                    .tag(Tab.name)
-
-                    Form {
-                        FormColorPicker(color: $color)
-                        CatDetImage(category: category)
-                    }
-                    .tag(Tab.colorImage)
-
-                    Form {
-                        CatDetFoodGroups(category: category)
-                    }
-                    .tag(Tab.foodGroups)
-
-                    FakeSection(title: "Servings") {
-                        ServingList(category: category)
-                    }
-                    .tag(Tab.servings)
+            ControlBarTabView(selection: $selectedTab, tint: categoryColor, title: title) {
+                Form {
+                    CatDetName(category: category)
                 }
-                .animation(.easeInOut(duration: 0.25), value: selectedTab)
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .frame(maxHeight: .infinity)
+                .tag(Tab.name)
 
-                ControlBar(selection: $selectedTab, tint: categoryColor)
-                    .padding(.horizontal, 20)
-                    .padding(.bottom)
-            }
-            .ignoresSafeArea(.all, edges: [.bottom]) // NOTE: allows control bar to be at bottom
-            .navigationTitle {
-                NavTitle(title, color: categoryColor)
-//                    .onTapGesture {
-//                        withAnimation {
-//                            selectedTab = .first
-//                        }
-//                    }
+                Form {
+                    FormColorPicker(color: $color)
+                    CatDetImage(category: category)
+                }
+                .tag(Tab.colorImage)
+
+                Form {
+                    CatDetFoodGroups(category: category)
+                }
+                .tag(Tab.foodGroups)
+
+                FakeSection(title: "Servings") {
+                    ServingList(category: category)
+                }
+                .tag(Tab.servings)
             }
         }
     #endif

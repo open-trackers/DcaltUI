@@ -69,41 +69,23 @@ public struct ServingDetail: View {
 
     #if os(watchOS)
         private var platformView: some View {
-            VStack {
-                TabView(selection: $selectedTab) {
-                    Form {
-                        ServDetName(serving: serving)
-                    }
-                    .tag(Tab.name)
-                    Form {
-                        ServDetCalories(serving: serving)
-                    }
-                    .tag(Tab.calories)
-                    Form {
-                        ServDetWeight(serving: serving)
-                    }
-                    .tag(Tab.weight)
-                    Form {
-                        ServDetVolume(serving: serving)
-                    }
-                    .tag(Tab.volume)
+            ControlBarTabView(selection: $selectedTab, tint: servingColor, title: title) {
+                Form {
+                    ServDetName(serving: serving)
                 }
-                .animation(.easeInOut(duration: 0.25), value: selectedTab)
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .frame(maxHeight: .infinity)
-
-                ControlBar(selection: $selectedTab, tint: servingColor)
-                    .padding(.horizontal, 20)
-                    .padding(.bottom)
-            }
-            .ignoresSafeArea(.all, edges: [.bottom]) // NOTE: allows control bar to be at bottom
-            .navigationTitle {
-                NavTitle(title)
-//                    .onTapGesture {
-//                        withAnimation {
-//                            selectedTab = .first
-//                        }
-//                    }
+                .tag(Tab.name)
+                Form {
+                    ServDetCalories(serving: serving)
+                }
+                .tag(Tab.calories)
+                Form {
+                    ServDetWeight(serving: serving)
+                }
+                .tag(Tab.weight)
+                Form {
+                    ServDetVolume(serving: serving)
+                }
+                .tag(Tab.volume)
             }
         }
     #endif
