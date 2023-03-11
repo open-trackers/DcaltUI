@@ -115,6 +115,11 @@ public struct ServingRun: View {
     #if os(iOS)
         private var platformView: some View {
             ScrollView {
+                Text(serving.wrappedName)
+                    .multilineTextAlignment(.leading)
+                    .font(.title3)
+                    .foregroundStyle(.tint)
+                    .lineLimit(3)
                 HStack {
                     GroupBox {
                         box(value: Float(serving.calories), title: "Calories", fgColor: .secondary)
@@ -147,7 +152,7 @@ public struct ServingRun: View {
                 Spacer()
             }
             .padding()
-            .navigationTitle(serving.wrappedName)
+            .navigationTitle("Serving")
             .navigationBarTitleDisplayMode(.large)
         }
     #endif
@@ -210,6 +215,9 @@ public struct ServingRun: View {
         intensityButton(0.5, "50.circle")
         intensityButton(1.0, "1.circle")
         intensityButton(2.0, "2.circle")
+        #if os(iOS)
+            intensityButton(3.0, "3.circle")
+        #endif
     }
 
     private var titleText: some View {
@@ -336,7 +344,7 @@ struct ServingRun_Previews: PreviewProvider {
         category.name = "Fruit"
         // category.colorCode = 148
         let s1 = MServing.create(ctx, category: category, userOrder: 0)
-        s1.name = "Bananas and Cantaloupe"
+        s1.name = "Bananas and Cantaloupe and this and that and everything else under the sun"
         s1.calories = 1500
         s1.weight_g = 0
         s1.volume_mL = 120

@@ -282,7 +282,7 @@ struct QuickLog_Previews: PreviewProvider {
         let manager = CoreDataStack.getPreviewStack()
         let ctx = manager.container.viewContext
         let category = MCategory.create(ctx, userOrder: 0)
-        category.name = "Fruit"
+        category.name = "Fruit and Vegetables"
         return TestHolder(category: category)
             .accentColor(.mint)
             .environment(\.managedObjectContext, ctx)
