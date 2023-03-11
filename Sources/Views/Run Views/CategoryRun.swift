@@ -208,10 +208,9 @@ struct CategoryRun_Previews: PreviewProvider {
     struct TestHolder: View {
         var category: MCategory
         @State var navData: Data?
-        @State var isNew = false
         var body: some View {
             DcaltNavStack(navData: $navData) {
-                CategoryRun(category: category) // , isNew: $isNew)
+                CategoryRun(category: category)
             }
         }
     }
