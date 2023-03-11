@@ -16,7 +16,7 @@ struct DailyTargetStepper: View {
     var body: some View {
         Section {
             Stepper(value: $targetCalories, in: 0 ... 10000, step: 10) {
-                Text("\(targetCalories) cals")
+                Text("\(targetCalories) cal")
                 #if os(watchOS)
                     .font(.headline)
                     .allowsTightening(true)

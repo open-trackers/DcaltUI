@@ -55,7 +55,7 @@ public struct SinceText: View {
               lastCalories > 0,
               let _sinceStr = sinceStr
         else { return nil }
-        return "\(lastCalories) cals, \(_sinceStr) ago"
+        return "\(lastCalories) cal, \(_sinceStr) ago"
     }
 
     // time interval since the last workout ended, formatted compactly
