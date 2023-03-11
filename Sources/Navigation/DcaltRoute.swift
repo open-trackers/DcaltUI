@@ -24,7 +24,7 @@ public enum DcaltRoute: Hashable, Codable {
     case servingRun(_ servingUri: URL)
     case quickLog(_ categoryUri: URL)
     case foodGroupList(_ categoryUri: URL)
-    case dayRunToday // NOTE platform-specific views
+    case dayRunToday // NOTE: platform-specific views
     case dayRunArchive(_ dayRunUri: URL)
     case dayRunList // History view from archive
 

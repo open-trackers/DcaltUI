@@ -64,7 +64,7 @@ public struct CategoryList: View {
         .navigationTitle {
             CalorieTitle()
                 .font(.title3)
-                .fontWeight(.bold) // NOTE let CalorieTitle choose its own color depending on context
+                .fontWeight(.bold) // NOTE: let CalorieTitle choose its own color depending on context
         }
         #elseif os(iOS)
         // .navigationBarTitleDisplayMode(.inline) // reduces the space allocated
@@ -72,7 +72,7 @@ public struct CategoryList: View {
             ToolbarItem(placement: .principal) {
                 CalorieTitle()
                     .font(.title2)
-                    .fontWeight(.bold) // NOTE let CalorieTitle choose its own color depending on context
+                    .fontWeight(.bold) // NOTE: let CalorieTitle choose its own color depending on context
             }
         }
         #endif
@@ -175,7 +175,7 @@ public struct CategoryList: View {
         private func todayAction() {
             logger.notice("\(#function)")
             Haptics.play()
-            
+
             router.path.append(DcaltRoute.dayRunToday)
         }
 
