@@ -27,6 +27,7 @@ public enum DcaltRoute: Hashable, Codable {
     case dayRunToday // NOTE: platform-specific views
     case dayRunArchive(_ dayRunUri: URL)
     case dayRunList // History view from archive
+    case servingRunDetail(_ servingRunUri: URL)
 
     private func uriSuffix(_ uri: URL) -> String {
         "[\(uri.absoluteString.suffix(12))]"
