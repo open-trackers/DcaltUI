@@ -219,7 +219,7 @@ struct CategoryRun_Previews: PreviewProvider {
         let manager = CoreDataStack.getPreviewStack()
         let ctx = manager.container.viewContext
         let category = MCategory.create(ctx, userOrder: 0)
-        category.name = "Fruit"
+        category.name = "Fruit and Vegetables"
         let s1 = MServing.create(ctx, category: category, userOrder: 0)
         s1.name = "Banana ala King and many other things that are amazing"
         s1.calories = 150

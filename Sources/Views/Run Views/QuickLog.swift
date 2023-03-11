@@ -117,6 +117,10 @@ public struct QuickLog: View {
         private var platformView: some View {
             GeometryReader { geo in
                 VStack(spacing: 0) {
+//                    Text(category.wrappedName)
+//                        .foregroundColor(.yellow)
+//                        .multilineTextAlignment(.leading)
+//                        .lineLimit(2)
                     TitleText(category.wrappedName)
                         .foregroundColor(.yellow)
                         .frame(height: geo.size.height * 1 / 4)

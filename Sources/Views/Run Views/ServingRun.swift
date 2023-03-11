@@ -50,6 +50,9 @@ public struct ServingRun: View {
 
     public var body: some View {
         platformView
+//        #if os(watchOS)
+//            .ignoresSafeArea(.all, edges: [.bottom])
+//        #endif
             .toolbar {
                 #if os(iOS)
                     ToolbarItem(placement: .automatic) {
@@ -73,42 +76,47 @@ public struct ServingRun: View {
 
     #if os(watchOS)
         private var platformView: some View {
-            VStack(spacing: 10) {
-                Text("\(netCalories, specifier: "%0.0f") cal")
-                    .font(.largeTitle)
-                    .foregroundColor(.yellow)
+            GeometryReader { geo in
+                VStack(spacing: 0) {
+                    Text(serving.wrappedName)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(2)
+                    
+                    Text("\(netCalories, specifier: "%0.0f") cal")
+                        .font(.largeTitle)
+                        .lineLimit(1)
+                        .foregroundColor(.yellow)
+                    
+                    ValueStepper(value: $intensity, in: intensityRange, step: intensityStep, specifier: "%0.0f﹪", multiplier: 100)
 
-                ValueStepper(value: $intensity, in: intensityRange, step: intensityStep, specifier: "%0.0f﹪", multiplier: 100)
-
-                HStack(spacing: 20) {
-                    Text("\(netWeight, specifier: "%0.0f") g")
-                        .foregroundColor(netWeight > 0 ? .secondary : .secondary.opacity(0.5))
-                    Text("\(netVolume, specifier: "%0.0f") ml")
-                        .foregroundColor(netVolume > 0 ? .secondary : .secondary.opacity(0.5))
-                }
-                .font(.title2)
-                .lineLimit(1)
-                .padding(.horizontal)
-
-                HStack(spacing: 15) {
-                    Button(action: editAction) {
-                        Image(systemName: "ellipsis.circle.fill")
-                            .imageScale(.large)
+                    HStack(spacing: 20) {
+                        Text("\(netWeight, specifier: "%0.0f") g")
+                            .foregroundColor(netWeight > 0 ? .secondary : .secondary.opacity(0.5))
+                        Text("\(netVolume, specifier: "%0.0f") ml")
+                            .foregroundColor(netVolume > 0 ? .secondary : .secondary.opacity(0.5))
                     }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(.tint)
-
-                    intensityButtons
-                        .imageScale(.large)
+                    .font(.title2)
+                    .lineLimit(1)
+//                    .padding(.horizontal)
+                    
+                    HStack(spacing: 15) {
+                        Button(action: editAction) {
+                            Image(systemName: "ellipsis.circle.fill")
+                                .imageScale(.large)
+                        }
+                        .buttonStyle(.plain)
                         .foregroundStyle(.tint)
-                        .font(.title3)
+                        
+                        intensityButtons
+                            .imageScale(.large)
+                            .foregroundStyle(.tint)
+                            .font(.title3)
+                    }
                 }
+                .symbolRenderingMode(.hierarchical)
+                .padding(.bottom, 5)
             }
-            .symbolRenderingMode(.hierarchical)
-            .padding(.top, 15)
-            .navigationTitle {
-                NavTitle(serving.wrappedName)
-            }
+            .ignoresSafeArea(.all, edges: [.bottom])
         }
     #endif
 
