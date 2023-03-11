@@ -39,7 +39,7 @@ public struct ServingDetail: View {
         // @SceneStorage("serving-detail-tab") private var selectedTab = 0
         @State private var selectedTab: Tab = .first
 
-        enum Tab: Int, ControlBarProtocol {
+        enum Tab: Int, ControlBarred {
             case name = 1
             case calories = 2
             case weight = 3
