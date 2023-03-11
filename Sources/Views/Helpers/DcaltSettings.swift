@@ -123,6 +123,7 @@ struct DcaltSettings_Previews: PreviewProvider {
                                                onRestoreToDefaults: {}) { EmptyView() }
                 .environment(\.managedObjectContext, manager.container.viewContext)
                 .environmentObject(manager)
+                .accentColor(.green)
         }
     }
 }

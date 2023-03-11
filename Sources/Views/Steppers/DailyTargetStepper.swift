@@ -29,6 +29,7 @@ struct DailyTargetStepper: View {
                     }
                 #endif
             }
+            .symbolRenderingMode(.hierarchical)
         } header: {
             Text("Daily Target")
         } footer: {
