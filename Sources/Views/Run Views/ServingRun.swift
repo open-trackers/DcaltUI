@@ -191,7 +191,7 @@ public struct ServingRun: View {
                     }
                 }
                 .foregroundColor(value != 0 ? fgColor : .secondary)
-                .font(.title)
+                .font(.largeTitle)
                 .lineLimit(1)
                 .padding(.top, 1)
             } label: {
