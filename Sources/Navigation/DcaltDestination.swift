@@ -25,8 +25,6 @@ public struct DcaltDestination: View {
         self.route = route
     }
 
-    @AppStorage(storageKeyQuickLogRecents) private var quickLogRecents: QuickLogRecentsDict = .init()
-
     public var body: some View {
         switch route {
         case .settings:
@@ -80,7 +78,7 @@ public struct DcaltDestination: View {
             }
         case let .quickLog(categoryURI):
             if let category: MCategory = MCategory.get(viewContext, forURIRepresentation: categoryURI) {
-                QuickLog(category: category, lastCalories: quickLogRecents[categoryURI]?.first)
+                QuickLog(category: category, lastCalories: category.lastCalories)
                     .environmentObject(router)
                     .environment(\.managedObjectContext, viewContext)
             } else {
