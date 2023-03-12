@@ -24,6 +24,7 @@ public typealias QuickLogRecentsDict = [URL: [Int16]]
 public let defaultQuickLogCalories: Int16 = 150
 
 public struct QuickLog: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject private var router: DcaltRouter
     @EnvironmentObject private var manager: CoreDataStack
@@ -50,20 +51,10 @@ public struct QuickLog: View {
 
     @State private var value: Int16
 
+    private let caloriesUpperBound: Int16 = 20000
+
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!,
                                 category: String(describing: QuickLog.self))
-
-    #if os(watchOS)
-        @AppStorage(storageKeyQuickLogRecents) private var recentsDict: QuickLogRecentsDict = .init()
-        // private let maxRecents = 4
-        // private let minPresetButtonWidth: CGFloat = 70
-        private let verticalSpacing: CGFloat = 3 // determined empirically
-    // private let stepperMaxFontSize: CGFloat = 40
-    // private let stepperMaxHeight: CGFloat = 50
-    #elseif os(iOS)
-//        private let maxRecents = 12
-//        private let minPresetButtonWidth: CGFloat = 80
-    #endif
 
     // MARK: - Views
 
@@ -84,34 +75,42 @@ public struct QuickLog: View {
 
     #if os(iOS)
         private var platformView: some View {
-            ScrollView {
+            VStack {
                 GroupBox {
-                    TitleText(category.wrappedName)
+                    Text(category.wrappedName)
+                        .font(.largeTitle)
+                        .lineLimit(1)
+
                 } label: {
                     Text("Category")
                         .foregroundStyle(.tint)
                 }
 
                 GroupBox {
-                    CalorieField(value: $value)
+                    Text("\(value) cal")
+                        .foregroundColor(colorScheme == .light ? .primary : .yellow)
                         .font(.largeTitle)
-                        .multilineTextAlignment(.center)
-
                 } label: {
-                    Text("Serving Calories")
+                    Text("Serving")
                         .foregroundStyle(.tint)
                 }
 
-//                GroupBox {
-//                    PresetValues(values: Array(recents),
-//                                 minButtonWidth: minPresetButtonWidth,
-//                                 label: presetLabel,
-//                                 onLongPress: logPresetAction,
-//                                 onShortPress: setValueAction)
-//                } label: {
-//                    Text("Recent Calories")
-//                        .foregroundStyle(.tint)
-//                }
+                NumberPad(selection: $value,
+                          upperBound: caloriesUpperBound,
+                          horizontalSpacing: 10,
+                          verticalSpacing: 10)
+                    .font(.largeTitle)
+                    .buttonStyle(.bordered)
+                    .symbolRenderingMode(.hierarchical)
+                    .modify {
+                        if #available(iOS 16.1, watchOS 9.1, *) {
+                            $0.fontDesign(.monospaced)
+                        } else {
+                            $0.monospaced()
+                        }
+                    }
+                    .padding(.top)
+                    .frame(maxWidth: 300, maxHeight: 400)
 
                 Spacer()
             }
@@ -123,21 +122,29 @@ public struct QuickLog: View {
 
     #if os(watchOS)
         private var platformView: some View {
-            VStack(spacing: verticalSpacing) {
-                Text("\(value)")
-                    .font(.title2)
-                    .foregroundColor(.yellow)
-                NumberPad(selection: $value, upperBound: 10000)
-                    .font(.title2)
-            }
-            .modify {
-                if #available(iOS 16.1, watchOS 9.1, *) {
-                    $0.fontDesign(.monospaced)
-                } else {
-                    $0.monospaced()
+            GeometryReader { _ in
+                VStack(spacing: 3) {
+                    Text("\(value) cal")
+                        .font(.title2)
+                        .foregroundColor(.yellow)
+                    NumberPad(selection: $value, upperBound: caloriesUpperBound)
+                        .font(.title2)
+                        .buttonStyle(.plain)
+                        .symbolRenderingMode(.hierarchical)
+                        .modify {
+                            if #available(iOS 16.1, watchOS 9.1, *) {
+                                $0.fontDesign(.monospaced)
+                            } else {
+                                $0.monospaced()
+                            }
+                        }
                 }
             }
-            .navigationTitle(title)
+            .ignoresSafeArea(.all, edges: [.bottom])
+
+            .navigationTitle {
+                Image(systemName: "bolt.fill")
+            }
             .navigationBarTitleDisplayMode(.inline)
         }
     #endif

@@ -16,9 +16,13 @@ import TrackerUI
 
 struct CalorieField: View {
     @Binding private var value: Int16
+    private let upperBound: Int16
 
-    init(value: Binding<Int16>) {
+    init(value: Binding<Int16>,
+         upperBound: Int16)
+    {
         _value = value
+        self.upperBound = upperBound
     }
 
     private let nf: NumberFormatter = {
@@ -29,10 +33,12 @@ struct CalorieField: View {
     }()
 
     var body: some View {
-        TextField("Calories", value: $value, formatter: nf)
-        #if os(watchOS)
-        #elseif os(iOS)
-                .keyboardType(.numberPad)
+        TextField("Calories", value: Binding(
+            get: { $value },
+            set: { value = min($0.wrappedValue, upperBound) }
+        ), formatter: nf)
+        #if os(iOS)
+            .keyboardType(.numberPad)
         #endif
 //            .font(.largeTitle)
 //            .multilineTextAlignment(.center)
@@ -44,7 +50,7 @@ struct CalorieField_Previews: PreviewProvider {
         @State var value: Int16 = 100
         var body: some View {
             Form {
-                CalorieField(value: $value)
+                CalorieField(value: $value, upperBound: 10000)
             }
         }
     }
