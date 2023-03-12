@@ -12,7 +12,7 @@ import CoreData
 import os
 import SwiftUI
 
-import DequeModule
+// import DequeModule
 
 import DcaltLib
 import TrackerLib
@@ -53,16 +53,16 @@ public struct QuickLog: View {
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!,
                                 category: String(describing: QuickLog.self))
 
-    @AppStorage(storageKeyQuickLogRecents) private var recentsDict: QuickLogRecentsDict = .init()
     #if os(watchOS)
+        @AppStorage(storageKeyQuickLogRecents) private var recentsDict: QuickLogRecentsDict = .init()
         private let maxRecents = 4
         private let minPresetButtonWidth: CGFloat = 70
         private let verticalSpacing: CGFloat = 3 // determined empirically
         private let stepperMaxFontSize: CGFloat = 40
         private let stepperMaxHeight: CGFloat = 50
     #elseif os(iOS)
-        private let maxRecents = 12
-        private let minPresetButtonWidth: CGFloat = 80
+//        private let maxRecents = 12
+//        private let minPresetButtonWidth: CGFloat = 80
     #endif
 
     // MARK: - Views
@@ -95,22 +95,25 @@ public struct QuickLog: View {
                 }
 
                 GroupBox {
-                    CalorieStepper(value: $value)
+                    CalorieField(value: $value)
+                        .font(.largeTitle)
+                        .multilineTextAlignment(.center)
+
                 } label: {
                     Text("Serving Calories")
                         .foregroundStyle(.tint)
                 }
 
-                GroupBox {
-                    PresetValues(values: Array(recents),
-                                 minButtonWidth: minPresetButtonWidth,
-                                 label: presetLabel,
-                                 onLongPress: logPresetAction,
-                                 onShortPress: setValueAction)
-                } label: {
-                    Text("Recent Calories")
-                        .foregroundStyle(.tint)
-                }
+//                GroupBox {
+//                    PresetValues(values: Array(recents),
+//                                 minButtonWidth: minPresetButtonWidth,
+//                                 label: presetLabel,
+//                                 onLongPress: logPresetAction,
+//                                 onShortPress: setValueAction)
+//                } label: {
+//                    Text("Recent Calories")
+//                        .foregroundStyle(.tint)
+//                }
 
                 Spacer()
             }
@@ -164,16 +167,6 @@ public struct QuickLog: View {
         "Quick Log"
     }
 
-//    #if os(watchOS)
-//        private func presetWidth(_ geoWidth: CGFloat) -> ClosedRange<CGFloat> {
-//            let presetsPerRow: CGFloat = 2
-//            let marginFudge: CGFloat = 10
-//            let lower = (geoWidth / presetsPerRow) - marginFudge
-//            let upper = geoWidth / presetsPerRow + 1
-//            return lower ... upper
-//        }
-//    #endif
-
     @ViewBuilder
     private var consumeText: some View {
         #if os(watchOS)
@@ -187,13 +180,13 @@ public struct QuickLog: View {
         #endif
     }
 
-    private var recents: [Int16] {
-        var all = ArraySlice(recentsDict[categoryUri, default: []])
-        #if os(watchOS)
+    #if os(watchOS)
+        private var recents: [Int16] {
+            var all = ArraySlice(recentsDict[categoryUri, default: []])
             all = all.prefix(maxRecents)
-        #endif
-        return Array(all)
-    }
+            return Array(all)
+        }
+    #endif
 
     private var categoryUri: URL {
         category.uriRepresentation
@@ -205,18 +198,22 @@ public struct QuickLog: View {
         value = max(calorieRange.lowerBound, min(calorieRange.upperBound, val))
     }
 
-    private func updateRecents(with val: Int16) {
-        recentsDict[categoryUri, default: []].updateMRU(with: val, maxCount: maxRecents)
-    }
+    #if os(watchOS)
+        private func updateRecents(with val: Int16) {
+            recentsDict[categoryUri, default: []].updateMRU(with: val, maxCount: maxRecents)
+        }
+    #endif
 
     // MARK: - Actions
 
-    private func appearAction() {
-        if recents.first == nil {
-            let vals: [Int16] = [25, 50, 100, 150, 200, 400, 600, 800]
-            vals.forEach { updateRecents(with: $0) }
+    #if os(watchOS)
+        private func appearAction() {
+            if recents.first == nil {
+                let vals: [Int16] = [25, 50, 100, 150, 200, 400, 600, 800]
+                vals.forEach { updateRecents(with: $0) }
+            }
         }
-    }
+    #endif
 
     // long press action
     private func logPresetAction(_ val: Int16) {
@@ -252,8 +249,10 @@ public struct QuickLog: View {
 
             try viewContext.save()
 
-            // update stored list of most recently used (MRU) values for the category
-            updateRecents(with: value)
+            #if os(watchOS)
+                // update stored list of most recently used (MRU) values for the category
+                updateRecents(with: value)
+            #endif
 
             Haptics.play(immediate ? .immediateAction : .click)
 
