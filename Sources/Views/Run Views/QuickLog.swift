@@ -77,8 +77,6 @@ public struct QuickLog: View {
                     .disabled(value == 0)
                 }
             }
-            .onAppear(perform: appearAction)
-
             // advertise running "'Meat' Quick Log"
             .userActivity(logCategoryActivityType,
                           userActivityUpdate)
@@ -125,30 +123,20 @@ public struct QuickLog: View {
 
     #if os(watchOS)
         private var platformView: some View {
-            GeometryReader { _ in
-                VStack(spacing: verticalSpacing) {
-                    Text(category.wrappedName)
-                        .font(.title2)
-                        .lineLimit(1)
-                        .foregroundColor(.yellow)
-
-                    CalorieStepper(value: $value,
-                                   maxFontSize: stepperMaxFontSize)
-                        .frame(maxHeight: stepperMaxHeight)
-
-                    PresetValues(values: recents,
-                                 minButtonWidth: minPresetButtonWidth,
-                                 label: presetLabel,
-                                 onLongPress: logPresetAction,
-                                 onShortPress: setValueAction)
-                }
-                .navigationTitle {
-                    Image(systemName: "bolt.fill")
-                        .foregroundColor(.primary)
-                }
-                .symbolRenderingMode(.hierarchical)
+            VStack {
+                Text("\(value)")
+                    .font(.title2)
+                    .foregroundColor(.yellow)
+                NumberPad(selection: $value, range: 0 ... 10000)
+                    .font(.title2)
             }
-            .ignoresSafeArea(.all, edges: [.bottom])
+            .modify {
+                if #available(iOS 16.1, watchOS 9.1, *) {
+                    $0.fontDesign(.monospaced)
+                } else {
+                    $0.monospaced()
+                }
+            }
         }
     #endif
 
@@ -180,14 +168,6 @@ public struct QuickLog: View {
         #endif
     }
 
-    #if os(watchOS)
-        private var recents: [Int16] {
-            var all = ArraySlice(recentsDict[categoryUri, default: []])
-            all = all.prefix(maxRecents)
-            return Array(all)
-        }
-    #endif
-
     private var categoryUri: URL {
         category.uriRepresentation
     }
@@ -197,23 +177,6 @@ public struct QuickLog: View {
     private func setValueAction(_ val: Int16) {
         value = max(calorieRange.lowerBound, min(calorieRange.upperBound, val))
     }
-
-    #if os(watchOS)
-        private func updateRecents(with val: Int16) {
-            recentsDict[categoryUri, default: []].updateMRU(with: val, maxCount: maxRecents)
-        }
-    #endif
-
-    // MARK: - Actions
-
-    #if os(watchOS)
-        private func appearAction() {
-            if recents.first == nil {
-                let vals: [Int16] = [25, 50, 100, 150, 200, 400, 600, 800]
-                vals.forEach { updateRecents(with: $0) }
-            }
-        }
-    #endif
 
     // long press action
     private func logPresetAction(_ val: Int16) {
@@ -248,11 +211,6 @@ public struct QuickLog: View {
                                      startOfDay: appSetting.startOfDayEnum)
 
             try viewContext.save()
-
-            #if os(watchOS)
-                // update stored list of most recently used (MRU) values for the category
-                updateRecents(with: value)
-            #endif
 
             Haptics.play(immediate ? .immediateAction : .click)
 
