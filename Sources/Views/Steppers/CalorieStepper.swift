@@ -16,16 +16,24 @@ import TrackerUI
 
 struct CalorieStepper: View {
     @Binding private var value: Int16
+    private var maxHeight: CGFloat
+    private var maxFontSize: CGFloat
 
-    init(value: Binding<Int16>) {
+    init(value: Binding<Int16>,
+         maxHeight: CGFloat = 60,
+         maxFontSize: CGFloat = 40) {
         _value = value
+        self.maxHeight = maxHeight
+        self.maxFontSize = maxFontSize
     }
 
     var body: some View {
         ValueStepper(value: $value,
                      in: calorieRange,
                      step: calorieStep,
-                     specifier: "%d cal")
+                     specifier: "%d cal",
+        maxHeight: maxHeight,
+        maxFontSize: maxFontSize)
     }
 }
 

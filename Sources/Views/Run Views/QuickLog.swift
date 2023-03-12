@@ -114,16 +114,19 @@ public struct QuickLog: View {
     #endif
 
     #if os(watchOS)
-        private let verticalSpacing: CGFloat = 8 // determined empirically on SE (40mm)
+        private let verticalSpacing: CGFloat = 3 // determined empirically
+        private let maxFontSize: CGFloat = 30
+    private let stepperMaxHeight: CGFloat = 60
+    private let stepperMaxFontSize: CGFloat = 40
         private var platformView: some View {
             GeometryReader { geo in
                 VStack(spacing: verticalSpacing) {
-                    TitleText(category.wrappedName)
+                    TitleText(category.wrappedName, maxFontSize: maxFontSize)
                         .foregroundColor(.yellow)
-                        .frame(maxHeight: geo.size.height * 1 / 4)
 
-                    CalorieStepper(value: $value)
-                        .frame(maxHeight: geo.size.height * 1 / 4)
+                    CalorieStepper(value: $value,
+                                   maxHeight: stepperMaxHeight,
+                                   maxFontSize: stepperMaxFontSize)
 
                     PresetValues(values: recents,
                                  minimumWidth: presetWidth(geo.size.width),
@@ -135,6 +138,7 @@ public struct QuickLog: View {
                     Image(systemName: "bolt.fill")
                         .foregroundColor(.primary)
                 }
+                .symbolRenderingMode(.hierarchical)
             }
             .ignoresSafeArea(.all, edges: [.bottom])
         }
@@ -283,7 +287,7 @@ struct QuickLog_Previews: PreviewProvider {
         let manager = CoreDataStack.getPreviewStack()
         let ctx = manager.container.viewContext
         let category = MCategory.create(ctx, userOrder: 0)
-        category.name = "Fruit and vegetables"
+        category.name = "Fruit"
         return TestHolder(category: category)
             .accentColor(.mint)
             .environment(\.managedObjectContext, ctx)
