@@ -55,11 +55,11 @@ public struct QuickLog: View {
 
     #if os(watchOS)
         @AppStorage(storageKeyQuickLogRecents) private var recentsDict: QuickLogRecentsDict = .init()
-        private let maxRecents = 4
-        private let minPresetButtonWidth: CGFloat = 70
+        // private let maxRecents = 4
+        // private let minPresetButtonWidth: CGFloat = 70
         private let verticalSpacing: CGFloat = 3 // determined empirically
-        private let stepperMaxFontSize: CGFloat = 40
-        private let stepperMaxHeight: CGFloat = 50
+    // private let stepperMaxFontSize: CGFloat = 40
+    // private let stepperMaxHeight: CGFloat = 50
     #elseif os(iOS)
 //        private let maxRecents = 12
 //        private let minPresetButtonWidth: CGFloat = 80
@@ -123,11 +123,11 @@ public struct QuickLog: View {
 
     #if os(watchOS)
         private var platformView: some View {
-            VStack {
+            VStack(spacing: verticalSpacing) {
                 Text("\(value)")
                     .font(.title2)
                     .foregroundColor(.yellow)
-                NumberPad(selection: $value, range: 0 ... 10000)
+                NumberPad(selection: $value, upperBound: 10000)
                     .font(.title2)
             }
             .modify {
@@ -137,6 +137,8 @@ public struct QuickLog: View {
                     $0.monospaced()
                 }
             }
+            .navigationTitle(title)
+            .navigationBarTitleDisplayMode(.inline)
         }
     #endif
 
