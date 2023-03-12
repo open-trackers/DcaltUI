@@ -44,24 +44,13 @@ public struct CategoryDetail: View {
         // NOTE: no longer saving the tab in scene storage, because it has been
         // annoying to not start out at the first tab when navigating to detail.
         // @SceneStorage("category-detail-tab") private var selectedTab: Int = 0
-        @State private var selectedTab: Tab = .first
+        @State private var selectedTab: Tab = .name
 
-        enum Tab: Int, ControlBarred {
+        enum Tab: Int, CaseIterable {
             case name = 1
             case colorImage = 2
             case foodGroups = 3
             case servings = 4
-
-            static var first: Tab = .name
-            static var last: Tab = .servings
-
-            var previous: Tab? {
-                Tab(rawValue: rawValue - 1)
-            }
-
-            var next: Tab? {
-                Tab(rawValue: rawValue + 1)
-            }
         }
     #endif
 
