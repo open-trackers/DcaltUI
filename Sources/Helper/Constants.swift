@@ -10,8 +10,6 @@
 
 import SwiftUI
 
-// public let defaultDayStartHour: Int16 = 3
-// public let defaultDayStartMinute: Int16 = 0
 public let defaultTargetCalories: Int16 = 2000
 
 public let calorieRange: ClosedRange<Int16> = 0 ... 2000

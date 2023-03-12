@@ -46,6 +46,13 @@ public struct ServingRun: View {
 
     private let epsilon: Float = 0.0001
 
+    #if os(watchOS)
+        private let verticalSpacing: CGFloat = 2 // determined empirically
+        private let topPadding: CGFloat = 23
+        private let stepperMaxFontSize: CGFloat = 40
+        private let stepperMaxHeight: CGFloat = 60
+    #endif
+
     // MARK: - Views
 
     public var body: some View {
@@ -75,9 +82,6 @@ public struct ServingRun: View {
     }
 
     #if os(watchOS)
-        private let verticalSpacing: CGFloat = 5 // determined empirically
-        private let stepperMaxHeight: CGFloat = 40
-        private let stepperMaxFontSize: CGFloat = 60
         private var platformView: some View {
             GeometryReader { _ in
                 VStack(spacing: verticalSpacing) {
@@ -86,7 +90,7 @@ public struct ServingRun: View {
                         .lineLimit(1)
 
                     Text("\(netCalories, specifier: "%0.0f") cal")
-                        .font(.largeTitle)
+                        .font(.title)
                         .lineLimit(1)
                         .foregroundColor(.yellow)
 
@@ -95,8 +99,8 @@ public struct ServingRun: View {
                                  step: intensityStep,
                                  specifier: "%0.0f﹪",
                                  multiplier: 100,
-                                 maxHeight: stepperMaxHeight,
                                  maxFontSize: stepperMaxFontSize)
+                        .frame(maxHeight: stepperMaxHeight)
 
                     HStack(spacing: 20) {
                         Text("\(netWeight, specifier: "%0.0f") g")
@@ -359,7 +363,7 @@ struct ServingRun_Previews: PreviewProvider {
         category.name = "Fruit"
         // category.colorCode = 148
         let s1 = MServing.create(ctx, category: category, userOrder: 0)
-        //s1.name = "Peach"
+        // s1.name = "Peach"
         s1.name = "Bananas and Cantaloupe and this and that and everything else under the sun"
         s1.calories = 1500
         s1.weight_g = 0

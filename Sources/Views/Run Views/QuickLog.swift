@@ -56,8 +56,13 @@ public struct QuickLog: View {
     @AppStorage(storageKeyQuickLogRecents) private var recentsDict: QuickLogRecentsDict = .init()
     #if os(watchOS)
         private let maxRecents = 4
+        private let countPerRow = 2
+        private let verticalSpacing: CGFloat = 3 // determined empirically
+        private let stepperMaxFontSize: CGFloat = 40
+        private let stepperMaxHeight: CGFloat = 50
     #elseif os(iOS)
         private let maxRecents = 12
+        private let countPerRow = 4
     #endif
 
     // MARK: - Views
@@ -114,22 +119,21 @@ public struct QuickLog: View {
     #endif
 
     #if os(watchOS)
-        private let verticalSpacing: CGFloat = 3 // determined empirically
-        private let maxFontSize: CGFloat = 30
-    private let stepperMaxHeight: CGFloat = 60
-    private let stepperMaxFontSize: CGFloat = 40
         private var platformView: some View {
             GeometryReader { geo in
                 VStack(spacing: verticalSpacing) {
-                    TitleText(category.wrappedName, maxFontSize: maxFontSize)
+                    Text(category.wrappedName)
+                        .font(.title2)
+                        .lineLimit(1)
                         .foregroundColor(.yellow)
 
                     CalorieStepper(value: $value,
-                                   maxHeight: stepperMaxHeight,
                                    maxFontSize: stepperMaxFontSize)
+                        .frame(maxHeight: stepperMaxHeight)
 
                     PresetValues(values: recents,
-                                 minimumWidth: presetWidth(geo.size.width),
+                                 geoWidth: geo.size.width,
+                                 countPerRow: countPerRow,
                                  label: presetLabel,
                                  onLongPress: logPresetAction,
                                  onShortPress: setValueAction)
@@ -159,13 +163,15 @@ public struct QuickLog: View {
         "Quick Log"
     }
 
-    #if os(watchOS)
-        private func presetWidth(_ geoWidth: CGFloat) -> CGFloat {
-            let presetsPerRow: CGFloat = 2
-            let fudge: CGFloat = presetsPerRow * 2
-            return geoWidth / presetsPerRow - fudge
-        }
-    #endif
+//    #if os(watchOS)
+//        private func presetWidth(_ geoWidth: CGFloat) -> ClosedRange<CGFloat> {
+//            let presetsPerRow: CGFloat = 2
+//            let marginFudge: CGFloat = 10
+//            let lower = (geoWidth / presetsPerRow) - marginFudge
+//            let upper = geoWidth / presetsPerRow + 1
+//            return lower ... upper
+//        }
+//    #endif
 
     @ViewBuilder
     private var consumeText: some View {

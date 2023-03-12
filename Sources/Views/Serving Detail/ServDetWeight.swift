@@ -16,9 +16,16 @@ import TrackerUI
 
 struct ServDetWeight: View {
     @ObservedObject var serving: MServing
+    let geoWidth: CGFloat
 
     @AppStorage("serving-weight-recents") private var recents = [Float]()
     private let maxRecents = 8
+
+    #if os(watchOS)
+        private let countPerRow = 2
+    #elseif os(iOS)
+        private let countPerRow = 4
+    #endif
 
     var body: some View {
         Section("Weight") {
@@ -26,6 +33,8 @@ struct ServDetWeight: View {
 
             if recents.first != nil {
                 PresetValues(values: recents,
+                             geoWidth: geoWidth,
+                             countPerRow: countPerRow,
                              label: label,
                              onShortPress: {
                                  serving.weight_g = $0
@@ -44,9 +53,11 @@ struct ServDetWeight_Previews: PreviewProvider {
     struct TestHolder: View {
         var serving: MServing
         var body: some View {
-            NavigationStack {
-                Form {
-                    ServDetWeight(serving: serving)
+            GeometryReader { geo in
+                NavigationStack {
+                    Form {
+                        ServDetWeight(serving: serving, geoWidth: geo.size.width)
+                    }
                 }
             }
         }

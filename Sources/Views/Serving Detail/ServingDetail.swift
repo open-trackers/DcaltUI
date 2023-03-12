@@ -69,23 +69,25 @@ public struct ServingDetail: View {
 
     #if os(watchOS)
         private var platformView: some View {
-            ControlBarTabView(selection: $selectedTab, tint: servingColor, title: title) {
-                Form {
-                    ServDetName(serving: serving)
+            GeometryReader { geo in
+                ControlBarTabView(selection: $selectedTab, tint: servingColor, title: title) {
+                    Form {
+                        ServDetName(serving: serving)
+                    }
+                    .tag(Tab.name)
+                    Form {
+                        ServDetCalories(serving: serving, geoWidth: geo.size.width)
+                    }
+                    .tag(Tab.calories)
+                    Form {
+                        ServDetWeight(serving: serving, geoWidth: geo.size.width)
+                    }
+                    .tag(Tab.weight)
+                    Form {
+                        ServDetVolume(serving: serving, geoWidth: geo.size.width)
+                    }
+                    .tag(Tab.volume)
                 }
-                .tag(Tab.name)
-                Form {
-                    ServDetCalories(serving: serving)
-                }
-                .tag(Tab.calories)
-                Form {
-                    ServDetWeight(serving: serving)
-                }
-                .tag(Tab.weight)
-                Form {
-                    ServDetVolume(serving: serving)
-                }
-                .tag(Tab.volume)
             }
         }
     #endif
