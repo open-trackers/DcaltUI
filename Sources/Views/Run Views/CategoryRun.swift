@@ -72,7 +72,7 @@ public struct CategoryRun: View {
 
         #if os(watchOS)
         .navigationTitle {
-            NavTitle(category.wrappedName)
+            Text(category.wrappedName)
         }
         .toolbar {
             ToolbarItem {

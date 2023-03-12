@@ -75,7 +75,8 @@ public struct FoodGroupList: View {
         }
         #if os(watchOS)
         .navigationTitle {
-            NavTitle(title, color: foodGroupColorDarkBg)
+            Text(title)
+                .foregroundStyle(foodGroupColorDarkBg)
         }
         #elseif os(iOS)
         .navigationTitle(title)
