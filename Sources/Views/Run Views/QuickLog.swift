@@ -88,7 +88,7 @@ public struct QuickLog: View {
 
                 GroupBox {
                     Text("\(value) cal")
-                        .foregroundColor(colorScheme == .light ? .primary : .yellow)
+                        .foregroundColor(caloriesColor)
                         .font(.largeTitle)
                 } label: {
                     Text("Serving")
@@ -101,6 +101,7 @@ public struct QuickLog: View {
                           verticalSpacing: 10)
                     .font(.largeTitle)
                     .buttonStyle(.bordered)
+                    .foregroundStyle(Color.primary) // NOTE: colors the backspace too
                     .symbolRenderingMode(.hierarchical)
                     .modify {
                         if #available(iOS 16.1, watchOS 9.1, *) {
@@ -126,7 +127,7 @@ public struct QuickLog: View {
                 VStack(spacing: 3) {
                     Text("\(value) cal")
                         .font(.title2)
-                        .foregroundColor(.yellow)
+                        .foregroundColor(caloriesColor)
                     NumberPad(selection: $value, upperBound: caloriesUpperBound)
                         .font(.title2)
                         .buttonStyle(.plain)
@@ -158,6 +159,14 @@ public struct QuickLog: View {
     }
 
     // MARK: - Properties
+
+    private var caloriesColor: Color {
+        #if os(watchOS)
+            .yellow
+        #elseif os(iOS)
+            colorScheme == .light ? .primary : .yellow
+        #endif
+    }
 
     private var title: String {
         "Quick Log"
