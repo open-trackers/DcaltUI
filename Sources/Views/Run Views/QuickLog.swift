@@ -141,7 +141,6 @@ public struct QuickLog: View {
                 }
             }
             .ignoresSafeArea(.all, edges: [.bottom])
-
             .navigationTitle {
                 Image(systemName: "bolt.fill")
             }
