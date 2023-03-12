@@ -75,18 +75,19 @@ public struct ServingRun: View {
     }
 
     #if os(watchOS)
+        private let verticalSpacing: CGFloat = 3 // determined empirically on SE (40mm)
         private var platformView: some View {
-            GeometryReader { geo in
-                VStack(spacing: 0) {
+            GeometryReader { _ in
+                VStack(spacing: verticalSpacing) {
                     Text(serving.wrappedName)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(2)
-                    
+                        // .multilineTextAlignment(.leading)
+                        .lineLimit(1)
+
                     Text("\(netCalories, specifier: "%0.0f") cal")
                         .font(.largeTitle)
                         .lineLimit(1)
                         .foregroundColor(.yellow)
-                    
+
                     ValueStepper(value: $intensity, in: intensityRange, step: intensityStep, specifier: "%0.0f﹪", multiplier: 100)
 
                     HStack(spacing: 20) {
@@ -97,8 +98,7 @@ public struct ServingRun: View {
                     }
                     .font(.title2)
                     .lineLimit(1)
-//                    .padding(.horizontal)
-                    
+
                     HStack(spacing: 15) {
                         Button(action: editAction) {
                             Image(systemName: "ellipsis.circle.fill")
@@ -106,7 +106,7 @@ public struct ServingRun: View {
                         }
                         .buttonStyle(.plain)
                         .foregroundStyle(.tint)
-                        
+
                         intensityButtons
                             .imageScale(.large)
                             .foregroundStyle(.tint)
@@ -114,7 +114,6 @@ public struct ServingRun: View {
                     }
                 }
                 .symbolRenderingMode(.hierarchical)
-                .padding(.bottom, 5)
             }
             .ignoresSafeArea(.all, edges: [.bottom])
         }
