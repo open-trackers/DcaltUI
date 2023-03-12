@@ -56,13 +56,13 @@ public struct QuickLog: View {
     @AppStorage(storageKeyQuickLogRecents) private var recentsDict: QuickLogRecentsDict = .init()
     #if os(watchOS)
         private let maxRecents = 4
-        private let countPerRow = 2
+        private let minPresetButtonWidth: CGFloat = 70
         private let verticalSpacing: CGFloat = 3 // determined empirically
         private let stepperMaxFontSize: CGFloat = 40
         private let stepperMaxHeight: CGFloat = 50
     #elseif os(iOS)
         private let maxRecents = 12
-        private let countPerRow = 4
+        private let minPresetButtonWidth: CGFloat = 80
     #endif
 
     // MARK: - Views
@@ -103,6 +103,7 @@ public struct QuickLog: View {
 
                 GroupBox {
                     PresetValues(values: Array(recents),
+                                 minButtonWidth: minPresetButtonWidth,
                                  label: presetLabel,
                                  onLongPress: logPresetAction,
                                  onShortPress: setValueAction)
@@ -116,11 +117,12 @@ public struct QuickLog: View {
             .padding()
             .navigationTitle(title)
         }
+
     #endif
 
     #if os(watchOS)
         private var platformView: some View {
-            GeometryReader { geo in
+            GeometryReader { _ in
                 VStack(spacing: verticalSpacing) {
                     Text(category.wrappedName)
                         .font(.title2)
@@ -132,8 +134,7 @@ public struct QuickLog: View {
                         .frame(maxHeight: stepperMaxHeight)
 
                     PresetValues(values: recents,
-                                 geoWidth: geo.size.width,
-                                 countPerRow: countPerRow,
+                                 minButtonWidth: minPresetButtonWidth,
                                  label: presetLabel,
                                  onLongPress: logPresetAction,
                                  onShortPress: setValueAction)

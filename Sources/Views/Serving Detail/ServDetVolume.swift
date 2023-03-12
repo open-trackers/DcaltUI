@@ -16,15 +16,14 @@ import TrackerUI
 
 struct ServDetVolume: View {
     @ObservedObject var serving: MServing
-    let geoWidth: CGFloat
 
     @AppStorage("serving-volume-recents") private var recents = [Float]()
     private let maxRecents = 8
 
     #if os(watchOS)
-        private let countPerRow = 2
+        private let minPresetButtonWidth: CGFloat = 70
     #elseif os(iOS)
-        private let countPerRow = 4
+        private let minPresetButtonWidth: CGFloat = 80
     #endif
 
     var body: some View {
@@ -33,8 +32,7 @@ struct ServDetVolume: View {
 
             if recents.first != nil {
                 PresetValues(values: recents,
-                             geoWidth: geoWidth,
-                             countPerRow: countPerRow,
+                             minButtonWidth: minPresetButtonWidth,
                              label: label,
                              onShortPress: {
                                  serving.volume_mL = $0
@@ -53,11 +51,9 @@ struct ServDetVolume_Previews: PreviewProvider {
     struct TestHolder: View {
         var serving: MServing
         var body: some View {
-            GeometryReader { geo in
-                NavigationStack {
-                    Form {
-                        ServDetVolume(serving: serving, geoWidth: geo.size.width)
-                    }
+            NavigationStack {
+                Form {
+                    ServDetVolume(serving: serving)
                 }
             }
         }

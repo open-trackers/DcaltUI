@@ -16,15 +16,14 @@ import TrackerUI
 
 struct ServDetCalories: View {
     @ObservedObject var serving: MServing
-    let geoWidth: CGFloat
 
     @AppStorage("serving-calories-recents") private var recents = [Int16]()
     private let maxRecents = 8
 
     #if os(watchOS)
-        private let countPerRow = 2
+        private let minPresetButtonWidth: CGFloat = 70
     #elseif os(iOS)
-        private let countPerRow = 4
+        private let minPresetButtonWidth: CGFloat = 80
     #endif
 
     var body: some View {
@@ -33,8 +32,7 @@ struct ServDetCalories: View {
 
             if recents.first != nil {
                 PresetValues(values: recents,
-                             geoWidth: geoWidth,
-                             countPerRow: countPerRow,
+                             minButtonWidth: minPresetButtonWidth,
                              label: label,
                              onShortPress: {
                                  serving.calories = $0
@@ -53,11 +51,9 @@ struct ServDetCalories_Previews: PreviewProvider {
     struct TestHolder: View {
         var serving: MServing
         var body: some View {
-            GeometryReader { geo in
-                NavigationStack {
-                    Form {
-                        ServDetCalories(serving: serving, geoWidth: geo.size.width)
-                    }
+            NavigationStack {
+                Form {
+                    ServDetCalories(serving: serving)
                 }
             }
         }
