@@ -15,18 +15,9 @@ import TrackerLib
 import TrackerUI
 
 struct CalorieStepper: View {
-    @Binding private var value: Int16
-    private let maxFontSize: CGFloat
-    private let forceFocus: Bool
-
-    init(value: Binding<Int16>,
-         maxFontSize: CGFloat = 40,
-         forceFocus: Bool = false)
-    {
-        _value = value
-        self.maxFontSize = maxFontSize
-        self.forceFocus = forceFocus
-    }
+    @Binding var value: Int16
+    var maxFontSize: CGFloat = 40
+    var forceFocus: Bool = false
 
     var body: some View {
         ValueStepper(value: $value,

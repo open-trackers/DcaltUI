@@ -15,15 +15,8 @@ import TrackerLib
 import TrackerUI
 
 struct IntensityStepper: View {
-    @Binding private var value: Float
-    private let forceFocus: Bool
-
-    init(value: Binding<Float>,
-         forceFocus: Bool = false)
-    {
-        _value = value
-        self.forceFocus = forceFocus
-    }
+    @Binding var value: Float
+    var forceFocus: Bool = false
 
     var body: some View {
         ValueStepper(value: $value,
