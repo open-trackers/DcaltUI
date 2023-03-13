@@ -13,23 +13,19 @@ import SwiftUI
 import DcaltLib
 import TrackerUI
 
-public struct CatDetImage: View {
+struct CatDetImage: View {
     // MARK: - Parameters
 
-    @ObservedObject private var category: MCategory
-
-    public init(category: MCategory) {
-        self.category = category
-    }
-
-    // MARK: - Locals
+    @ObservedObject var category: MCategory
+    var forceFocus: Bool
 
     // MARK: - Views
 
-    public var body: some View {
+    var body: some View {
         Section {
             ImageStepper(initialName: category.imageName,
-                         imageNames: systemImageNames)
+                         imageNames: systemImageNames,
+                         forceFocus: forceFocus)
             {
                 category.imageName = $0
             }
@@ -51,7 +47,7 @@ struct CatDetImage_Previews: PreviewProvider {
         var category: MCategory
         var body: some View {
             Form {
-                CatDetImage(category: category)
+                CatDetImage(category: category, forceFocus: false)
             }
         }
     }

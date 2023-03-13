@@ -72,7 +72,7 @@ public struct CategoryDetail: View {
 
                 Form {
                     FormColorPicker(color: $color)
-                    CatDetImage(category: category)
+                    CatDetImage(category: category, forceFocus: true)
                 }
                 .tag(Tab.colorImage)
 
@@ -93,7 +93,7 @@ public struct CategoryDetail: View {
         private var platformView: some View {
             Form {
                 CatDetName(category: category)
-                CatDetImage(category: category)
+                CatDetImage(category: category, forceFocus: false)
                 FormColorPicker(color: $color)
                 CatDetServings(category: category)
                 CatDetFoodGroups(category: category)
