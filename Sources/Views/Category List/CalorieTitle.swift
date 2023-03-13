@@ -61,9 +61,9 @@ struct CalorieTitle: View {
     // uses boolean state to force refresh of Text
     // from main store (NOT archive!)
     private func refreshTodayZDayRun() {
-        guard let dateStr = appSetting?.subjectiveToday,
+        guard let subjectiveToday = appSetting?.subjectiveToday,
               let mainStore = manager.getMainStore(viewContext),
-              let zdr = try? ZDayRun.getOrCreate(viewContext, consumedDay: dateStr, inStore: mainStore)
+              let zdr = try? ZDayRun.get(viewContext, consumedDay: subjectiveToday, inStore: mainStore)
         else { return }
 
         zdr.updateCalories()

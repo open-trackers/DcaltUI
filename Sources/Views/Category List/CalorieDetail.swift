@@ -120,7 +120,7 @@ struct CalorieDetail: View {
     private var calories: Int16? {
         guard let subjectiveToday = appSetting?.subjectiveToday,
               let mainStore = manager.getMainStore(viewContext),
-              let zdr = try? ZDayRun.getOrCreate(viewContext, consumedDay: subjectiveToday, inStore: mainStore)
+              let zdr = try? ZDayRun.get(viewContext, consumedDay: subjectiveToday, inStore: mainStore)
         else { return nil }
         return zdr.calories
     }
