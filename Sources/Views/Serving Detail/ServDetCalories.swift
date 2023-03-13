@@ -17,45 +17,30 @@ import TrackerUI
 struct ServDetCalories: View {
     @ObservedObject var serving: MServing
 
-    @AppStorage("serving-calorie-recents") private var recents: [Int16] = [100, 200, 400, 800]
-
-    #if os(watchOS)
-        private let minPresetButtonWidth: CGFloat = 70
-        private let maxRecents = 4
-    #elseif os(iOS)
-        private let minPresetButtonWidth: CGFloat = 80
-        private let maxRecents = 8
-    #endif
-
     var body: some View {
-        Section {
+        Section("Calories") {
             CalorieStepper(value: $serving.calories)
 
-            if recents.first != nil {
-                PresetValues(values: recents,
-                             minButtonWidth: minPresetButtonWidth,
-                             label: label,
-                             onShortPress: {
-                                 serving.calories = $0
-                             })
-                             .padding(.vertical, 3)
+            HStack {
+                Text("Clear")
+                    .onTapGesture {
+                        serving.calories = 0
+                    }
+                #if os(iOS)
+                    Spacer()
+                    Text("+50 cal")
+                        .onTapGesture {
+                            serving.calories += 50
+                        }
+                #endif
+                Spacer()
+                Text("+100 cal")
+                    .onTapGesture {
+                        serving.calories += 100
+                    }
             }
-
-            Button(action: { serving.calories = 0 }) {
-                Text("Set to zero (0 cal)")
-                // .foregroundStyle(servingColorDarkBg)
-            }
-        } header: {
-            Text("Calories")
+            .foregroundStyle(.tint)
         }
-        .onDisappear {
-            guard serving.calories != 0 else { return }
-            recents.updateMRU(with: serving.calories, maxCount: maxRecents)
-        }
-    }
-
-    private func label(_ value: Int16) -> some View {
-        Text("\(value)")
     }
 }
 

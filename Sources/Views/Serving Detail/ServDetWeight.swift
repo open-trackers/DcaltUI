@@ -17,41 +17,29 @@ import TrackerUI
 struct ServDetWeight: View {
     @ObservedObject var serving: MServing
 
-    @AppStorage("serving-weight-recents") private var recents: [Float] = [10, 50, 100, 200]
-
-    #if os(watchOS)
-        private let minPresetButtonWidth: CGFloat = 70
-        private let maxRecents = 4
-    #elseif os(iOS)
-        private let minPresetButtonWidth: CGFloat = 80
-        private let maxRecents = 8
-    #endif
-
     var body: some View {
-        Section {
+        Section("Weight") {
             WeightStepper(value: $serving.weight_g)
-
-            if recents.first != nil {
-                PresetValues(values: recents,
-                             minButtonWidth: minPresetButtonWidth,
-                             label: label,
-                             onShortPress: {
-                                 serving.weight_g = $0
-                             })
-                             .padding(.vertical, 3)
+            HStack {
+                Text("Clear")
+                    .onTapGesture {
+                        serving.weight_g = 0
+                    }
+                #if os(iOS)
+                    Spacer()
+                    Text("+50 g")
+                        .onTapGesture {
+                            serving.weight_g += 50
+                        }
+                #endif
+                Spacer()
+                Text("+100 g")
+                    .onTapGesture {
+                        serving.weight_g += 100
+                    }
             }
-            Button(action: { serving.weight_g = 0 }) { Text("Set to zero (0 g)") }
-        } header: {
-            Text("Weight")
+            .foregroundStyle(.tint)
         }
-        .onDisappear {
-            guard serving.weight_g != 0 else { return }
-            recents.updateMRU(with: serving.weight_g, maxCount: maxRecents)
-        }
-    }
-
-    private func label(_ value: Float) -> some View {
-        Text("\(value, specifier: "%0.0f")")
     }
 }
 
@@ -78,5 +66,7 @@ struct ServDetWeight_Previews: PreviewProvider {
         return TestHolder(serving: serving)
             .environment(\.managedObjectContext, ctx)
             .environmentObject(manager)
+            .accentColor(.orange)
+            .symbolRenderingMode(.hierarchical)
     }
 }

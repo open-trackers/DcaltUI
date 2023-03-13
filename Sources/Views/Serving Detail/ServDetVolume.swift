@@ -17,43 +17,30 @@ import TrackerUI
 struct ServDetVolume: View {
     @ObservedObject var serving: MServing
 
-    @AppStorage("serving-volume-recents") private var recents: [Float] = [10, 50, 100, 200]
-
-    #if os(watchOS)
-        private let minPresetButtonWidth: CGFloat = 70
-        private let maxRecents = 4
-    #elseif os(iOS)
-        private let minPresetButtonWidth: CGFloat = 80
-        private let maxRecents = 8
-    #endif
-
     var body: some View {
-        Section {
+        Section("Volume") {
             VolumeStepper(value: $serving.volume_mL)
 
-            if recents.first != nil {
-                PresetValues(values: recents,
-                             minButtonWidth: minPresetButtonWidth,
-                             label: label,
-                             onShortPress: {
-                                 serving.volume_mL = $0
-                             })
-                             .padding(.vertical, 3)
+            HStack {
+                Text("Clear")
+                    .onTapGesture {
+                        serving.volume_mL = 0
+                    }
+                #if os(iOS)
+                    Spacer()
+                    Text("+50 ml")
+                        .onTapGesture {
+                            serving.volume_mL += 50
+                        }
+                #endif
+                Spacer()
+                Text("+100 ml")
+                    .onTapGesture {
+                        serving.volume_mL += 100
+                    }
             }
-
-            Button(action: { serving.volume_mL = 0 }) { Text("Set to zero (0 ml)") }
-
-        } header: {
-            Text("Volume")
+            .foregroundStyle(.tint)
         }
-        .onDisappear {
-            guard serving.volume_mL != 0 else { return }
-            recents.updateMRU(with: serving.volume_mL, maxCount: maxRecents)
-        }
-    }
-
-    private func label(_ value: Float) -> some View {
-        Text("\(value, specifier: "%0.0f")")
     }
 }
 
