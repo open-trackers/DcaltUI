@@ -17,6 +17,7 @@ public typealias DcaltRouter = Router<DcaltRoute>
 public enum DcaltRoute: Hashable, Codable {
     case settings
     case about
+    case calorieDetail
     case categoryDetail(_ categoryUri: URL)
     case categoryRun(_ categoryRun: URL)
     case servingDetail(_ servingUri: URL)

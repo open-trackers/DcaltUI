@@ -62,17 +62,15 @@ public struct CategoryList: View {
         #if os(watchOS)
         // .navigationBarTitleDisplayMode(.large)
         .navigationTitle {
-            CalorieTitle()
+            calorieTitle
                 .font(.title3)
-                .fontWeight(.bold) // NOTE: let CalorieTitle choose its own color depending on context
         }
         #elseif os(iOS)
         // .navigationBarTitleDisplayMode(.inline) // reduces the space allocated
         .toolbar {
             ToolbarItem(placement: .principal) {
-                CalorieTitle()
+                calorieTitle
                     .font(.title2)
-                    .fontWeight(.bold) // NOTE: let CalorieTitle choose its own color depending on context
             }
         }
         #endif
@@ -96,6 +94,19 @@ public struct CategoryList: View {
             logger.debug("onReceive: \(logServingPublisher.name.rawValue)")
             guard let servingURI = payload.object as? URL else { return }
             router.path = [.servingRun(servingURI)]
+        }
+    }
+
+    private var calorieTitle: some View {
+        HStack {
+            CalorieTitle()
+                .foregroundColor(.accentColor)
+                .fontWeight(.bold)
+            Spacer()
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            router.path.append(.calorieDetail)
         }
     }
 

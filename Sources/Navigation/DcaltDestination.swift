@@ -36,6 +36,8 @@ public struct DcaltDestination: View {
             }
         case .about:
             aboutView
+        case .calorieDetail:
+            CalorieDetail()
         case let .categoryDetail(categoryURI):
             if let category: MCategory = MCategory.get(viewContext, forURIRepresentation: categoryURI) {
                 CategoryDetail(category: category)

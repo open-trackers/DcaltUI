@@ -16,6 +16,9 @@ import TrackerLib
 struct CalorieTitle: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject private var manager: CoreDataStack
+    @EnvironmentObject private var router: DcaltRouter
+
+    // MARK: - Locals
 
     @AppStorage(progressFormatModeKey) private var progressFormat: ProgressFormat = .defaultValue
 
@@ -32,26 +35,19 @@ struct CalorieTitle: View {
     #endif
 
     var body: some View {
-        HStack {
-            Text("\(progressFormatted)\(refreshToggle ? "" : "")")
-                .foregroundStyle(isOver ? Color.red : .accentColor)
-            Spacer()
-        }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            progressFormat = progressFormat.next
-        }
-        .onAppear {
-            // print("REFRESHING via onAppear")
-            refreshTodayZDayRun()
-        }
-        .onReceive(remoteChangePublisher) { _ in
-            // print("REFRESHING via Remote Change")
-            refreshTodayZDayRun()
-        }
+        Text("\(progressFormatted)\(refreshToggle ? "" : "")")
+            // .foregroundStyle(isOver ? Color.red : .accentColor)
+            .onAppear {
+                // print("REFRESHING via onAppear")
+                refreshTodayZDayRun()
+            }
+            .onReceive(remoteChangePublisher) { _ in
+                // print("REFRESHING via Remote Change")
+                refreshTodayZDayRun()
+            }
     }
 
-    private var progressFormatted: Text {
+    private var progressFormatted: String {
         progressFormat.render(calories: todayZDayRun?.calories ?? 0,
                               targetCalories: appSetting?.targetCalories ?? 0,
                               isCompact: isCompact)
@@ -61,28 +57,11 @@ struct CalorieTitle: View {
         try? AppSetting.getOrCreate(viewContext)
     }
 
-    private var isOver: Bool {
-        if let calories = todayZDayRun?.calories,
-           let targetCalories = appSetting?.targetCalories
-        {
-            return calories > targetCalories
-        }
-        return false
-    }
-
-    private var subjectiveToday: String? {
-        guard let startOfDay = appSetting?.startOfDayEnum,
-              let (consumedDay, _) = Date.now.getSubjectiveDate(dayStartHour: startOfDay.hour,
-                                                                dayStartMinute: startOfDay.minute)
-        else { return nil }
-        return consumedDay
-    }
-
     // will show for new day if startOfDay is passed
     // uses boolean state to force refresh of Text
     // from main store (NOT archive!)
     private func refreshTodayZDayRun() {
-        guard let dateStr = subjectiveToday,
+        guard let dateStr = appSetting?.subjectiveToday,
               let mainStore = manager.getMainStore(viewContext),
               let zdr = try? ZDayRun.getOrCreate(viewContext, consumedDay: dateStr, inStore: mainStore)
         else { return }

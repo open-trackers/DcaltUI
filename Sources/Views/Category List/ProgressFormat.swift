@@ -22,7 +22,7 @@ enum ProgressFormat: Int, CaseIterable {
 
     static let defaultValue: ProgressFormat = .percentCalories
 
-    func render(calories: Int16, targetCalories: Int16, isCompact: Bool) -> Text {
+    func render(calories: Int16, targetCalories: Int16, isCompact: Bool) -> String {
         var percent: String {
             guard targetCalories > 0 else { return "" }
             let n = 100.0 * Float(calories) / Float(targetCalories)
@@ -33,25 +33,25 @@ enum ProgressFormat: Int, CaseIterable {
 
         switch self {
         case .caloriesOnly:
-            return Text("\(calories)\(cal)")
+            return "\(calories)\(cal)"
         case .percentOnly:
-            return Text("\(percent)")
+            return "\(percent)"
         case .caloriesPercent:
             let suffix = isCompact ? "" : cal
-            return Text("\(calories)\(suffix) (\(percent))")
+            return "\(calories)\(suffix) (\(percent))"
         case .percentCalories:
             let suffix = isCompact ? "" : cal
-            return Text("\(percent) (\(calories)\(suffix))")
+            return "\(percent) (\(calories)\(suffix))"
         case .caloriesTarget:
             let suffix = isCompact ? "" : cal
-            return Text("\(calories)/\(targetCalories)\(suffix)")
+            return "\(calories)/\(targetCalories)\(suffix)"
         case .remaining:
             let remaining = targetCalories - calories
             if remaining >= 0 {
                 let suffix = isCompact ? "remain" : "remaining"
-                return Text("\(remaining) \(suffix)")
+                return "\(remaining) \(suffix)"
             } else {
-                return Text("Over by \(-remaining)")
+                return "Over by \(-remaining)"
             }
         }
     }
@@ -70,6 +70,21 @@ enum ProgressFormat: Int, CaseIterable {
             return .remaining
         case .remaining:
             return .caloriesOnly
+        }
+    }
+}
+
+struct ProgressFormatPicker: View {
+    @Binding var progressFormat: ProgressFormat
+    let calories: Int16
+    let targetCalories: Int16
+
+    var body: some View {
+        Picker("", selection: $progressFormat) {
+            ForEach(ProgressFormat.allCases, id: \.self) {
+                Text($0.render(calories: calories, targetCalories: targetCalories, isCompact: false))
+                    .tag($0)
+            }
         }
     }
 }
