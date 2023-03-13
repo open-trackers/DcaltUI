@@ -16,11 +16,6 @@ import DcaltLib
 import TrackerLib
 import TrackerUI
 
-public let storageKeyQuickLogRecents = "quick-log-recents"
-public typealias QuickLogRecentsDict = [URL: [Int16]]
-
-public let defaultQuickLogCalories: Int16 = 150
-
 public struct QuickLog: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.managedObjectContext) private var viewContext
@@ -39,7 +34,7 @@ public struct QuickLog: View {
         self.category = category
         let initialCalories: Int16 = {
             guard let lastCalories, lastCalories > 0
-            else { return defaultQuickLogCalories }
+            else { return Self.defaultQuickLogCalories }
             return lastCalories
         }()
         _value = State(initialValue: initialCalories)
@@ -49,6 +44,7 @@ public struct QuickLog: View {
 
     @State private var value: Int16
 
+    private static let defaultQuickLogCalories: Int16 = 150
     private let caloriesUpperBound: Int16 = 20000
 
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!,
