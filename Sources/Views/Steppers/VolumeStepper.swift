@@ -26,7 +26,7 @@ struct VolumeStepper: View {
                      in: volumeRange,
                      step: volumeStep,
                      specifier: "%0.0f ml",
-                     ifZero: "n/a")
+                     ifZero: "0 ml")
     }
 }
 

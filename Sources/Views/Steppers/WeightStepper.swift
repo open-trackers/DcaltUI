@@ -26,7 +26,7 @@ struct WeightStepper: View {
                      in: weightRange,
                      step: weightStep,
                      specifier: "%0.0f g",
-                     ifZero: "n/a")
+                     ifZero: "0 g")
     }
 }
 

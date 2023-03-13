@@ -28,7 +28,7 @@ struct ServDetWeight: View {
     #endif
 
     var body: some View {
-        Section("Weight") {
+        Section {
             WeightStepper(value: $serving.weight_g)
 
             if recents.first != nil {
@@ -38,15 +38,20 @@ struct ServDetWeight: View {
                              onShortPress: {
                                  serving.weight_g = $0
                              })
+                             .padding(.vertical, 3)
             }
+            Button(action: { serving.weight_g = 0 }) { Text("Set to zero (0 g)") }
+        } header: {
+            Text("Weight")
         }
         .onDisappear {
+            guard serving.weight_g != 0 else { return }
             recents.updateMRU(with: serving.weight_g, maxCount: maxRecents)
         }
     }
 
     private func label(_ value: Float) -> some View {
-        Text("\(value, specifier: "%0.1f g")")
+        Text("\(value, specifier: "%0.0f")")
     }
 }
 

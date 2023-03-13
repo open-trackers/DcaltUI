@@ -28,7 +28,7 @@ struct ServDetVolume: View {
     #endif
 
     var body: some View {
-        Section("Volume") {
+        Section {
             VolumeStepper(value: $serving.volume_mL)
 
             if recents.first != nil {
@@ -38,15 +38,22 @@ struct ServDetVolume: View {
                              onShortPress: {
                                  serving.volume_mL = $0
                              })
+                             .padding(.vertical, 3)
             }
+
+            Button(action: { serving.volume_mL = 0 }) { Text("Set to zero (0 ml)") }
+
+        } header: {
+            Text("Volume")
         }
         .onDisappear {
+            guard serving.volume_mL != 0 else { return }
             recents.updateMRU(with: serving.volume_mL, maxCount: maxRecents)
         }
     }
 
     private func label(_ value: Float) -> some View {
-        Text("\(value, specifier: "%0.1f ml")")
+        Text("\(value, specifier: "%0.0f")")
     }
 }
 

@@ -28,7 +28,7 @@ struct ServDetCalories: View {
     #endif
 
     var body: some View {
-        Section("Calories") {
+        Section {
             CalorieStepper(value: $serving.calories)
 
             if recents.first != nil {
@@ -38,9 +38,18 @@ struct ServDetCalories: View {
                              onShortPress: {
                                  serving.calories = $0
                              })
+                             .padding(.vertical, 3)
             }
+
+            Button(action: { serving.calories = 0 }) {
+                Text("Set to zero (0 cal)")
+                // .foregroundStyle(servingColorDarkBg)
+            }
+        } header: {
+            Text("Calories")
         }
         .onDisappear {
+            guard serving.calories != 0 else { return }
             recents.updateMRU(with: serving.calories, maxCount: maxRecents)
         }
     }
