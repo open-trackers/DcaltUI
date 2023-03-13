@@ -72,8 +72,8 @@ struct CalorieTitle: View {
 
     private var subjectiveToday: String? {
         guard let startOfDay = appSetting?.startOfDayEnum,
-              let (consumedDay, _) = getSubjectiveDate(dayStartHour: startOfDay.hour,
-                                                       dayStartMinute: startOfDay.minute)
+              let (consumedDay, _) = Date.now.getSubjectiveDate(dayStartHour: startOfDay.hour,
+                                                                dayStartMinute: startOfDay.minute)
         else { return nil }
         return consumedDay
     }
