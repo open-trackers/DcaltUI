@@ -29,13 +29,18 @@ struct ServDetCalories: View {
                     }
                 #if os(iOS)
                     Spacer()
-                    Text("+50 cal")
+                    Text("+10")
+                        .onTapGesture {
+                            serving.calories += 10
+                        }
+                    Spacer()
+                    Text("+50")
                         .onTapGesture {
                             serving.calories += 50
                         }
                 #endif
                 Spacer()
-                Text("+100 cal")
+                Text("+100")
                     .onTapGesture {
                         serving.calories += 100
                     }

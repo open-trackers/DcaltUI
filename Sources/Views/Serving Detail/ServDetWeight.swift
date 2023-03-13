@@ -28,13 +28,18 @@ struct ServDetWeight: View {
                     }
                 #if os(iOS)
                     Spacer()
-                    Text("+50 g")
+                    Text("+10")
+                        .onTapGesture {
+                            serving.weight_g += 10
+                        }
+                    Spacer()
+                    Text("+50")
                         .onTapGesture {
                             serving.weight_g += 50
                         }
                 #endif
                 Spacer()
-                Text("+100 g")
+                Text("+100")
                     .onTapGesture {
                         serving.weight_g += 100
                     }

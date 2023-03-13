@@ -29,13 +29,18 @@ struct ServDetVolume: View {
                     }
                 #if os(iOS)
                     Spacer()
-                    Text("+50 ml")
+                    Text("+10")
+                        .onTapGesture {
+                            serving.volume_mL += 10
+                        }
+                    Spacer()
+                    Text("+50")
                         .onTapGesture {
                             serving.volume_mL += 50
                         }
                 #endif
                 Spacer()
-                Text("+100 ml")
+                Text("+100")
                     .onTapGesture {
                         serving.volume_mL += 100
                     }
