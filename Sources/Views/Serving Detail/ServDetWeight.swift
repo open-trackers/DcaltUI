@@ -17,13 +17,14 @@ import TrackerUI
 struct ServDetWeight: View {
     @ObservedObject var serving: MServing
 
-    @AppStorage("serving-weight-recents") private var recents = [Float]()
-    private let maxRecents = 8
+    @AppStorage("serving-weight-recents") private var recents: [Float] = [10, 50, 100, 200]
 
     #if os(watchOS)
         private let minPresetButtonWidth: CGFloat = 70
+        private let maxRecents = 4
     #elseif os(iOS)
         private let minPresetButtonWidth: CGFloat = 80
+        private let maxRecents = 8
     #endif
 
     var body: some View {
@@ -36,9 +37,11 @@ struct ServDetWeight: View {
                              label: label,
                              onShortPress: {
                                  serving.weight_g = $0
-                                 // recents.updateMRU(with: $0, maxCount: maxRecents)
                              })
             }
+        }
+        .onDisappear {
+            recents.updateMRU(with: serving.weight_g, maxCount: maxRecents)
         }
     }
 

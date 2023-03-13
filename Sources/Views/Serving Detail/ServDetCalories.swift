@@ -17,13 +17,14 @@ import TrackerUI
 struct ServDetCalories: View {
     @ObservedObject var serving: MServing
 
-    @AppStorage("serving-calories-recents") private var recents = [Int16]()
-    private let maxRecents = 8
+    @AppStorage("serving-calorie-recents") private var recents: [Int16] = [100, 200, 400, 800]
 
     #if os(watchOS)
         private let minPresetButtonWidth: CGFloat = 70
+        private let maxRecents = 4
     #elseif os(iOS)
         private let minPresetButtonWidth: CGFloat = 80
+        private let maxRecents = 8
     #endif
 
     var body: some View {
@@ -36,9 +37,11 @@ struct ServDetCalories: View {
                              label: label,
                              onShortPress: {
                                  serving.calories = $0
-                                 // recents.updateMRU(with: $0, maxCount: maxRecents)
                              })
             }
+        }
+        .onDisappear {
+            recents.updateMRU(with: serving.calories, maxCount: maxRecents)
         }
     }
 
@@ -70,5 +73,6 @@ struct ServDetCalories_Previews: PreviewProvider {
         return TestHolder(serving: serving)
             .environment(\.managedObjectContext, ctx)
             .environmentObject(manager)
+            .accentColor(.green)
     }
 }
