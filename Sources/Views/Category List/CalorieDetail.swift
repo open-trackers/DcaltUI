@@ -57,6 +57,7 @@ struct CalorieDetail: View {
                         .foregroundColor(caloriesColor)
                 } label: {
                     Text("Today")
+                        .foregroundStyle(.tint)
                 }
 
                 GroupBox {
@@ -64,6 +65,7 @@ struct CalorieDetail: View {
                         .font(.largeTitle)
                 } label: {
                     Text("Target")
+                        .foregroundStyle(.tint)
                 }
 
                 GroupBox {
@@ -71,12 +73,14 @@ struct CalorieDetail: View {
                         .font(.largeTitle)
                 } label: {
                     Text("Progress")
+                        .foregroundStyle(.tint)
                 }
 
                 GroupBox {
                     formatPicker
                 } label: {
                     Text("Display Format")
+                        .foregroundStyle(.tint)
                 }
 
                 Spacer()
@@ -102,7 +106,7 @@ struct CalorieDetail: View {
     }
 
     private var title: String {
-        "Today"
+        "Summary"
     }
 
     private var targetCalories: Int16? {
