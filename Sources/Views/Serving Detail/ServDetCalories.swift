@@ -16,10 +16,11 @@ import TrackerUI
 
 struct ServDetCalories: View {
     @ObservedObject var serving: MServing
+    var forceFocus: Bool = false
 
     var body: some View {
         Section("Calories") {
-            CalorieStepper(value: $serving.calories)
+            CalorieStepper(value: $serving.calories, forceFocus: forceFocus)
 
             HStack {
                 Text("Clear")

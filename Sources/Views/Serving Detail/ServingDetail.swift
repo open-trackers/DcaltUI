@@ -64,15 +64,15 @@ public struct ServingDetail: View {
                 }
                 .tag(Tab.name)
                 Form {
-                    ServDetCalories(serving: serving)
+                    ServDetCalories(serving: serving, forceFocus: true)
                 }
                 .tag(Tab.calories)
                 Form {
-                    ServDetWeight(serving: serving)
+                    ServDetWeight(serving: serving, forceFocus: true)
                 }
                 .tag(Tab.weight)
                 Form {
-                    ServDetVolume(serving: serving)
+                    ServDetVolume(serving: serving, forceFocus: true)
                 }
                 .tag(Tab.volume)
             }

@@ -16,9 +16,13 @@ import TrackerUI
 
 struct VolumeStepper: View {
     @Binding private var value: Float
+    private let forceFocus: Bool
 
-    init(value: Binding<Float>) {
+    init(value: Binding<Float>,
+         forceFocus: Bool = false)
+    {
         _value = value
+        self.forceFocus = forceFocus
     }
 
     var body: some View {
@@ -26,7 +30,8 @@ struct VolumeStepper: View {
                      in: volumeRange,
                      step: volumeStep,
                      specifier: "%0.0f ml",
-                     ifZero: "0 ml")
+                     ifZero: "0 ml",
+                     forceFocus: forceFocus)
     }
 }
 

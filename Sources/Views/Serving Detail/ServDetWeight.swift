@@ -16,10 +16,11 @@ import TrackerUI
 
 struct ServDetWeight: View {
     @ObservedObject var serving: MServing
+    var forceFocus: Bool = false
 
     var body: some View {
         Section("Weight") {
-            WeightStepper(value: $serving.weight_g)
+            WeightStepper(value: $serving.weight_g, forceFocus: forceFocus)
             HStack {
                 Text("Clear")
                     .onTapGesture {

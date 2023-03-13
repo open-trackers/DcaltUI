@@ -16,10 +16,11 @@ import TrackerUI
 
 struct ServDetVolume: View {
     @ObservedObject var serving: MServing
+    var forceFocus: Bool = false
 
     var body: some View {
         Section("Volume") {
-            VolumeStepper(value: $serving.volume_mL)
+            VolumeStepper(value: $serving.volume_mL, forceFocus: forceFocus)
 
             HStack {
                 Text("Clear")

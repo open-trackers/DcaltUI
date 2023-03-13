@@ -17,12 +17,15 @@ import TrackerUI
 struct CalorieStepper: View {
     @Binding private var value: Int16
     private let maxFontSize: CGFloat
+    private let forceFocus: Bool
 
     init(value: Binding<Int16>,
-         maxFontSize: CGFloat = 40)
+         maxFontSize: CGFloat = 40,
+         forceFocus: Bool = false)
     {
         _value = value
         self.maxFontSize = maxFontSize
+        self.forceFocus = forceFocus
     }
 
     var body: some View {
@@ -30,7 +33,8 @@ struct CalorieStepper: View {
                      in: calorieRange,
                      step: calorieStep,
                      specifier: "%d cal",
-                     maxFontSize: maxFontSize)
+                     maxFontSize: maxFontSize,
+                     forceFocus: forceFocus)
     }
 }
 

@@ -16,9 +16,13 @@ import TrackerUI
 
 struct WeightStepper: View {
     @Binding private var value: Float
+    private let forceFocus: Bool
 
-    init(value: Binding<Float>) {
+    init(value: Binding<Float>,
+         forceFocus: Bool = false)
+    {
         _value = value
+        self.forceFocus = forceFocus
     }
 
     var body: some View {
@@ -26,7 +30,8 @@ struct WeightStepper: View {
                      in: weightRange,
                      step: weightStep,
                      specifier: "%0.0f g",
-                     ifZero: "0 g")
+                     ifZero: "0 g",
+                     forceFocus: forceFocus)
     }
 }
 

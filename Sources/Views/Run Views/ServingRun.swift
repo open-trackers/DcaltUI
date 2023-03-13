@@ -94,12 +94,14 @@ public struct ServingRun: View {
                         .lineLimit(1)
                         .foregroundColor(.yellow)
 
+                    // TODO: refactor this into IntensityStepper, so it works on both watch and phone
                     ValueStepper(value: $intensity,
                                  in: intensityRange,
                                  step: intensityStep,
                                  specifier: "%0.0f﹪",
                                  multiplier: 100,
-                                 maxFontSize: stepperMaxFontSize)
+                                 maxFontSize: stepperMaxFontSize,
+                                 forceFocus: true)
                         .frame(maxHeight: stepperMaxHeight)
 
                     HStack(spacing: 20) {
@@ -205,7 +207,7 @@ public struct ServingRun: View {
     #if os(iOS)
         private var intensityBox: some View {
             GroupBox {
-                IntensityStepper(value: $intensity)
+                IntensityStepper(value: $intensity, forceFocus: false)
             } label: {
                 HStack {
                     Text("Serving Size")

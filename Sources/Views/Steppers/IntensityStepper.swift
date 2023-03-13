@@ -16,9 +16,13 @@ import TrackerUI
 
 struct IntensityStepper: View {
     @Binding private var value: Float
+    private let forceFocus: Bool
 
-    init(value: Binding<Float>) {
+    init(value: Binding<Float>,
+         forceFocus: Bool = false)
+    {
         _value = value
+        self.forceFocus = forceFocus
     }
 
     var body: some View {
@@ -26,7 +30,8 @@ struct IntensityStepper: View {
                      in: intensityRange,
                      step: intensityStep,
                      specifier: "%0.0f﹪",
-                     multiplier: 100)
+                     multiplier: 100,
+                     forceFocus: forceFocus)
     }
 }
 
