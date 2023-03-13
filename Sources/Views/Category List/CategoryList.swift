@@ -226,7 +226,7 @@ struct CategoryList_Previews: PreviewProvider {
         _ = MServing.create(ctx, category: c2, userOrder: 1, name: "Licorice")
 
         return TestHolder()
-            .accentColor(.blue)
+            .accentColor(.green)
             .environment(\.managedObjectContext, ctx)
             .environmentObject(manager)
     }

@@ -57,9 +57,6 @@ public struct ServingRun: View {
 
     public var body: some View {
         platformView
-//        #if os(watchOS)
-//            .ignoresSafeArea(.all, edges: [.bottom])
-//        #endif
             .toolbar {
                 #if os(iOS)
                     ToolbarItem(placement: .automatic) {

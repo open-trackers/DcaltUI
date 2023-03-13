@@ -35,6 +35,12 @@ public struct AddServingButton: View {
         AddElementButton(elementName: "Serving",
                          onCreate: createAction,
                          onAfterSave: afterSaveAction)
+        #if os(watchOS)
+            .font(.title3)
+            .tint(servingColorDarkBg)
+            .foregroundStyle(.tint)
+            .symbolRenderingMode(.hierarchical)
+        #endif
     }
 
     // MARK: - Properties

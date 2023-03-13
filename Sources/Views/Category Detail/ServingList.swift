@@ -61,9 +61,6 @@ public struct ServingList: View {
 
             #if os(watchOS)
                 AddServingButton(category: category)
-                    .font(.title3)
-                    .tint(servingColorDarkBg)
-                    .foregroundStyle(.tint)
             #endif
         }
         #if os(iOS)
