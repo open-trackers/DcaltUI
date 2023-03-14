@@ -37,6 +37,12 @@ public struct CatDetName: View {
                 Text($0)
                     .foregroundStyle(.tint)
             }
+            .textInputAutocapitalization(.words)
+            #if os(watchOS)
+                Text(category.wrappedName)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.leading)
+            #endif
         } header: {
             Text("Name")
         }
@@ -59,7 +65,7 @@ struct CatDetName_Previews: PreviewProvider {
         let manager = CoreDataStack.getPreviewStack()
         let ctx = manager.container.viewContext
         let category = MCategory.create(ctx, userOrder: 0)
-        category.name = "Beverage"
+        category.name = "Beverage and this and that and other things"
         let serving = MServing.create(ctx, category: category, userOrder: 0)
         serving.name = "Stout"
         serving.calories = 323

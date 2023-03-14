@@ -44,6 +44,11 @@ public struct ServDetName: View {
             } label: {
                 Text($0.title)
             }
+            #if os(watchOS)
+                Text(serving.wrappedName)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.leading)
+            #endif
         } header: {
             Text("Name")
         }
@@ -78,7 +83,7 @@ struct ServDetName_Previews: PreviewProvider {
         let category = MCategory.create(ctx, userOrder: 0)
         category.name = "Beverage"
         let serving = MServing.create(ctx, category: category, userOrder: 0)
-        serving.name = "Stout"
+        serving.name = "Stout and Beer and Hops and other stuff"
         serving.calories = 323
         return TestHolder(serving: serving)
             .environment(\.managedObjectContext, ctx)
