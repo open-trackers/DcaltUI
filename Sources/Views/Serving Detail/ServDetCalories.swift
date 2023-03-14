@@ -23,27 +23,18 @@ struct ServDetCalories: View {
             CalorieStepper(value: $serving.calories, forceFocus: forceFocus)
 
             HStack {
-                Text("Clear")
-                    .onTapGesture {
-                        serving.calories = 0
-                    }
+                FormTextButton("Clear") { serving.calories = 0 }
+
                 #if os(iOS)
                     Spacer()
-                    Text("+10")
-                        .onTapGesture {
-                            serving.calories += 10
-                        }
+                    FormTextButton("+10") { serving.calories += 10 }
+
                     Spacer()
-                    Text("+50")
-                        .onTapGesture {
-                            serving.calories += 50
-                        }
+                    FormTextButton("+50") { serving.calories += 50 }
+
                 #endif
                 Spacer()
-                Text("+100")
-                    .onTapGesture {
-                        serving.calories += 100
-                    }
+                FormTextButton("+100") { serving.calories += 100 }
             }
             .foregroundStyle(.tint)
         }

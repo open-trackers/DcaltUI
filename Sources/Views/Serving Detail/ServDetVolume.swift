@@ -23,27 +23,15 @@ struct ServDetVolume: View {
             VolumeStepper(value: $serving.volume_mL, forceFocus: forceFocus)
 
             HStack {
-                Text("Clear")
-                    .onTapGesture {
-                        serving.volume_mL = 0
-                    }
+                FormTextButton("Clear") { serving.volume_mL = 0 }
                 #if os(iOS)
                     Spacer()
-                    Text("+10")
-                        .onTapGesture {
-                            serving.volume_mL += 10
-                        }
+                    FormTextButton("+10") { serving.volume_mL += 10 }
                     Spacer()
-                    Text("+50")
-                        .onTapGesture {
-                            serving.volume_mL += 50
-                        }
+                    FormTextButton("+50") { serving.volume_mL += 50 }
                 #endif
                 Spacer()
-                Text("+100")
-                    .onTapGesture {
-                        serving.volume_mL += 100
-                    }
+                FormTextButton("+100") { serving.volume_mL += 100 }
             }
             .foregroundStyle(.tint)
         }

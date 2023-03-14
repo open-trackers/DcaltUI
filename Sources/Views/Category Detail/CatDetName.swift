@@ -43,9 +43,11 @@ public struct CatDetName: View {
             .textInputAutocapitalization(.words)
 
             #if os(watchOS)
-                Text(category.wrappedName)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.leading)
+                if category.wrappedName.count > 20 {
+                    Text(category.wrappedName)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.leading)
+                }
             #endif
         } header: {
             Text("Name")

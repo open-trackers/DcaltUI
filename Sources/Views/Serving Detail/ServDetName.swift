@@ -49,9 +49,11 @@ public struct ServDetName: View {
             #endif
 
             #if os(watchOS)
-                Text(serving.wrappedName)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.leading)
+                if serving.wrappedName.count > 20 {
+                    Text(serving.wrappedName)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.leading)
+                }
             #endif
         } header: {
             Text("Name")

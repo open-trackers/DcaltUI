@@ -16,15 +16,15 @@ import TrackerUI
 
 struct CalorieStepper: View {
     @Binding var value: Int16
-    var maxFontSize: CGFloat = 40
     var forceFocus: Bool = false
+
+    // MARK: - Views
 
     var body: some View {
         ValueStepper(value: $value,
                      in: calorieRange,
                      step: calorieStep,
                      specifier: "%d cal",
-                     maxFontSize: maxFontSize,
                      forceFocus: forceFocus)
     }
 }

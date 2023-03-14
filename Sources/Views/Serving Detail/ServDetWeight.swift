@@ -22,27 +22,15 @@ struct ServDetWeight: View {
         Section("Weight") {
             WeightStepper(value: $serving.weight_g, forceFocus: forceFocus)
             HStack {
-                Text("Clear")
-                    .onTapGesture {
-                        serving.weight_g = 0
-                    }
+                FormTextButton("Clear") { serving.weight_g = 0 }
                 #if os(iOS)
                     Spacer()
-                    Text("+10")
-                        .onTapGesture {
-                            serving.weight_g += 10
-                        }
+                    FormTextButton("+10") { serving.weight_g += 10 }
                     Spacer()
-                    Text("+50")
-                        .onTapGesture {
-                            serving.weight_g += 50
-                        }
+                    FormTextButton("+50") { serving.weight_g += 50 }
                 #endif
                 Spacer()
-                Text("+100")
-                    .onTapGesture {
-                        serving.weight_g += 100
-                    }
+                FormTextButton("+100") { serving.weight_g += 100 }
             }
             .foregroundStyle(.tint)
         }
