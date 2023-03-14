@@ -116,11 +116,11 @@ public struct ServingRun: View {
                                 .imageScale(.large)
                         }
                         .buttonStyle(.plain)
-                        .foregroundStyle(.tint)
+                        .foregroundStyle(servingColorDarkBg)
 
                         intensityButtons
                             .imageScale(.large)
-                            .foregroundStyle(.tint)
+                            .foregroundStyle(servingColorDarkBg)
                             .font(.title3)
                     }
                 }
@@ -224,7 +224,7 @@ public struct ServingRun: View {
             Image(systemName: systemName)
         }
         .buttonStyle(.plain)
-        .symbolRenderingMode(.hierarchical)
+        // .symbolRenderingMode(.hierarchical)
         .disabled(isIntensityAt(value))
     }
 
