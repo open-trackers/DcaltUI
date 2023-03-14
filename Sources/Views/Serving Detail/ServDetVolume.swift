@@ -16,24 +16,16 @@ import TrackerUI
 
 struct ServDetVolume: View {
     @ObservedObject var serving: MServing
-    var forceFocus: Bool = false
 
     var body: some View {
         Section("Volume") {
-            VolumeStepper(value: $serving.volume_mL, forceFocus: forceFocus)
-
-            HStack {
-                FormTextButton("Clear") { serving.volume_mL = 0 }
-                #if os(iOS)
-                    Spacer()
-                    FormTextButton("+10") { serving.volume_mL += 10 }
-                    Spacer()
-                    FormTextButton("+50") { serving.volume_mL += 50 }
-                #endif
-                Spacer()
-                FormTextButton("+100") { serving.volume_mL += 100 }
+            FormFloatPad(selection: $serving.volume_mL,
+                         precision: volumePrecision,
+                         upperBound: volumeRange.upperBound)
+            {
+                Text("\($0, specifier: "%0.1f") ml")
+                    .font(.title2)
             }
-            .foregroundStyle(.tint)
         }
     }
 }

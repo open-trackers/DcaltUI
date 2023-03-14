@@ -27,14 +27,16 @@ public let foodGroupListItemTint: Color = foodGroupColor.opacity(0.2)
 
 public let defaultTargetCalories: Int16 = 2000
 
-public let calorieRange: ClosedRange<Int16> = 0 ... 2000
+public let calorieRange: ClosedRange<Int16> = 0 ... 5000
 public let calorieStep = Int16.Stride(1)
 
 public let weightRange: ClosedRange<Float> = 0 ... 1000
-public let weightStep: Float = 1
+public let weightPrecision = 1
+public let weightStep: Float = 0.1
 
 public let volumeRange: ClosedRange<Float> = 0 ... 1000
-public let volumeStep: Float = 1
+public let volumePrecision = 1
+public let volumeStep: Float = 0.1
 
 public let intensityRange: ClosedRange<Float> = 0 ... 10
 public let intensityStep: Float = 0.1

@@ -16,23 +16,16 @@ import TrackerUI
 
 struct ServDetWeight: View {
     @ObservedObject var serving: MServing
-    var forceFocus: Bool = false
 
     var body: some View {
         Section("Weight") {
-            WeightStepper(value: $serving.weight_g, forceFocus: forceFocus)
-            HStack {
-                FormTextButton("Clear") { serving.weight_g = 0 }
-                #if os(iOS)
-                    Spacer()
-                    FormTextButton("+10") { serving.weight_g += 10 }
-                    Spacer()
-                    FormTextButton("+50") { serving.weight_g += 50 }
-                #endif
-                Spacer()
-                FormTextButton("+100") { serving.weight_g += 100 }
+            FormFloatPad(selection: $serving.weight_g,
+                         precision: weightPrecision,
+                         upperBound: weightRange.upperBound)
+            {
+                Text("\($0, specifier: "%0.1f") g")
+                    .font(.title2)
             }
-            .foregroundStyle(.tint)
         }
     }
 }

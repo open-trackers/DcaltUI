@@ -16,27 +16,13 @@ import TrackerUI
 
 struct ServDetCalories: View {
     @ObservedObject var serving: MServing
-    var forceFocus: Bool = false
 
     var body: some View {
         Section("Calories") {
-            CalorieStepper(value: $serving.calories, forceFocus: forceFocus)
-
-            HStack {
-                FormTextButton("Clear") { serving.calories = 0 }
-
-                #if os(iOS)
-                    Spacer()
-                    FormTextButton("+10") { serving.calories += 10 }
-
-                    Spacer()
-                    FormTextButton("+50") { serving.calories += 50 }
-
-                #endif
-                Spacer()
-                FormTextButton("+100") { serving.calories += 100 }
+            FormIntPad(selection: $serving.calories, upperBound: calorieRange.upperBound) {
+                Text("\($0) cal")
+                    .font(.title2)
             }
-            .foregroundStyle(.tint)
         }
     }
 }
