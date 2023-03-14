@@ -13,9 +13,9 @@ import os
 import SwiftUI
 
 import DcaltLib
+import NumberPad
 import TrackerLib
 import TrackerUI
-import TrackerNumPad
 
 public struct QuickLog: View {
     @Environment(\.colorScheme) private var colorScheme
@@ -38,15 +38,15 @@ public struct QuickLog: View {
             else { return Self.defaultQuickLogCalories }
             return lastCalories
         }()
-        self.value = IntegerValue(initialCalories, upperBound: 20000)
+        value = NumPadInt(initialCalories, upperBound: 20000)
     }
 
     // MARK: - Locals
 
-    @ObservedObject private var value: IntegerValue<Int16>
-    
+    @ObservedObject private var value: NumPadInt<Int16>
+
     private static let defaultQuickLogCalories: Int16 = 150
-    //private let caloriesUpperBound: Int16 = 20000
+    // private let caloriesUpperBound: Int16 = 20000
 
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!,
                                 category: String(describing: QuickLog.self))
@@ -90,10 +90,10 @@ public struct QuickLog: View {
                         .foregroundStyle(.tint)
                 }
 
-                NumPad(selection: value,
+                NumberPad(selection: value,
                           horizontalSpacing: 10,
-                       verticalSpacing: 10,
-                       showDecimalPoint: false)
+                          verticalSpacing: 10,
+                          showDecimalPoint: false)
                     .font(.largeTitle)
                     .buttonStyle(.bordered)
                     .foregroundStyle(Color.primary) // NOTE: colors the backspace too
@@ -124,8 +124,8 @@ public struct QuickLog: View {
                         .font(.title2)
                         .foregroundColor(caloriesColor)
                     NumberPadI(selection: $value,
-                    horizontalSpacing: 3,
-                    verticalSpacing: 3)
+                               horizontalSpacing: 3,
+                               verticalSpacing: 3)
                         .font(.title2)
                         .buttonStyle(.plain)
                         .symbolRenderingMode(.hierarchical)
