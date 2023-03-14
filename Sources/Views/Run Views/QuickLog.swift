@@ -55,6 +55,7 @@ public struct QuickLog: View {
 
     public var body: some View {
         platformView
+            .symbolRenderingMode(.hierarchical)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button(action: { logAction(immediate: false) }) {
@@ -91,13 +92,10 @@ public struct QuickLog: View {
                 }
 
                 NumberPad(selection: value,
-                          horizontalSpacing: 10,
-                          verticalSpacing: 10,
                           showDecimalPoint: false)
                     .font(.largeTitle)
                     .buttonStyle(.bordered)
                     .foregroundStyle(Color.primary) // NOTE: colors the backspace too
-                    .symbolRenderingMode(.hierarchical)
                     .modify {
                         if #available(iOS 16.1, watchOS 9.1, *) {
                             $0.fontDesign(.monospaced)
@@ -123,12 +121,10 @@ public struct QuickLog: View {
                     Text("\(value.value ?? 0) cal")
                         .font(.title2)
                         .foregroundColor(caloriesColor)
-                    NumberPad(selection: $value,
-                              horizontalSpacing: 3,
-                              verticalSpacing: 3)
+                    NumberPad(selection: value,
+                              showDecimalPoint: false)
                         .font(.title2)
                         .buttonStyle(.plain)
-                        .symbolRenderingMode(.hierarchical)
                         .modify {
                             if #available(iOS 16.1, watchOS 9.1, *) {
                                 $0.fontDesign(.monospaced)
