@@ -37,7 +37,11 @@ public struct CatDetName: View {
                 Text($0)
                     .foregroundStyle(.tint)
             }
+            #if os(iOS)
+            .font(.title3)
+            #endif
             .textInputAutocapitalization(.words)
+
             #if os(watchOS)
                 Text(category.wrappedName)
                     .foregroundColor(.secondary)

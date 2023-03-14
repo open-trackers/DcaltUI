@@ -44,6 +44,10 @@ public struct ServDetName: View {
             } label: {
                 Text($0.title)
             }
+            #if os(iOS)
+            .font(.title3)
+            #endif
+
             #if os(watchOS)
                 Text(serving.wrappedName)
                     .foregroundColor(.secondary)
