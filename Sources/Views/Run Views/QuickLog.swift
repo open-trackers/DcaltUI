@@ -38,12 +38,12 @@ public struct QuickLog: View {
             else { return Self.defaultQuickLogCalories }
             return lastCalories
         }()
-        _value = State(initialValue: IntegerValue(initialCalories, upperBound: 20000))
+        self.value = IntegerValue(initialCalories, upperBound: 20000)
     }
 
     // MARK: - Locals
 
-    @State private var value: IntegerValue<Int16>
+    @ObservedObject private var value: IntegerValue<Int16>
     
     private static let defaultQuickLogCalories: Int16 = 150
     //private let caloriesUpperBound: Int16 = 20000
@@ -90,9 +90,10 @@ public struct QuickLog: View {
                         .foregroundStyle(.tint)
                 }
 
-                NumberPadI(selection: $value,
+                NumPad(selection: value,
                           horizontalSpacing: 10,
-                          verticalSpacing: 10)
+                       verticalSpacing: 10,
+                       showDecimalPoint: false)
                     .font(.largeTitle)
                     .buttonStyle(.bordered)
                     .foregroundStyle(Color.primary) // NOTE: colors the backspace too
