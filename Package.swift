@@ -13,7 +13,7 @@ let package = Package(name: "DcaltUI",
                           .package(url: "https://github.com/apple/swift-collections.git", from: "1.0.4"),
                           .package(url: "https://github.com/open-trackers/TrackerUI.git", from: "1.0.0"),
                           .package(url: "https://github.com/open-trackers/DcaltLib.git", from: "1.0.0"),
-                          .package(path: "../SwiftNumberPad"),
+                          .package(url: "https://github.com/openalloc/SwiftNumberPad.git", from: "1.0.0"),
                       ],
                       targets: [
                           .target(name: "DcaltUI",
