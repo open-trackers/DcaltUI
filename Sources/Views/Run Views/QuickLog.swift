@@ -123,9 +123,9 @@ public struct QuickLog: View {
                     Text("\(value.value ?? 0) cal")
                         .font(.title2)
                         .foregroundColor(caloriesColor)
-                    NumberPadI(selection: $value,
-                               horizontalSpacing: 3,
-                               verticalSpacing: 3)
+                    NumberPad(selection: $value,
+                              horizontalSpacing: 3,
+                              verticalSpacing: 3)
                         .font(.title2)
                         .buttonStyle(.plain)
                         .symbolRenderingMode(.hierarchical)
