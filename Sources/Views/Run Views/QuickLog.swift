@@ -15,6 +15,7 @@ import SwiftUI
 import DcaltLib
 import TrackerLib
 import TrackerUI
+import TrackerNumPad
 
 public struct QuickLog: View {
     @Environment(\.colorScheme) private var colorScheme
@@ -37,15 +38,15 @@ public struct QuickLog: View {
             else { return Self.defaultQuickLogCalories }
             return lastCalories
         }()
-        _value = State(initialValue: initialCalories)
+        _value = State(initialValue: IntegerValue(initialCalories, upperBound: 20000))
     }
 
     // MARK: - Locals
 
-    @State private var value: Int16
-
+    @State private var value: IntegerValue<Int16>
+    
     private static let defaultQuickLogCalories: Int16 = 150
-    private let caloriesUpperBound: Int16 = 20000
+    //private let caloriesUpperBound: Int16 = 20000
 
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!,
                                 category: String(describing: QuickLog.self))
@@ -59,7 +60,7 @@ public struct QuickLog: View {
                     Button(action: { logAction(immediate: false) }) {
                         consumeText
                     }
-                    .disabled(value == 0)
+                    .disabled(value.value == 0)
                 }
             }
             // advertise running "'Meat' Quick Log"
@@ -81,7 +82,7 @@ public struct QuickLog: View {
                 }
 
                 GroupBox {
-                    Text("\(value) cal")
+                    Text("\(value.value ?? 0) cal")
                         .foregroundColor(caloriesColor)
                         .font(.largeTitle)
                 } label: {
@@ -89,8 +90,7 @@ public struct QuickLog: View {
                         .foregroundStyle(.tint)
                 }
 
-                NumberPad(selection: $value,
-                          upperBound: caloriesUpperBound,
+                NumberPadI(selection: $value,
                           horizontalSpacing: 10,
                           verticalSpacing: 10)
                     .font(.largeTitle)
@@ -119,10 +119,12 @@ public struct QuickLog: View {
         private var platformView: some View {
             GeometryReader { _ in
                 VStack(spacing: 3) {
-                    Text("\(value) cal")
+                    Text("\(value.value ?? 0) cal")
                         .font(.title2)
                         .foregroundColor(caloriesColor)
-                    NumberPad(selection: $value, upperBound: caloriesUpperBound)
+                    NumberPadI(selection: $value,
+                    horizontalSpacing: 3,
+                    verticalSpacing: 3)
                         .font(.title2)
                         .buttonStyle(.plain)
                         .symbolRenderingMode(.hierarchical)
@@ -174,7 +176,7 @@ public struct QuickLog: View {
             if verticalSizeClass == .regular {
                 Text("Consume")
             } else {
-                Text("Consume \(value) cal")
+                Text("Consume \(value.value ?? 0) cal")
             }
         #endif
     }
@@ -184,17 +186,6 @@ public struct QuickLog: View {
     }
 
     // MARK: - Helpers
-
-    private func setValueAction(_ val: Int16) {
-        value = max(calorieRange.lowerBound, min(calorieRange.upperBound, val))
-    }
-
-    // long press action
-    private func logPresetAction(_ val: Int16) {
-        logger.debug("\(#function)")
-        value = val
-        logAction(immediate: true)
-    }
 
     private func logAction(immediate: Bool) {
         logger.debug("\(#function)")
@@ -218,7 +209,7 @@ public struct QuickLog: View {
                                      mainStore: mainStore,
                                      servingArchiveID: quickLogID,
                                      servingName: quickLogName,
-                                     netCalories: value,
+                                     netCalories: value.value ?? 0,
                                      startOfDay: appSetting.startOfDayEnum)
 
             try viewContext.save()
