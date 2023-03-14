@@ -65,12 +65,11 @@ public struct FoodGroupList: View {
 
             #if os(watchOS)
                 addPresetButton {
-                    Label("Add Food Group", systemImage: "plus.circle.fill")
+                    Label("Add Food Group", systemImage: "plus.circle")
                         .symbolRenderingMode(.hierarchical)
                 }
-                .font(.title3)
-                .tint(foodGroupColorDarkBg)
-                .foregroundStyle(.tint)
+                .accentColor(foodGroupColorDarkBg)
+                .symbolRenderingMode(.hierarchical)
             #endif
         }
         #if os(watchOS)

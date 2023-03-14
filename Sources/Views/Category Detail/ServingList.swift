@@ -61,6 +61,8 @@ public struct ServingList: View {
 
             #if os(watchOS)
                 AddServingButton(category: category)
+                    .accentColor(servingColorDarkBg)
+                    .symbolRenderingMode(.hierarchical)
             #endif
         }
         #if os(iOS)

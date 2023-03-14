@@ -10,6 +10,21 @@
 
 import SwiftUI
 
+public let categoryColor: Color = .accentColor
+public let categoryColorDarkBg: Color = categoryColor.opacity(0.8)
+public let categoryColorLiteBg: Color = categoryColor
+public let categoryListItemTint: Color = categoryColor.opacity(0.2)
+
+public let servingColor: Color = .yellow
+public let servingColorDarkBg: Color = servingColor.opacity(0.8)
+public let servingColorLiteBg: Color = .primary
+public let servingListItemTint: Color = servingColor.opacity(0.2)
+
+public let foodGroupColor: Color = .mint
+public let foodGroupColorDarkBg: Color = foodGroupColor.opacity(0.8)
+public let foodGroupColorLiteBg: Color = .primary
+public let foodGroupListItemTint: Color = foodGroupColor.opacity(0.2)
+
 public let defaultTargetCalories: Int16 = 2000
 
 public let calorieRange: ClosedRange<Int16> = 0 ... 2000
@@ -23,18 +38,6 @@ public let volumeStep: Float = 1
 
 public let intensityRange: ClosedRange<Float> = 0 ... 10
 public let intensityStep: Float = 0.1
-
-public let categoryColor: Color = .accentColor
-public let categoryColorDarkBg: Color = categoryColor.opacity(0.8)
-public let categoryColorLiteBg: Color = categoryColor
-
-public let servingColorDarkBg: Color = .yellow.opacity(0.8)
-public let servingColorLiteBg: Color = .primary
-public let servingListItemTint: Color = .yellow.opacity(0.2)
-
-public let foodGroupColorDarkBg: Color = .mint.opacity(0.8)
-public let foodGroupColorLiteBg: Color = .primary
-public let foodGroupListItemTint: Color = .mint.opacity(0.2)
 
 public let logCategoryActivityType = "org.openalloc.dcalt.category-quick-log"
 public let logServingActivityType = "org.openalloc.dcalt.category-serving-log"

@@ -51,10 +51,14 @@ public struct CategoryList: View {
                  addButton: { AddCategoryButton() })
         {
             #if os(watchOS)
-                todayButton
-                AddCategoryButton()
-                settingsButton
-                aboutButton
+                Group {
+                    todayButton
+                    AddCategoryButton()
+                    settingsButton
+                    aboutButton
+                }
+                .accentColor(.blue) // NOTE: make the images really blue
+                .symbolRenderingMode(.hierarchical)
             #elseif os(iOS)
                 EmptyView()
             #endif
