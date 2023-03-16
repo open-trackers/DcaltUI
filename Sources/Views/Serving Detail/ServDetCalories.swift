@@ -19,8 +19,8 @@ struct ServDetCalories: View {
 
     var body: some View {
         Section("Calories") {
-            FormIntPad(selection: $serving.calories, upperBound: calorieRange.upperBound) {
-                Text("\($0) cal")
+            FormIntegerPad(value: $serving.calories, upperBound: calorieRange.upperBound) {
+                Text("\($0 ?? 0) cal")
                     .font(.title2)
             }
         }

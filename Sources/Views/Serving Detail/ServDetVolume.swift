@@ -19,11 +19,11 @@ struct ServDetVolume: View {
 
     var body: some View {
         Section("Volume") {
-            FormFloatPad(selection: $serving.volume_mL,
+            FormFloatPad(value: $serving.volume_mL,
                          precision: volumePrecision,
                          upperBound: volumeRange.upperBound)
             {
-                Text("\($0, specifier: "%0.1f") ml")
+                Text("\($0 ?? 0, specifier: "%0.1f") ml")
                     .font(.title2)
             }
         }

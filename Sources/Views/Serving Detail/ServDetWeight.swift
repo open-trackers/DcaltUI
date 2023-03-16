@@ -19,11 +19,11 @@ struct ServDetWeight: View {
 
     var body: some View {
         Section("Weight") {
-            FormFloatPad(selection: $serving.weight_g,
+            FormFloatPad(value: $serving.weight_g,
                          precision: weightPrecision,
                          upperBound: weightRange.upperBound)
             {
-                Text("\($0, specifier: "%0.1f") g")
+                Text("\($0 ?? 0, specifier: "%0.1f") g")
                     .font(.title2)
             }
         }

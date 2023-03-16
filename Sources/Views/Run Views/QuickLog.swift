@@ -38,12 +38,12 @@ public struct QuickLog: View {
             else { return Self.defaultQuickLogCalories }
             return lastCalories
         }()
-        value = NumPadInt(initialCalories, upperBound: 20000)
+        config = NPIntegerConfig(initialCalories, upperBound: 20000)
     }
 
     // MARK: - Locals
 
-    @ObservedObject private var value: NumPadInt<Int16>
+    @ObservedObject private var config: NPIntegerConfig<Int16>
 
     private static let defaultQuickLogCalories: Int16 = 150
     // private let caloriesUpperBound: Int16 = 20000
@@ -61,7 +61,7 @@ public struct QuickLog: View {
                     Button(action: { logAction(immediate: false) }) {
                         consumeText
                     }
-                    .disabled(value.value == 0)
+                    .disabled(config.value == 0)
                 }
             }
             // advertise running "'Meat' Quick Log"
@@ -83,7 +83,7 @@ public struct QuickLog: View {
                 }
 
                 GroupBox {
-                    Text("\(value.value ?? 0) cal")
+                    Text("\(config.value ?? 0) cal")
                         .foregroundColor(caloriesColor)
                         .font(.largeTitle)
                 } label: {
@@ -91,7 +91,7 @@ public struct QuickLog: View {
                         .foregroundStyle(.tint)
                 }
 
-                NumberPad(selection: value,
+                NumberPad(config: config,
                           showDecimalPoint: false)
                     .font(.largeTitle)
                     .buttonStyle(.bordered)
@@ -118,10 +118,10 @@ public struct QuickLog: View {
         private var platformView: some View {
             GeometryReader { _ in
                 VStack(spacing: 3) {
-                    Text("\(value.value ?? 0) cal")
+                    Text("\(config.value ?? 0) cal")
                         .font(.title2)
                         .foregroundColor(caloriesColor)
-                    NumberPad(selection: value,
+                    NumberPad(config: config,
                               showDecimalPoint: false)
                         .font(.title2)
                         .buttonStyle(.plain)
@@ -173,7 +173,7 @@ public struct QuickLog: View {
             if verticalSizeClass == .regular {
                 Text("Consume")
             } else {
-                Text("Consume \(value.value ?? 0) cal")
+                Text("Consume \(config.value ?? 0) cal")
             }
         #endif
     }
@@ -206,7 +206,7 @@ public struct QuickLog: View {
                                      mainStore: mainStore,
                                      servingArchiveID: quickLogID,
                                      servingName: quickLogName,
-                                     netCalories: value.value ?? 0,
+                                     netCalories: config.value ?? 0,
                                      startOfDay: appSetting.startOfDayEnum)
 
             try viewContext.save()
