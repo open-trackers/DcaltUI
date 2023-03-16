@@ -91,8 +91,7 @@ public struct QuickLog: View {
                         .foregroundStyle(.tint)
                 }
 
-                NumberPad(config: config,
-                          showDecimalPoint: false)
+                NumberPad(config: config)
                     .font(.largeTitle)
                     .buttonStyle(.bordered)
                     .foregroundStyle(Color.primary) // NOTE: colors the backspace too
@@ -121,8 +120,7 @@ public struct QuickLog: View {
                     Text("\(config.value ?? 0) cal")
                         .font(.title2)
                         .foregroundColor(caloriesColor)
-                    NumberPad(config: config,
-                              showDecimalPoint: false)
+                    NumberPad(config: config)
                         .font(.title2)
                         .buttonStyle(.plain)
                         .modify {
