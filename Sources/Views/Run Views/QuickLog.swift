@@ -214,7 +214,7 @@ public struct QuickLog: View {
             // NOTE: this async wrapper is a KLUDGE to fix problem where the
             // NavigationStack was NOT popping, and then the user's manual pop
             // caused "Fatal error: Can't remove more items from a collection
-            // than it contains".
+            // than it contains".  (Happened on iPad Mini (6th) in landscape.)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 router.path.removeAll()
             }
