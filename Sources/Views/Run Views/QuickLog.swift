@@ -211,9 +211,10 @@ public struct QuickLog: View {
 
             Haptics.play(immediate ? .immediateAction : .click)
 
-            // NOTE: this is a KLUDGE to fix problem where the NavigationStack was NOT
-            // popping, and then the user's manual pop caused as "Fatal error: Can't
-            // remove more items from a collection than it contains".
+            // NOTE: this async wrapper is a KLUDGE to fix problem where the
+            // NavigationStack was NOT popping, and then the user's manual pop
+            // caused "Fatal error: Can't remove more items from a collection
+            // than it contains".
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 router.path.removeAll()
             }
