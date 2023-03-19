@@ -307,7 +307,7 @@ public struct ServingRun: View {
     }
 
     private func logAction() {
-        logger.debug("\(#function)")
+        logger.debug("\(#function) ENTER")
 
         guard let mainStore = manager.getMainStore(viewContext)
         else {
@@ -325,6 +325,8 @@ public struct ServingRun: View {
             Haptics.play()
 
             router.path.removeAll()
+
+            logger.debug("\(#function) DONE")
 
         } catch {
             logger.error("\(#function): \(error.localizedDescription)")

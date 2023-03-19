@@ -183,7 +183,7 @@ public struct QuickLog: View {
     // MARK: - Helpers
 
     private func logAction(immediate: Bool) {
-        logger.debug("\(#function)")
+        logger.debug("\(#function) ENTER")
 
         guard let mainStore = manager.getMainStore(viewContext) else {
             logger.error("\(#function): Unable to obtain main store. Cannot create quick log.")
@@ -211,8 +211,14 @@ public struct QuickLog: View {
 
             Haptics.play(immediate ? .immediateAction : .click)
 
-            router.path.removeAll()
+            // NOTE: this is a KLUDGE to fix problem where the NavigationStack was NOT
+            // popping, and then the user's manual pop caused as "Fatal error: Can't
+            // remove more items from a collection than it contains".
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                router.path.removeAll()
+            }
 
+            logger.debug("\(#function) DONE")
         } catch {
             logger.error("\(#function): \(error.localizedDescription)")
         }

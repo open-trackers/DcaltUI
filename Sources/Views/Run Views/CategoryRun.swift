@@ -168,7 +168,7 @@ public struct CategoryRun: View {
 
     // based on long press, will log at serving.lastIntensity, which may not be 100%!
     private func immediateLogAction(_ serving: MServing) {
-        logger.notice("\(#function)")
+        logger.notice("\(#function) ENTER")
 
         guard let mainStore = manager.getMainStore(viewContext) else { return }
         do {
@@ -181,6 +181,8 @@ public struct CategoryRun: View {
             Haptics.play(.immediateAction)
 
             router.path.removeAll()
+
+            logger.debug("\(#function) DONE")
 
         } catch {
             logger.error("\(#function): \(error.localizedDescription)")
