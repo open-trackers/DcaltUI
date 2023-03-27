@@ -46,10 +46,7 @@ public struct AddCategoryButton: View {
     // MARK: - Actions
 
     private func createAction() -> MCategory {
-        let nu = MCategory.create(viewContext, userOrder: maxOrder)
-        nu.name = "New Category"
-        nu.userOrder = maxOrder + 1
-        return nu
+        MCategory.create(viewContext, name: "New Category", userOrder: maxOrder + 1)
     }
 
     private func afterSaveAction(_ nu: MCategory) {
