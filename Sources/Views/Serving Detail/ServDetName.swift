@@ -42,7 +42,7 @@ public struct ServDetName: View {
                 serving.calories = Int16(preset.calories)
 
             } label: {
-                Text($0.title)
+                Text($0.description)
             }
             #if os(iOS)
             .font(.title3)
