@@ -91,19 +91,21 @@ public struct QuickLog: View {
                         .foregroundStyle(.tint)
                 }
 
-                NumberPad(config: config)
-                    .font(.largeTitle)
-                    .buttonStyle(.bordered)
-                    .foregroundStyle(Color.primary) // NOTE: colors the backspace too
-                    .modify {
-                        if #available(iOS 16.1, watchOS 9.1, *) {
-                            $0.fontDesign(.monospaced)
-                        } else {
-                            $0.monospaced()
-                        }
+                NumberPad(config: config) { _, _ in
+                    Haptics.play()
+                }
+                .font(.largeTitle)
+                .buttonStyle(.bordered)
+                .foregroundStyle(Color.primary) // NOTE: colors the backspace too
+                .modify {
+                    if #available(iOS 16.1, watchOS 9.1, *) {
+                        $0.fontDesign(.monospaced)
+                    } else {
+                        $0.monospaced()
                     }
-                    .padding(.top)
-                    .frame(maxWidth: 300, maxHeight: 400)
+                }
+                .padding(.top)
+                .frame(maxWidth: 300, maxHeight: 400)
 
                 Spacer()
             }
@@ -120,16 +122,18 @@ public struct QuickLog: View {
                     Text("\(config.value ?? 0) cal")
                         .font(.title2)
                         .foregroundColor(caloriesColor)
-                    NumberPad(config: config)
-                        .font(.title2)
-                        .buttonStyle(.plain)
-                        .modify {
-                            if #available(iOS 16.1, watchOS 9.1, *) {
-                                $0.fontDesign(.monospaced)
-                            } else {
-                                $0.monospaced()
-                            }
+                    NumberPad(config: config) { _, _ in
+                        Haptics.play()
+                    }
+                    .font(.title2)
+                    .buttonStyle(.plain)
+                    .modify {
+                        if #available(iOS 16.1, watchOS 9.1, *) {
+                            $0.fontDesign(.monospaced)
+                        } else {
+                            $0.monospaced()
                         }
+                    }
                 }
             }
             .ignoresSafeArea(.all, edges: [.bottom])
