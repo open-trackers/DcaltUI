@@ -66,12 +66,13 @@ public func handleTaskAction(_ manager: CoreDataStack) async {
             try backgroundContext.save()
 
             #if os(watchOS)
-                // delete log records older than N days
-                guard let keepSince = Calendar.current.date(byAdding: .year, value: -1, to: Date.now),
+                // delete log records older than one year
+                guard let mainStore = manager.getMainStore(backgroundContext),
+                      let keepSince = Calendar.current.date(byAdding: .year, value: -1, to: Date.now),
                       let (keepSinceDay, _) = keepSince.splitToLocal()
                 else { throw TrackerError.missingData(msg: "Clean: could not resolve date one year in past") }
                 logger.notice("\(#function): keepSince=\(keepSinceDay)")
-                try cleanLogRecords(backgroundContext, keepSinceDay: keepSinceDay)
+                try cleanLogRecords(backgroundContext, keepSinceDay: keepSinceDay, inStore: mainStore)
             #endif
 
             #if os(iOS)
