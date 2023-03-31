@@ -43,6 +43,8 @@ public struct CatDetName: View {
             #endif
             .textInputAutocapitalization(.words)
 
+            // KLUDGE: unable to get textfield to display multiple lines, so conditionally
+            //         including full text as a courtesy.
             #if os(watchOS)
                 if category.wrappedName.count > 20 {
                     Text(category.wrappedName)

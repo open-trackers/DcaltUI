@@ -49,6 +49,8 @@ public struct ServDetName: View {
             .font(.title3)
             #endif
 
+            // KLUDGE: unable to get textfield to display multiple lines, so conditionally
+            //         including full text as a courtesy.
             #if os(watchOS)
                 if serving.wrappedName.count > 20 {
                     Text(serving.wrappedName)
