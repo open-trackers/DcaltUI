@@ -10,6 +10,8 @@
 
 import SwiftUI
 
+import TextFieldPreset
+
 import DcaltLib
 import TrackerUI
 
@@ -28,12 +30,11 @@ public struct CatDetName: View {
 
     public var body: some View {
         Section {
-            TextFieldWithPresets($category.wrappedName,
-                                 prompt: "Enter category name",
-                                 presets: categoryNamePresets)
-            { _, _ in
-                // nothing to set other than the name
-            } label: {
+            TextFieldPreset($category.wrappedName,
+                            prompt: "Enter category name",
+                            axis: .vertical,
+                            presets: categoryNamePresets)
+            {
                 Text($0.description)
                     .foregroundStyle(.tint)
             }

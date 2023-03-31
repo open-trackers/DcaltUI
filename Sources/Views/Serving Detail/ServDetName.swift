@@ -10,6 +10,8 @@
 
 import SwiftUI
 
+import TextFieldPreset
+
 import DcaltLib
 import TrackerUI
 
@@ -21,7 +23,7 @@ public struct ServDetName: View {
     public init(serving: MServing) {
         self.serving = serving
 
-        _servingPreset = State(initialValue: ServingPreset(title: serving.wrappedName, calories: Float(serving.calories)))
+        _servingPreset = State(initialValue: ServingPreset(serving.wrappedName, calories: Float(serving.calories)))
     }
 
     // MARK: - Locals
@@ -32,17 +34,16 @@ public struct ServDetName: View {
 
     public var body: some View {
         Section {
-            TextFieldWithPresets($serving.wrappedName,
-                                 prompt: "Enter serving name",
-                                 presets: filteredServingPresets)
+            TextFieldPreset($serving.wrappedName,
+                            prompt: "Enter serving name",
+                            axis: .vertical,
+                            presets: filteredServingPresets,
+                            pickerLabel: { Text($0.description) })
             { _, preset in
                 // serving.name = preset.title  // NOTE: title should have been set by control
                 serving.volume_mL = Float(preset.volume_mL ?? 0)
                 serving.weight_g = Float(preset.weight_g ?? 0)
                 serving.calories = Int16(preset.calories)
-
-            } label: {
-                Text($0.description)
             }
             #if os(iOS)
             .font(.title3)
