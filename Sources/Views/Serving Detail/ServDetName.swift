@@ -39,7 +39,7 @@ public struct ServDetName: View {
                             axis: .vertical,
                             presets: filteredServingPresets,
                             pickerLabel: { Text($0.description) })
-            { _, preset in
+            { preset in
                 // serving.name = preset.title  // NOTE: title should have been set by control
                 serving.volume_mL = Float(preset.volume_mL ?? 0)
                 serving.weight_g = Float(preset.weight_g ?? 0)
