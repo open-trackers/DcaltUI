@@ -94,6 +94,7 @@ public struct AddServingButton: View {
             do {
                 // produce an ordered array of presets from the unordered set
                 let presets = filteredPresets.flatMap(\.value).filter { selected.contains($0) }
+                selected.removeAll()
 
                 try MServing.bulkCreate(viewContext, category: category, presets: presets)
                 try viewContext.save()
