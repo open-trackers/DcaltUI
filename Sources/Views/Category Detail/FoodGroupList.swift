@@ -49,7 +49,7 @@ public struct FoodGroupList: View {
     public var body: some View {
         List {
             ForEach(categoryPresets, id: \.self) { preset in
-                if let groupRaw = preset.groupRaw,
+                if case let groupRaw = preset.groupRaw,
                    let foodGroup = FoodGroup(rawValue: groupRaw)
                 {
                     Text("\(foodGroup.description)")

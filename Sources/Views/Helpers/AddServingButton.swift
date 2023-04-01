@@ -49,9 +49,9 @@ public struct AddServingButton: View {
         #if os(iOS)
             .sheet(isPresented: $showBulkAdd) {
                 NavigationStack {
-                    PresetsPickerMulti(selected: $selected,
-                                       presets: filteredPresets,
-                                       label: { Text($0.description) })
+                    BulkPresetsPicker(selected: $selected,
+                                      presets: filteredPresets,
+                                      label: { Text($0.description) })
                         .toolbar {
                             ToolbarItem(placement: .cancellationAction) {
                                 Button("Cancel", action: cancelBulkAddAction)
