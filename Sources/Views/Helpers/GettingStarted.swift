@@ -19,19 +19,18 @@ struct GettingStarted: View {
     // MARK: - Parameters
 
     @ObservedObject var appSetting: AppSetting
-    @Binding var show: Bool
 
     // MARK: - Locals
 
     @State private var createStandardCategories = true
 
-    private let title = "Getting Started"
-
     // MARK: - Views
 
     var body: some View {
-        Form {
+        Group {
             DailyTargetStepper(targetCalories: $appSetting.targetCalories)
+
+            Divider()
 
             Section {
                 Toggle(isOn: $createStandardCategories) {
@@ -41,26 +40,14 @@ struct GettingStarted: View {
                 Text("As an alternative, you can create your own.")
             }
         }
-        #if os(iOS)
-        .navigationTitle(title)
-        #endif
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel") {
-                    show = false
-                }
-            }
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Done", action: doneAction)
-            }
-        }
+        .onDisappear(perform: disappearAction)
     }
 
     // MARK: - Properties
 
     // MARK: - Actions
 
-    private func doneAction() {
+    private func disappearAction() {
         if createStandardCategories {
             try? MCategory.refreshStandard(viewContext)
         }
@@ -68,8 +55,6 @@ struct GettingStarted: View {
         do {
             try viewContext.save()
         } catch {}
-
-        show = false
     }
 }
 
@@ -80,7 +65,7 @@ struct GettingStarted_Previews: PreviewProvider {
         appSet.startOfDayEnum = StartOfDay.defaultValue
         appSet.targetCalories = 3000
         return NavigationStack {
-            GettingStarted(appSetting: appSet, show: .constant(true))
+            GettingStarted(appSetting: appSet)
                 .accentColor(.blue)
         }
         .environment(\.managedObjectContext, manager.container.viewContext)

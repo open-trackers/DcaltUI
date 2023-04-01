@@ -68,11 +68,7 @@ public struct ServDetName: View {
 
     private func selectAction(_ preset: ServingPreset) {
         do {
-            // serving.name = preset.title  // NOTE: title should have been set by control
-            serving.volume_mL = Float(preset.volume_mL ?? 0)
-            serving.weight_g = Float(preset.weight_g ?? 0)
-            serving.calories = Int16(preset.calories)
-
+            serving.populate(from: preset)
             try viewContext.save()
         } catch {
             logger.error("\(#function): \(error.localizedDescription)")

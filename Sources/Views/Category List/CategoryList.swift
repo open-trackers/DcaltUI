@@ -79,13 +79,11 @@ public struct CategoryList: View {
         }
         #endif
         .onAppear(perform: appearAction)
-        .sheet(isPresented: $showGettingStarted) {
-            NavigationStack {
-                if let appSetting = try? AppSetting.getOrCreate(viewContext) {
-                    GettingStarted(appSetting: appSetting, show: $showGettingStarted)
-                } else {
-                    Text("Unable to retrieve settings")
-                }
+        .gettingStarted(show: $showGettingStarted) {
+            if let appSetting = try? AppSetting.getOrCreate(viewContext) {
+                GettingStarted(appSetting: appSetting)
+            } else {
+                Text("Unable to retrieve settings")
             }
         }
         // .task(priority: .utility, taskAction)
