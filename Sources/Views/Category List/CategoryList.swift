@@ -37,12 +37,8 @@ public struct CategoryList: View {
     private let logCategoryPublisher = NotificationCenter.default.publisher(for: .logCategory)
     private let logServingPublisher = NotificationCenter.default.publisher(for: .logServing)
 
-    @AppStorage("category-is-new-user") private var isNewUser: Bool = true
-
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!,
                                 category: String(describing: CategoryList.self))
-
-    @State private var showGettingStarted = false
 
     // MARK: - Views
 
@@ -78,15 +74,6 @@ public struct CategoryList: View {
             }
         }
         #endif
-        .onAppear(perform: appearAction)
-        .gettingStarted(show: $showGettingStarted) {
-            if let appSetting = try? AppSetting.getOrCreate(viewContext) {
-                GettingStarted(appSetting: appSetting)
-            } else {
-                Text("Unable to retrieve settings")
-            }
-        }
-        // .task(priority: .utility, taskAction)
         .onReceive(logCategoryPublisher) { payload in
             logger.debug("onReceive: \(logCategoryPublisher.name.rawValue)")
             guard let categoryURI = payload.object as? URL else { return }
@@ -153,14 +140,6 @@ public struct CategoryList: View {
 
     // MARK: - Actions
 
-    private func appearAction() {
-        // if a new user, prompt for target calories and ask if they'd like to create the standard categories
-        if isNewUser {
-            isNewUser = false
-            showGettingStarted = true
-        }
-    }
-
     private func detailAction(_ uri: URL) {
         logger.notice("\(#function)")
         Haptics.play()
@@ -206,16 +185,6 @@ public struct CategoryList: View {
             router.path.append(DcaltRoute.about)
         }
     #endif
-
-    // MARK: - Background Task
-
-//    @Sendable
-//    private func taskAction() async {
-//        logger.notice("\(#function) START")
-//
-//
-//        logger.notice("\(#function) END")
-//    }
 }
 
 struct CategoryList_Previews: PreviewProvider {
