@@ -12,6 +12,8 @@ import CoreData
 import os
 import SwiftUI
 
+import TextFieldPreset
+
 import DcaltLib
 import TrackerUI
 
@@ -29,15 +31,46 @@ public struct AddServingButton: View {
 
     // MARK: - Locals
 
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!,
+                                category: String(describing: AddServingButton.self))
+
+    #if os(iOS)
+        @State private var showBulkAdd = false
+        @State private var selected = Set<ServingPreset>()
+    #endif
+
     // MARK: - Views
 
     public var body: some View {
         AddElementButton(elementName: "Serving",
+                         onLongPress: longPressAction,
                          onCreate: createAction,
                          onAfterSave: afterSaveAction)
+        #if os(iOS)
+            .sheet(isPresented: $showBulkAdd) {
+                NavigationStack {
+                    PresetsPickerMulti(selected: $selected,
+                                       presets: filteredPresets,
+                                       label: { Text($0.description) })
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Cancel", action: cancelBulkAddAction)
+                            }
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Add Servings", action: bulkAddAction)
+                                    .disabled(selected.count == 0)
+                            }
+                        }
+                }
+            }
+        #endif
     }
 
     // MARK: - Properties
+
+    private var filteredPresets: ServingPresetDict {
+        category.filteredPresets ?? servingPresets
+    }
 
     private var maxOrder: Int16 {
         do {
@@ -50,11 +83,39 @@ public struct AddServingButton: View {
 
     // MARK: - Actions
 
+    #if os(iOS)
+        private func cancelBulkAddAction() {
+            showBulkAdd = false
+        }
+    #endif
+
+    #if os(iOS)
+        private func bulkAddAction() {
+            do {
+                // produce an ordered array of presets from the unordered set
+                let presets = filteredPresets.flatMap(\.value).filter { selected.contains($0) }
+
+                try MServing.bulkCreate(viewContext, category: category, presets: presets)
+                try viewContext.save()
+            } catch {
+                logger.error("\(#function): \(error.localizedDescription)")
+            }
+            showBulkAdd = false
+        }
+    #endif
+
+    private func longPressAction() {
+        #if os(watchOS)
+            Haptics.play(.warning)
+        #elseif os(iOS)
+            showBulkAdd = true
+        #endif
+    }
+
     private func createAction() -> MServing {
         MServing.create(viewContext,
                         category: category,
-                        userOrder: maxOrder + 1,
-                        name: "New Serving")
+                        userOrder: maxOrder + 1)
     }
 
     private func afterSaveAction(_ nu: MServing) {

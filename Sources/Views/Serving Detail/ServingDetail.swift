@@ -60,7 +60,7 @@ public struct ServingDetail: View {
         private var platformView: some View {
             ControlBarTabView(selection: $selectedTab, tint: servingColor, title: title) {
                 Form {
-                    ServDetName(serving: serving)
+                    ServDetName(serving: serving, tint: servingColor)
                 }
                 .tag(Tab.name)
                 Form {
@@ -84,7 +84,7 @@ public struct ServingDetail: View {
             Form {
                 // FUTURE: allow user to change category
 
-                ServDetName(serving: serving)
+                ServDetName(serving: serving, tint: servingColor)
                 ServDetCalories(serving: serving)
 
                 ServDetWeight(serving: serving)

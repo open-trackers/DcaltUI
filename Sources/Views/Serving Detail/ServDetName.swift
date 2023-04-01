@@ -8,6 +8,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 //
 
+import os
 import SwiftUI
 
 import TextFieldPreset
@@ -16,19 +17,17 @@ import DcaltLib
 import TrackerUI
 
 public struct ServDetName: View {
+    @Environment(\.managedObjectContext) private var viewContext
+
     // MARK: - Parameters
 
-    @ObservedObject private var serving: MServing
-
-    public init(serving: MServing) {
-        self.serving = serving
-
-        _servingPreset = State(initialValue: ServingPreset(serving.wrappedName, calories: Float(serving.calories)))
-    }
+    @ObservedObject var serving: MServing
+    let tint: Color
 
     // MARK: - Locals
 
-    @State private var servingPreset: ServingPreset
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!,
+                                category: String(describing: ServDetName.self))
 
     // MARK: - Views
 
@@ -37,17 +36,10 @@ public struct ServDetName: View {
             TextFieldPreset($serving.wrappedName,
                             prompt: "Enter serving name",
                             axis: .vertical,
-                            presets: filteredServingPresets,
-                            pickerLabel: { Text($0.description) })
-            { preset in
-                // serving.name = preset.title  // NOTE: title should have been set by control
-                serving.volume_mL = Float(preset.volume_mL ?? 0)
-                serving.weight_g = Float(preset.weight_g ?? 0)
-                serving.calories = Int16(preset.calories)
-            }
-            #if os(iOS)
-            .font(.title3)
-            #endif
+                            presets: filteredPresets,
+                            pickerLabel: { Text($0.description) },
+                            onSelect: selectAction)
+                .tint(tint)
 
             // KLUDGE: unable to get textfield to display multiple lines, so conditionally
             //         including full text as a courtesy.
@@ -61,18 +53,30 @@ public struct ServDetName: View {
         } header: {
             Text("Name")
         }
+        #if os(iOS)
+        .font(.title3)
+        #endif
     }
 
     // MARK: - Properties
 
-    private var filteredServingPresets: ServingPresetDict {
-        guard let foodGroupElems = serving.category?.foodGroups?.allObjects as? [MFoodGroup],
-              foodGroupElems.first != nil
-        else { return servingPresets }
+    private var filteredPresets: ServingPresetDict {
+        serving.category?.filteredPresets ?? servingPresets
+    }
 
-        let foodGroups = foodGroupElems.map { FoodGroup(rawValue: $0.groupRaw) }
+    // MARK: - Actions
 
-        return servingPresets.filter { foodGroups.contains($0.key) }
+    private func selectAction(_ preset: ServingPreset) {
+        do {
+            // serving.name = preset.title  // NOTE: title should have been set by control
+            serving.volume_mL = Float(preset.volume_mL ?? 0)
+            serving.weight_g = Float(preset.weight_g ?? 0)
+            serving.calories = Int16(preset.calories)
+
+            try viewContext.save()
+        } catch {
+            logger.error("\(#function): \(error.localizedDescription)")
+        }
     }
 }
 
@@ -81,7 +85,7 @@ struct ServDetName_Previews: PreviewProvider {
         var serving: MServing
         var body: some View {
             Form {
-                ServDetName(serving: serving)
+                ServDetName(serving: serving, tint: .green)
             }
         }
     }
