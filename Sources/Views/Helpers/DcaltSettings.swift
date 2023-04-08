@@ -103,8 +103,7 @@ public struct DcaltSettings<Content>: View
 
     private func refreshWidgetAction() {
         guard let mainStore = manager.getMainStore(viewContext) else { return }
-        refreshWidget(viewContext, inStore: mainStore)
-        refreshWidgetReload()
+        refreshWidget(viewContext, inStore: mainStore, reload: true)
     }
 }
 

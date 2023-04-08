@@ -91,11 +91,9 @@ public func handleTaskAction(_ manager: CoreDataStack) async {
             #endif
 
             // ensure the widget/complication has the latest target (and day's total) calories
-            refreshWidget(backgroundContext, inStore: mainStore)
+            refreshWidget(backgroundContext, inStore: mainStore, reload: true)
 
             try backgroundContext.save()
-
-            refreshWidgetReload()
 
         } catch {
             logger.error("\(#function): \(error.localizedDescription)")
