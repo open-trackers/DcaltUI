@@ -16,10 +16,14 @@ import Compactor
 import DcaltLib
 
 public struct WidgetView: View {
-    var entry: Provider.Entry
+    private let entry: Provider.Entry
+    private let maxFontSize: CGFloat
 
-    public init(entry: Provider.Entry) {
+    public init(entry: Provider.Entry,
+                maxFontSize: CGFloat = 40)
+    {
         self.entry = entry
+        self.maxFontSize = maxFontSize
     }
 
     static let tc = NumberCompactor(ifZero: "0", roundSmallToWhole: true)
@@ -29,12 +33,16 @@ public struct WidgetView: View {
             Text("\(Self.tc.string(from: remaining as NSNumber) ?? "")")
                 .foregroundColor(remaining >= 0 ? .primary : .red)
                 .padding()
-                .font(.headline.bold())
-//                .font(.system(size: 500))
-//                .minimumScaleFactor(0.01)
+                // .font(.headline.bold())
+                .font(.system(size: maxFontSize))
+                .minimumScaleFactor(0.01)
+                .fontWeight(.bold)
         }
         .progressViewStyle(.circular)
         .tint(.accentColor)
+        #if os(iOS)
+            .padding()
+        #endif
     }
 
     private var remaining: Int {
