@@ -1,0 +1,33 @@
+//
+//  Provider.swift
+//
+// Copyright 2023  OpenAlloc LLC
+//
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+//
+
+import SwiftUI
+import WidgetKit
+
+import DcaltLib
+
+public struct Provider: TimelineProvider {
+    public init() {}
+
+    public func placeholder(in _: Context) -> SimpleEntry {
+        SimpleEntry(date: Date(), targetCalories: 2000, currentCalories: 1200)
+    }
+
+    public func getSnapshot(in _: Context, completion: @escaping (SimpleEntry) -> Void) {
+        let entry = SimpleEntry(date: Date(), targetCalories: 2000, currentCalories: 700)
+        completion(entry)
+    }
+
+    public func getTimeline(in _: Context, completion: @escaping (Timeline<SimpleEntry>) -> Void) {
+        guard let entry = UserDefaults.appGroup.getSimpleEntry() else { return }
+        let timeline = Timeline(entries: [entry], policy: .never)
+        completion(timeline)
+    }
+}
