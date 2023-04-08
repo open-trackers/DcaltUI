@@ -26,7 +26,7 @@ public struct Provider: TimelineProvider {
     }
 
     public func getTimeline(in _: Context, completion: @escaping (Timeline<WidgetEntry>) -> Void) {
-        guard let entry = UserDefaults.appGroup.getSimpleEntry() else { return }
+        guard let entry = UserDefaults.appGroup.get() else { return }
         let timeline = Timeline(entries: [entry], policy: .never)
         completion(timeline)
     }
