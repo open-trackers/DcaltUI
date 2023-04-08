@@ -49,7 +49,7 @@ public struct WidgetView: View {
 
 struct WidgetView_Previews: PreviewProvider {
     static var previews: some View {
-        let entry = SimpleEntry(targetCalories: 2000, currentCalories: 500)
+        let entry = WidgetEntry(targetCalories: 2000, currentCalories: 500)
         return WidgetView(entry: entry)
             .accentColor(.blue)
             .previewContext(WidgetPreviewContext(family: .accessoryCircular))

@@ -16,16 +16,16 @@ import DcaltLib
 public struct Provider: TimelineProvider {
     public init() {}
 
-    public func placeholder(in _: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), targetCalories: 2000, currentCalories: 1200)
+    public func placeholder(in _: Context) -> WidgetEntry {
+        WidgetEntry(date: Date(), targetCalories: 2000, currentCalories: 1200)
     }
 
-    public func getSnapshot(in _: Context, completion: @escaping (SimpleEntry) -> Void) {
-        let entry = SimpleEntry(date: Date(), targetCalories: 2000, currentCalories: 700)
+    public func getSnapshot(in _: Context, completion: @escaping (WidgetEntry) -> Void) {
+        let entry = WidgetEntry(date: Date(), targetCalories: 2000, currentCalories: 700)
         completion(entry)
     }
 
-    public func getTimeline(in _: Context, completion: @escaping (Timeline<SimpleEntry>) -> Void) {
+    public func getTimeline(in _: Context, completion: @escaping (Timeline<WidgetEntry>) -> Void) {
         guard let entry = UserDefaults.appGroup.getSimpleEntry() else { return }
         let timeline = Timeline(entries: [entry], policy: .never)
         completion(timeline)
