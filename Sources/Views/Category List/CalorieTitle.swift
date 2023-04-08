@@ -61,23 +61,29 @@ struct CalorieTitle: View {
     // uses boolean state to force refresh of Text
     // from main store (NOT archive!)
     private func refreshTodayZDayRun() {
-        guard let subjectiveToday = appSetting?.subjectiveToday,
+        guard let appSetting,
+              let subjectiveToday = appSetting.subjectiveToday,
               let mainStore = manager.getMainStore(viewContext),
               let zdr = try? ZDayRun.get(viewContext, consumedDay: subjectiveToday, inStore: mainStore)
         else { return }
 
-        zdr.updateCalories()
-
         do {
             try viewContext.save()
         } catch {
+            // logger.error("\(#function): \(error.localizedDescription)")
             return
-                // logger.error("\(#function): \(error.localizedDescription)")
         }
+
+        _ = zdr.refreshCalorieSum()
 
         todayZDayRun = zdr
 
         refreshToggle.toggle()
+
+        // refresh happening too frequently!
+//        refreshWidget(currentCalories: calories)
+//        refreshWidget(targetCalories: appSetting.targetCalories)
+//        refreshWidgetReload()
     }
 }
 
