@@ -26,7 +26,7 @@ public struct WidgetView: View {
 
     // MARK: - Locals
 
-    static let tc = NumberCompactor(ifZero: "0", roundSmallToWhole: true)
+    private static let tc = NumberCompactor(ifZero: "0", roundSmallToWhole: true)
 
     // MARK: - Views
 

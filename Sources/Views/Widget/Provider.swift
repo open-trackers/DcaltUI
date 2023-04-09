@@ -17,11 +17,15 @@ public struct Provider: TimelineProvider {
     public init() {}
 
     public func placeholder(in _: Context) -> WidgetEntry {
-        WidgetEntry(date: Date(), targetCalories: 2000, currentCalories: 1200)
+        WidgetEntry(date: Date(), targetCalories: 2000, currentCalories: 1200, pairs: [
+            WidgetEntry.Pair(.red, 0.34),
+            WidgetEntry.Pair(.green, 0.33),
+            WidgetEntry.Pair(.blue, 0.33),
+        ])
     }
 
-    public func getSnapshot(in _: Context, completion: @escaping (WidgetEntry) -> Void) {
-        let entry = WidgetEntry(date: Date(), targetCalories: 2000, currentCalories: 700)
+    public func getSnapshot(in context: Context, completion: @escaping (WidgetEntry) -> Void) {
+        let entry = placeholder(in: context)
         completion(entry)
     }
 
