@@ -174,7 +174,8 @@ public struct CategoryRun: View {
         do {
             try serving.logCalories(viewContext,
                                     mainStore: mainStore,
-                                    intensity: serving.lastIntensity)
+                                    intensity: serving.lastIntensity,
+                                    defaultColor: .accentColor)
 
             try viewContext.save()
 

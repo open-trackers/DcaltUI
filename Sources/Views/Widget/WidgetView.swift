@@ -16,37 +16,61 @@ import Compactor
 import DcaltLib
 
 public struct WidgetView: View {
-    private let entry: Provider.Entry
-    private let maxFontSize: CGFloat
+    // MARK: - Parameters
 
-    public init(entry: Provider.Entry,
-                maxFontSize: CGFloat = 40)
-    {
+    private let entry: Provider.Entry
+
+    public init(entry: Provider.Entry) {
         self.entry = entry
-        self.maxFontSize = maxFontSize
     }
+
+    // MARK: - Locals
 
     static let tc = NumberCompactor(ifZero: "0", roundSmallToWhole: true)
 
+    // MARK: - Views
+
     public var body: some View {
-        ProgressView(value: percent) {
-            Text("\(Self.tc.string(from: remaining as NSNumber) ?? "")")
-                .foregroundColor(remaining >= 0 ? .primary : .red)
-                .padding()
-                // .font(.headline.bold())
-                .font(.system(size: maxFontSize))
-                .minimumScaleFactor(0.01)
-                .fontWeight(.bold)
-        }
-        .progressViewStyle(.circular)
-        .tint(.accentColor)
-        #if os(iOS)
-            .padding()
+        #if os(watchOS)
+            gauge
+        #elseif os(iOS)
+            Section {
+                gauge
+            } header: {
+                Text("Daily Calories")
+                    .foregroundColor(.secondary)
+            }
         #endif
     }
 
-    private var remaining: Int {
-        entry.targetCalories - entry.currentCalories // may be negative
+    private var gauge: some View {
+        Gauge(value: percent, in: 0.0 ... 1.0) {
+            Text("CAL")
+                .foregroundColor(isOver ? .red : .primary)
+        } currentValueLabel: {
+            Text(caloriesStr)
+        }
+        .gaugeStyle(.accessoryCircular)
+        .tint(Gradient(colors: colors))
+    }
+
+    // MARK: - Properties
+
+    private var caloriesStr: String {
+        Self.tc.string(from: entry.currentCalories as NSNumber) ?? ""
+    }
+
+    private var colors: [Color] {
+        let c = entry.pairs.map(\.color)
+        return c.first == nil ? [.accentColor] : c
+    }
+
+//    private var remaining: Int {
+//        entry.targetCalories - entry.currentCalories // may be negative
+//    }
+
+    private var isOver: Bool {
+        entry.targetCalories < entry.currentCalories
     }
 
     private var percent: Float {
