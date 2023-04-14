@@ -8,10 +8,8 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 //
 
-import SwiftUI
-import WidgetKit
-
 import Compactor
+import SwiftUI
 
 import DcaltLib
 
@@ -84,6 +82,6 @@ struct WidgetView_Previews: PreviewProvider {
         let entry = WidgetEntry(targetCalories: 2000, currentCalories: 500)
         return WidgetView(entry: entry)
             .accentColor(.blue)
-            .previewContext(WidgetPreviewContext(family: .accessoryCircular))
+        // .previewContext(WidgetPreviewContext(family: .accessoryCircular))
     }
 }

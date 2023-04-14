@@ -69,7 +69,7 @@ public struct CategoryCell: View {
         #if os(watchOS)
             .short
         #else
-            .full
+                .full
         #endif
     }
 }
