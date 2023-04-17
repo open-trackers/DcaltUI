@@ -57,6 +57,7 @@ public func handleLogServingUA(_ context: NSManagedObjectContext, _ userActivity
     }
 }
 
+// TODO: should this be in DcaltLib?
 public func handleTaskAction(_ manager: CoreDataStack) async {
     logger.notice("\(#function) START")
     await manager.container.performBackgroundTask { backgroundContext in
@@ -89,7 +90,14 @@ public func handleTaskAction(_ manager: CoreDataStack) async {
                                       startOfDay: startOfDay)
             #endif
 
+            // ensure the widget/complication has the latest target (and day's total) calories
+            WidgetEntry.refresh(backgroundContext,
+                                inStore: mainStore,
+                                reload: true,
+                                defaultColor: .accentColor)
+
             try backgroundContext.save()
+
         } catch {
             logger.error("\(#function): \(error.localizedDescription)")
         }

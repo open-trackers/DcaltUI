@@ -209,7 +209,8 @@ public struct QuickLog: View {
                                      servingArchiveID: quickLogID,
                                      servingName: quickLogName,
                                      netCalories: config.value ?? 0,
-                                     startOfDay: appSetting.startOfDayEnum)
+                                     startOfDay: appSetting.startOfDayEnum,
+                                     defaultColor: .accentColor)
 
             try viewContext.save()
 

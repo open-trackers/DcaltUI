@@ -318,7 +318,8 @@ public struct ServingRun: View {
         do {
             try serving.logCalories(viewContext,
                                     mainStore: mainStore,
-                                    intensity: intensity)
+                                    intensity: intensity,
+                                    defaultColor: .accentColor)
 
             try viewContext.save()
 

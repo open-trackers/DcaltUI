@@ -56,10 +56,6 @@ public struct DcaltSettings<Content>: View
 
             DailyTargetStepper(targetCalories: $appSetting.targetCalories)
 
-//            #if os(iOS)
-//                ProgressFormatPicker()
-//            #endif
-
             Section {
                 Button(action: standardCategoriesAction) {
                     Text("Refresh now")
@@ -73,7 +69,7 @@ public struct DcaltSettings<Content>: View
 
             content()
         }
-//        .onDisappear(perform: disappearAction)
+        .onDisappear(perform: refreshWidgetAction)
     }
 
     // MARK: - Actions
@@ -91,6 +87,8 @@ public struct DcaltSettings<Content>: View
         }
 
         onRestoreToDefaults() // continue up the chain
+
+        refreshWidgetAction()
     }
 
     private func standardCategoriesAction() {
@@ -103,15 +101,13 @@ public struct DcaltSettings<Content>: View
         }
     }
 
-//    private func disappearAction() {
-//        do {
-//            //category.setColor(color != .clear ? color : nil)
-//            appSetting.calDisplayMode = calDisplayMode.rawValue
-//            try viewContext.save()
-//        } catch {
-//            logger.error("\(#function): \(error.localizedDescription)")
-//        }
-//    }
+    private func refreshWidgetAction() {
+        guard let mainStore = manager.getMainStore(viewContext) else { return }
+        WidgetEntry.refresh(viewContext,
+                            inStore: mainStore,
+                            reload: true,
+                            defaultColor: .accentColor)
+    }
 }
 
 struct DcaltSettings_Previews: PreviewProvider {
