@@ -82,21 +82,21 @@ public struct CategoryRun: View {
             }
         }
         #elseif os(iOS)
-        .navigationTitle(category.wrappedName)
-        .toolbar {
-            ToolbarItem {
-                Button(action: quickLogAction) {
-                    if verticalSizeClass == .regular {
-                        Image(systemName: "bolt.fill")
-                    } else {
-                        Text("Quick Log")
+            .navigationTitle(category.wrappedName)
+                .toolbar {
+                    ToolbarItem {
+                        Button(action: quickLogAction) {
+                            if verticalSizeClass == .regular {
+                                Image(systemName: "bolt.fill")
+                            } else {
+                                Text("Quick Log")
+                            }
+                        }
+                    }
+                    ToolbarItem {
+                        AddServingButton(category: category)
                     }
                 }
-            }
-            ToolbarItem {
-                AddServingButton(category: category)
-            }
-        }
         #endif
     }
 
