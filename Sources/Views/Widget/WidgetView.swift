@@ -29,15 +29,9 @@ public struct WidgetView: View {
     // MARK: - Views
 
     public var body: some View {
-        #if os(watchOS)
-            gauge
-        #elseif os(iOS)
-            Section {
-                gauge
-            } header: {
-                Text("Daily Calories")
-                    .foregroundColor(.secondary)
-            }
+        gauge
+        #if os(iOS)
+        .scaleEffect(2.0) // double the size in iOS
         #endif
     }
 
