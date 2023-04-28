@@ -41,9 +41,10 @@ public struct ServingDetail: View {
 
         enum Tab: Int, CaseIterable {
             case name = 1
-            case calories = 2
-            case weight = 3
-            case volume = 4
+            case category = 2
+            case calories = 3
+            case weight = 4
+            case volume = 5
         }
     #endif
 
@@ -63,6 +64,14 @@ public struct ServingDetail: View {
                     ServDetName(serving: serving, tint: servingColor)
                 }
                 .tag(Tab.name)
+                Form {
+                    if let category = serving.category {
+                        ServDetCategory(category: category, onSelect: selectCategoryAction)
+                    } else {
+                        Text("Category not available")
+                    }
+                }
+                .tag(Tab.category)
                 Form {
                     ServDetCalories(serving: serving)
                 }
@@ -85,6 +94,9 @@ public struct ServingDetail: View {
                 // FUTURE: allow user to change category
 
                 ServDetName(serving: serving, tint: servingColor)
+                if let category = serving.category {
+                    ServDetCategory(category: category, onSelect: selectCategoryAction)
+                }
                 ServDetCalories(serving: serving)
 
                 ServDetWeight(serving: serving)
@@ -105,6 +117,18 @@ public struct ServingDetail: View {
     }
 
     // MARK: - Actions
+
+    // if user selects a new category, the servering should no longer be in category's list of servings
+    private func selectCategoryAction(nuCategoryArchiveID: UUID?) {
+        guard let nuCategoryArchiveID,
+              nuCategoryArchiveID != serving.category?.archiveID else { return }
+        do {
+            guard let nu = try MCategory.get(viewContext, archiveID: nuCategoryArchiveID) else { return }
+            serving.category = nu
+        } catch {
+            logger.error("\(#function): \(error.localizedDescription)")
+        }
+    }
 
     private func disappearAction() {
         do {
