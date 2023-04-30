@@ -123,8 +123,10 @@ public struct ServingDetail: View {
         guard let nuCategoryArchiveID,
               nuCategoryArchiveID != serving.category?.archiveID else { return }
         do {
-            guard let nu = try MCategory.get(viewContext, archiveID: nuCategoryArchiveID) else { return }
-            serving.category = nu
+            guard let nu = try MCategory.get(viewContext, archiveID: nuCategoryArchiveID)
+            else { return }
+            try serving.move(viewContext, to: nu)
+            try viewContext.save()
         } catch {
             logger.error("\(#function): \(error.localizedDescription)")
         }
