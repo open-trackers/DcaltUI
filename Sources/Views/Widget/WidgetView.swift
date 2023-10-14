@@ -30,8 +30,9 @@ public struct WidgetView: View {
 
     public var body: some View {
         gauge
+            .widgetBackground(backgroundView: Color.clear)
         #if os(iOS)
-        .scaleEffect(2.0) // double the size in iOS
+            .scaleEffect(2.0) // double the size in iOS
         #endif
     }
 

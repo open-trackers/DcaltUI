@@ -39,6 +39,9 @@ public struct ServDetName: View {
                             presets: filteredPresets,
                             pickerLabel: { Text($0.description) },
                             onSelect: selectAction)
+            #if os(watchOS)
+                .padding(.bottom)
+            #endif
                 .tint(tint)
 
             // KLUDGE: unable to get textfield to display multiple lines, so conditionally
