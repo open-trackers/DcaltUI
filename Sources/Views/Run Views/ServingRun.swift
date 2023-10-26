@@ -79,17 +79,20 @@ public struct ServingRun: View {
     }
 
     #if os(watchOS)
+        private var slices: CGFloat = 13
         private var platformView: some View {
-            GeometryReader { _ in
+            GeometryReader { geo in
                 VStack(spacing: verticalSpacing) {
                     Text(serving.wrappedName)
                         .font(.title3)
                         .lineLimit(1)
+                        .frame(height: geo.size.height * 1 / slices)
 
                     Text("\(netCalories, specifier: "%0.0f") cal")
                         .font(.title)
                         .lineLimit(1)
                         .foregroundColor(.yellow)
+                        .frame(height: geo.size.height * 3 / slices)
 
                     // TODO: refactor this into IntensityStepper, so it works on both watch and phone
                     ValueStepper(value: $intensity,
@@ -99,7 +102,8 @@ public struct ServingRun: View {
                                  multiplier: 100,
                                  maxFontSize: stepperMaxFontSize,
                                  forceFocus: true)
-                        .frame(maxHeight: stepperMaxHeight)
+                        .frame(height: geo.size.height * 3 / slices)
+//                        .frame(maxHeight: stepperMaxHeight)
 
                     HStack(spacing: 20) {
                         Text("\(netWeight, specifier: "%0.0f") g")
@@ -109,6 +113,7 @@ public struct ServingRun: View {
                     }
                     .font(.title2)
                     .lineLimit(1)
+                    .frame(height: geo.size.height * 3 / slices)
 
                     HStack(spacing: 15) {
                         Button(action: editAction) {
@@ -123,6 +128,7 @@ public struct ServingRun: View {
                             .foregroundStyle(servingColorDarkBg)
                             .font(.title3)
                     }
+                    .frame(height: geo.size.height * 2 / slices)
                 }
                 .symbolRenderingMode(.hierarchical)
             }

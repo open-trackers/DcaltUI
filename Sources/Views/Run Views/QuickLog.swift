@@ -126,6 +126,9 @@ public struct QuickLog: View {
                         Haptics.play()
                     }
                     .font(.title2)
+            
+                    
+                    
                     .buttonStyle(.plain)
                     .modify {
                         if #available(iOS 16.1, watchOS 9.1, *) {
@@ -220,9 +223,13 @@ public struct QuickLog: View {
             // NavigationStack was NOT popping, and then the user's manual pop
             // caused "Fatal error: Can't remove more items from a collection
             // than it contains".  (Happened on iPad Mini (6th) in landscape.)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            //
+            // October 2023 update: this async operation was causing a "Simultaneous
+            // accesses to 0x..., but modification requires exclusive access" on my
+            // iPhone 12 Pro on iOS 17.0.3, but not on simulator. Removed async for now.
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 router.path.removeAll()
-            }
+//            }
 
             logger.debug("\(#function) DONE")
         } catch {
