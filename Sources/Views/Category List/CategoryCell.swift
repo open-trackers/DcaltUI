@@ -17,7 +17,7 @@ import DcaltLib
 import TrackerLib
 import TrackerUI
 
-extension MCategory: Celled {}
+extension MCategory: @retroactive Celled {}
 
 public struct CategoryCell: View {
     @Environment(\.managedObjectContext) private var viewContext

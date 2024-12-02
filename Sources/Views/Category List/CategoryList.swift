@@ -16,7 +16,7 @@ import DcaltLib
 import TrackerLib
 import TrackerUI
 
-extension MCategory: Named {}
+extension MCategory: @retroactive Named {}
 
 // This is the shared 'ContentView' for both iOS and watchOS platforms
 public struct CategoryList: View {
